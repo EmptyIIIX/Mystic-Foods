@@ -33,10 +33,10 @@ namespace Mystic_Foods
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
             //load texture , add sprite into Drag_DropManager
-            Texture2D boxTexture = Content.Load<Texture2D>("Assets");
+            Texture2D boxTexture = Content.Load<Texture2D>("Assets/Asset");
 
             //Lastest sprite will be top layer and first choosed for drag & drop
-            _drag_dropManager.AddSprite(new Drag_Drop("Assets", boxTexture, new Vector2(150, 150)));
+            _drag_dropManager.AddSprite(new Drag_Drop("Asset", boxTexture, new Vector2(150, 150)));
         }
 
         protected override void Update(GameTime gameTime)
