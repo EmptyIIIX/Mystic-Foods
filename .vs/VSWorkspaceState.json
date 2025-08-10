@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Mystic Foods",
-    "\\Mystic Foods\\Mystic Foods"
+    "\\Mystic Foods\\Mystic Foods",
+    "\\Mystic Foods\\Mystic Foods\\Content"
   ],
-  "SelectedNode": "\\Mystic Foods\\Mystic Foods\\Game1.cs",
+  "SelectedNode": "\\Mystic Foods\\Mystic Foods.sln",
   "PreviewInSolutionExplorer": false
 }
