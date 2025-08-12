@@ -14,6 +14,8 @@ namespace Mystic_Foods
         private MainMenuScene _mainMenuScene;
         private GamePlayScene _gamePlayScene;
 
+        private CustomerManager _customerManager;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -28,9 +30,12 @@ namespace Mystic_Foods
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            //make it start at main menu
+            _customerManager = new CustomerManager();
+
             _mainMenuScene = new MainMenuScene();
-            _gamePlayScene = new GamePlayScene();
+            _gamePlayScene = new GamePlayScene(_customerManager);
+
+            //make it start at main menu
             _currentScene = _mainMenuScene;
 
             base.Initialize();
