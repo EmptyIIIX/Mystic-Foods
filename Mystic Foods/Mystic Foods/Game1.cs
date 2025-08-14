@@ -23,8 +23,9 @@ namespace Mystic_Foods
             IsMouseVisible = true;
 
             //screen resolution
-            _graphics.PreferredBackBufferWidth = 800;
-            _graphics.PreferredBackBufferHeight = 480;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
