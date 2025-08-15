@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 //Comment
+//Comment 1
 namespace Mystic_Foods
 {
     public class Game1 : Game
