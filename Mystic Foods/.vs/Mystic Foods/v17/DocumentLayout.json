@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project 3 subject\\Mystic-Foods\\Mystic Foods\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\university\\camt_dg\\courses\\co-project 3 subject\\mystic-foods\\mystic foods\\mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\university\\camt_dg\\courses\\co-project 3 subject\\mystic-foods\\mystic foods\\mystic foods\\drag\u0026drop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\drag\u0026drop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\university\\camt_dg\\courses\\co-project 3 subject\\mystic-foods\\mystic foods\\mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,7 +30,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Drag\u0026Drop.cs",
               "DocumentMoniker": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project 3 subject\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Drag\u0026Drop.cs",
               "RelativeDocumentMoniker": "Mystic Foods\\Drag\u0026Drop.cs",
@@ -38,11 +38,12 @@
               "RelativeToolTip": "Mystic Foods\\Drag\u0026Drop.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T07:53:13.744Z"
+              "WhenOpened": "2025-08-10T07:53:13.744Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Game1.cs",
               "DocumentMoniker": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project 3 subject\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Game1.cs",
               "RelativeDocumentMoniker": "Mystic Foods\\Game1.cs",
