@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 //Comment
 //Comment 1
+//Comment 2
 namespace Mystic_Foods
 {
     public class Game1 : Game
