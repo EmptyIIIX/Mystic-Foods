@@ -16,6 +16,7 @@ namespace Mystic_Foods
         private IGameScene _currentScene;
         private MainMenuScene _mainMenuScene;
         private GamePlayScene _gamePlayScene;
+        private DnDScene _dndScene;
 
         private CustomerManager _customerManager;
 
@@ -42,6 +43,7 @@ namespace Mystic_Foods
             _drag_dropManager = new Drag_DropManager();
             _mainMenuScene = new MainMenuScene();
             _gamePlayScene = new GamePlayScene(_customerManager);
+            _dndScene = new DnDScene(_drag_dropManager);
 
             //make it start at main menu
             _currentScene = _mainMenuScene;
@@ -61,6 +63,7 @@ namespace Mystic_Foods
             //load scene
             _mainMenuScene.LoadContent(Content);
             _gamePlayScene.LoadContent(Content);
+            _dndScene.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -74,6 +77,11 @@ namespace Mystic_Foods
                 {
                     _mainMenuScene.StartGameRequested = false;
                     _currentScene = _gamePlayScene;
+                }
+                if (_mainMenuScene.DnDRequested)
+                {
+                    _mainMenuScene.DnDRequested = false;
+                    _currentScene = _dndScene;
                 }
                 if (_mainMenuScene.ExitRequested)
                 {
@@ -89,9 +97,17 @@ namespace Mystic_Foods
                     _currentScene = _mainMenuScene;
                 }
             }
+            else if (_currentScene == _dndScene)
+            {
+                _dndScene.Update(gameTime);
+                if (_dndScene.BackToMenuRequested)
+                {
+                    _dndScene.BackToMenuRequested = false;
+                    _currentScene = _mainMenuScene;
+                }
+            }
 
             // TODO: Add your update logic here
-            _drag_dropManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -100,9 +116,6 @@ namespace Mystic_Foods
         {
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
-            _drag_dropManager.Draw(_spriteBatch);
-            _spriteBatch.End();
             //draw scene
             _currentScene.Draw(_spriteBatch);
 
