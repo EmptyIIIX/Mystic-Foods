@@ -3,12 +3,28 @@
   "WorkspaceRootPath": "D:\\Work\\Mystic-Foods\\Mystic Foods\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\drag\u0026drop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\drag\u0026drop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\mainmenuscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\mainmenuscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\gameplayscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\gameplayscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\dndscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\dndscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\drag\u0026drop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\drag\u0026drop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\customermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\customermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,15 +46,67 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Drag\u0026Drop.cs",
               "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Drag\u0026Drop.cs",
               "RelativeDocumentMoniker": "Mystic Foods\\Drag\u0026Drop.cs",
               "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Drag\u0026Drop.cs",
               "RelativeToolTip": "Mystic Foods\\Drag\u0026Drop.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAFMAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T07:53:13.744Z",
+              "WhenOpened": "2025-08-19T08:05:13.965Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DnDScene.cs",
+              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\DnDScene.cs",
+              "RelativeDocumentMoniker": "Mystic Foods\\DnDScene.cs",
+              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\DnDScene.cs",
+              "RelativeToolTip": "Mystic Foods\\DnDScene.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAAADcAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-19T08:04:55.704Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainMenuScene.cs",
+              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\MainMenuScene.cs",
+              "RelativeDocumentMoniker": "Mystic Foods\\MainMenuScene.cs",
+              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\MainMenuScene.cs",
+              "RelativeToolTip": "Mystic Foods\\MainMenuScene.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAYwFoAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-19T07:52:08.071Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CustomerManager.cs",
+              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\CustomerManager.cs",
+              "RelativeDocumentMoniker": "Mystic Foods\\CustomerManager.cs",
+              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\CustomerManager.cs",
+              "RelativeToolTip": "Mystic Foods\\CustomerManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-19T07:55:49.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GamePlayScene.cs",
+              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\GamePlayScene.cs",
+              "RelativeDocumentMoniker": "Mystic Foods\\GamePlayScene.cs",
+              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\GamePlayScene.cs",
+              "RelativeToolTip": "Mystic Foods\\GamePlayScene.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-19T08:05:40.889Z",
               "EditorCaption": ""
             },
             {
@@ -49,9 +117,10 @@
               "RelativeDocumentMoniker": "Mystic Foods\\Game1.cs",
               "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Game1.cs",
               "RelativeToolTip": "Mystic Foods\\Game1.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAYwCYAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAGEAAAAAAAAAAAAYwHIAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-08T08:21:14.115Z"
+              "WhenOpened": "2025-08-08T08:21:14.115Z",
+              "EditorCaption": ""
             }
           ]
         }
