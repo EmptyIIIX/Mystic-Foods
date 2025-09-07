@@ -11,7 +11,7 @@ namespace Mystic_Foods
 {
     public interface IGameScene
     {
-        void LoadContent(ContentManager content);
+        void LoadContent(ContentManager content, SpriteBatch spriteBatch);
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
     }

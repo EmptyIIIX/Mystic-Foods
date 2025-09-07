@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Mystic_Foods.Managers;
+using Mystic_Foods.Systems;
 
 namespace Mystic_Foods
 {
@@ -8,7 +10,9 @@ namespace Mystic_Foods
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Drag_DropManager _drag_dropManager;
+
+        private GameManager _gameManager;
+
         //Scene Management
         private IGameScene _currentScene;
         private MainMenuScene _mainMenuScene;
@@ -26,21 +30,15 @@ namespace Mystic_Foods
             //screen resolution
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
+            //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
-            _graphics.ApplyChanges();
             _customerManager = new CustomerManager();
-
-            _drag_dropManager = new Drag_DropManager();
             _mainMenuScene = new MainMenuScene();
             _gamePlayScene = new GamePlayScene(_customerManager);
-            _dndScene = new DnDScene(_drag_dropManager);
 
             //make it start at main menu
             _currentScene = _mainMenuScene;
@@ -51,22 +49,24 @@ namespace Mystic_Foods
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            // TODO: use this.Content to load your game content here
-            //load texture , add sprite into Drag_DropManager
-            Texture2D boxTexture = Content.Load<Texture2D>("Environments/Asset");
 
-            //Lastest sprite will be top layer and first choosed for drag & drop
-            _drag_dropManager.AddSprite(new Drag_Drop("Asset", boxTexture, new Vector2(150, 150)));
+            Globals.Content = Content; //คำสั่งนี้ต้องสร้างก่อน _gameManager = new GameManager();
+            _gameManager = new GameManager(); //สร้าง GameManager หลัง Globals.Content
+            _gameManager.LoadContent(Content);//รูปหรือ assets สำหรับหน้าทำอาหาร(Cooking scene) ใส่ใน method นี้
+
+            _dndScene = new DnDScene(_gameManager);
+
             //load scene
-            _mainMenuScene.LoadContent(Content);
-            _gamePlayScene.LoadContent(Content);
-            _dndScene.LoadContent(Content);
+            _mainMenuScene.LoadContent(Content, _spriteBatch);
+            _gamePlayScene.LoadContent(Content, _spriteBatch);
+            _dndScene.LoadContent(Content, _spriteBatch);
+
         }
 
         protected override void Update(GameTime gameTime)
         {
-
             //Scene Logic
+            #region Scene Logic
             if (_currentScene == _mainMenuScene)
             {
                 _mainMenuScene.Update(gameTime);
@@ -103,16 +103,13 @@ namespace Mystic_Foods
                     _currentScene = _mainMenuScene;
                 }
             }
-
-            // TODO: Add your update logic here
+            #endregion
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-
-            // TODO: Add your drawing code here
             //draw scene
             _currentScene.Draw(_spriteBatch);
 
