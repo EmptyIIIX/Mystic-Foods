@@ -25,7 +25,7 @@ namespace Mystic_Foods
         // เก็บ bounding box ของแต่ละเมนู (เพื่อคลิกได้)
         private List<Rectangle> _menuItemRects = new List<Rectangle>();
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _font = content.Load<SpriteFont>("MainFont");
 

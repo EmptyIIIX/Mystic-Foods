@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mystic_Foods
+namespace Mystic_Foods.Managers
 {
     public class CustomerManager
     {

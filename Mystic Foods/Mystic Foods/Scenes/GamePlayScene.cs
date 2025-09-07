@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Mystic_Foods.Managers;
 using Mystic_Foods.Time;
 
 namespace Mystic_Foods
@@ -36,7 +37,7 @@ namespace Mystic_Foods
             _patienceMeter = _patienceMeterStart;
         }
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             // Load font
             _font = content.Load<SpriteFont>("MainFont");

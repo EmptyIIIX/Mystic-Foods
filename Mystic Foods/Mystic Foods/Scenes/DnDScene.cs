@@ -2,35 +2,40 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Mystic_Foods.Managers;
+using Mystic_Foods.Systems;
 
 namespace Mystic_Foods
 {
     public class DnDScene : IGameScene
     {
-        private Drag_DropManager _dragDropManager;
+        private GameManager _gameManager;
+
         private SpriteFont _font;
         private bool _contentLoaded = false;
         private KeyboardState _oldState;
 
         public bool BackToMenuRequested = false;
 
-        public DnDScene(Drag_DropManager dragDropManager)
+        public DnDScene(GameManager gameManager)
         {
-            _dragDropManager = dragDropManager;
+            _gameManager = gameManager;
         }
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             if (_contentLoaded) return;
             _font = content.Load<SpriteFont>("MainFont");
-            // ใส่ texture/sprite ต่างๆ ตามที่ต้องการ (หรือ load ที่ Drag_DropManager)
+
             _contentLoaded = true;
+            Globals.SpriteBatch = spriteBatch;
         }
 
         public void Update(GameTime gameTime)
         {
             // ใช้การลากวางตามปกติ
-            _dragDropManager.Update(gameTime);
+            Globals.Update(gameTime);
+            _gameManager.Update();
 
             // กด ESC เพื่อกลับเมนู
             KeyboardState state = Keyboard.GetState();
@@ -45,14 +50,14 @@ namespace Mystic_Foods
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateGray);
 
-            spriteBatch.Begin();
             // วาด UI หรือหัวข้อก็ได้
+            spriteBatch.Begin();
             spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
             spriteBatch.End();
 
             // วาด Drag & Drop Object
             spriteBatch.Begin();
-            _dragDropManager.Draw(spriteBatch);
+            _gameManager.Draw();
             spriteBatch.End();
         }
     }
