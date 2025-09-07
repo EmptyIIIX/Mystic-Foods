@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Mystic_Foods.Time;
 
 namespace Mystic_Foods
 {
@@ -13,12 +14,21 @@ namespace Mystic_Foods
         private CustomerManager _customerManager;
         private Customer _currentCustomer;
 
+        Texture2D morning, sunset, midnight;
+        // Morning
+        Texture2D pink_morning, man_morning;
+        // Sunset
+        //Midnight
+
         // ระบบ Patience Meter
         private float _patienceMeter;
         private const float _patienceMeterStart = 144f;
         private float _patienceReduceTimer = 0f;
         private const float patienceInterval = 0.2f; // reduce frequency
 
+        //private Morning morning;
+        private CustomerType customerType;
+        int aaa;
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
@@ -28,7 +38,15 @@ namespace Mystic_Foods
 
         public void LoadContent(ContentManager content)
         {
+            // Load font
             _font = content.Load<SpriteFont>("MainFont");
+            // Load Environments
+            //morning = content.Load<Texture2D>("Environments/view_morning");
+            //sunset = content.Load<Texture2D>("Environments/view_sunset");
+            //midnight = content.Load<Texture2D>("Environments/view_midnight");
+            // Load customers
+            pink_morning = content.Load<Texture2D>("Human/pink_morning");
+            man_morning = content.Load<Texture2D>("Human/man_morning");
         }
 
         public void Update(GameTime gameTime)
@@ -64,7 +82,40 @@ namespace Mystic_Foods
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
+            //backgrounds = Backgrounds.Morning;
+            customerType = CustomerType.pinkMorning;
             spriteBatch.Begin();
+
+            //switch (backgrounds)// Draw backgrounds
+            //{
+            //    case Backgrounds.Morning:
+            //        spriteBatch.Draw(morning, new Vector2(0, 0), Color.White);
+            //        break;
+
+            //    case Backgrounds.Sunset:
+            //        aaa = 2 + 1;
+            //        break;
+
+            //    case Backgrounds.Midnight:
+            //        aaa = 3 + 1;
+            //        break;
+
+            //    default:
+            //        aaa = aaa + 1;
+            //        break;
+            //}
+
+            switch (customerType)
+            {
+                case CustomerType.pinkMorning:
+                    spriteBatch.Draw(pink_morning, new Vector2(400, 0), Color.White);
+                    break;
+                case CustomerType.pinkSunset:
+                    aaa += 1;
+                    break;
+                default:
+                    break;
+            }
 
             string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
             Vector2 size = _font.MeasureString(text);

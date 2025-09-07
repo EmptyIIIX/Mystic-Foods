@@ -2,9 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-//Comment
-//Comment 1
-//Comment 2
 namespace Mystic_Foods
 {
     public class Game1 : Game
@@ -56,7 +53,7 @@ namespace Mystic_Foods
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
             //load texture , add sprite into Drag_DropManager
-            Texture2D boxTexture = Content.Load<Texture2D>("Assets/Asset");
+            Texture2D boxTexture = Content.Load<Texture2D>("Environments/Asset");
 
             //Lastest sprite will be top layer and first choosed for drag & drop
             _drag_dropManager.AddSprite(new Drag_Drop("Asset", boxTexture, new Vector2(150, 150)));
