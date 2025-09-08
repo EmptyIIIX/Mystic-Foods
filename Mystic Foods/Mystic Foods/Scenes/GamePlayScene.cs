@@ -14,6 +14,8 @@ namespace Mystic_Foods
         private KeyboardState _oldState;
         private CustomerManager _customerManager;
         private Customer _currentCustomer;
+        Texture2D _customerTexture;
+        private ContentManager _contentManager;
 
         Texture2D morning, sunset, midnight;
         // Morning
@@ -25,9 +27,8 @@ namespace Mystic_Foods
         private float _patienceMeter;
         private const float _patienceMeterStart = 144f;
         private float _patienceReduceTimer = 0f;
-        private const float patienceInterval = 0.2f; // reduce frequency
+        private const float patienceInterval = 0.2f;
 
-        //private Morning morning;
         private CustomerType customerType;
         int aaa;
         public GamePlayScene(CustomerManager cm)
@@ -48,6 +49,8 @@ namespace Mystic_Foods
             // Load customers
             pink_morning = content.Load<Texture2D>("Human/pink_morning");
             man_morning = content.Load<Texture2D>("Human/man_morning");
+
+            _customerTexture = content.Load<Texture2D>(_currentCustomer.SpritePath);
         }
 
         public void Update(GameTime gameTime)
@@ -63,6 +66,8 @@ namespace Mystic_Foods
             {
                 _currentCustomer = _customerManager.GetRandomCustomer();
                 _patienceMeter = _patienceMeterStart;
+
+                _customerTexture = _contentManager.Load<Texture2D>(_currentCustomer.SpritePath);
             }
 
             // Patience reduce logic
@@ -83,40 +88,7 @@ namespace Mystic_Foods
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
-            //backgrounds = Backgrounds.Morning;
-            customerType = CustomerType.pinkMorning;
             spriteBatch.Begin();
-
-            //switch (backgrounds)// Draw backgrounds
-            //{
-            //    case Backgrounds.Morning:
-            //        spriteBatch.Draw(morning, new Vector2(0, 0), Color.White);
-            //        break;
-
-            //    case Backgrounds.Sunset:
-            //        aaa = 2 + 1;
-            //        break;
-
-            //    case Backgrounds.Midnight:
-            //        aaa = 3 + 1;
-            //        break;
-
-            //    default:
-            //        aaa = aaa + 1;
-            //        break;
-            //}
-
-            switch (customerType)
-            {
-                case CustomerType.pinkMorning:
-                    spriteBatch.Draw(pink_morning, new Vector2(400, 0), Color.White);
-                    break;
-                case CustomerType.pinkSunset:
-                    aaa += 1;
-                    break;
-                default:
-                    break;
-            }
 
             string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
             Vector2 size = _font.MeasureString(text);
@@ -136,6 +108,8 @@ namespace Mystic_Foods
                 // แสดงค่า Patience Meter
                 string patienceText = $"Patience Left: {_patienceMeter:0}";
                 spriteBatch.DrawString(_font, patienceText, new Vector2(100, 320), Color.Red);
+
+                spriteBatch.Draw(_customerTexture, new Vector2(400, 0), Color.White);
 
                 // Show Patience Meter แบบ progress bar
                 int barX = 300, barY = 350, barW = 300, barH = 20;
