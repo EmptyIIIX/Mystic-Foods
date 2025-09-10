@@ -12,9 +12,30 @@ namespace Mystic_Foods.Managers
         {
             Customers = new List<Customer>
             {
-                new Customer { Id = 1, Name = "Anna", SpritePath = "Human/pink_morning", Patience = 1f, Preference = "chop see dang", IsVIP = false, Mood = "Happy" },
-                new Customer { Id = 2, Name = "Jek", SpritePath = "Human/man_sunset", Patience = 1f, Preference = "mai gin pak", IsVIP = true, Mood = "Neutral" },
-                new Customer { Id = 3, Name = "Wo", SpritePath = "Human/pink_midnight", Patience = 1f, Preference = "mai bok :P", IsVIP = false, Mood = "Silly :3" }
+                new Customer {
+                    Id = 1,
+                    Name = "Pink",
+                    SpritePathHappy = "Human/NPC1/npc1HumanHappy",
+                    SpritePathNeutral = "Human/NPC1/npc1HumanNormal",
+                    SpritePathGrumpy = "Human/NPC1/npc1HumanAngry",
+                    Patience = 5f,
+                },
+                new Customer {
+                    Id = 2,
+                    Name = "Man",
+                    SpritePathHappy = "Human/NPC2/npc2HumanHappy",
+                    SpritePathNeutral = "Human/NPC2/npc2HumanNormal",
+                    SpritePathGrumpy = "Human/NPC2/npc2HumanAngry",
+                    Patience = 1f,
+                },
+                new Customer {
+                    Id = 3,
+                    Name = "Granny",
+                    SpritePathHappy = "Human/NPC3/npc3HumanHappy",
+                    SpritePathNeutral = "Human/NPC3/npc3HumanNormal",
+                    SpritePathGrumpy = "Human/NPC3/npc3HumanAngry",
+                    Patience = 1f,
+                },
             };
         }
 
@@ -26,11 +47,8 @@ namespace Mystic_Foods.Managers
             }
             else
             {
-                // หากลูกค้าหมดคิว อาจจะวนใหม่หรือ return null
-                // แบบวนลูป
                 _currentIndex = 0;
                 return Customers[_currentIndex++];
-                // หรือถ้าไม่ต้องวนให้: return null;
             }
         }
 

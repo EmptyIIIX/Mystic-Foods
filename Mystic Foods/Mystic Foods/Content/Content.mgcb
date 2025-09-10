@@ -73,30 +73,6 @@
 /processorParam:TextureFormat=Color
 /build:Environments/Food.png
 
-#begin Environments/Food.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Environments/Food.png
-
-#begin Environments/Plate.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Environments/Plate.png
-
 #begin Environments/Plate.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -145,7 +121,7 @@
 /processorParam:TextureFormat=Color
 /build:Environments/view_sunset.png
 
-#begin Human/man_midnight.png
+#begin Human/NPC1/npc1HumanAngry.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -155,9 +131,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Human/man_midnight.png
+/build:Human/NPC1/npc1HumanAngry.png
 
-#begin Human/man_morning.png
+#begin Human/NPC1/npc1HumanHappy.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -167,9 +143,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Human/man_morning.png
+/build:Human/NPC1/npc1HumanHappy.png
 
-#begin Human/man_sunset.png
+#begin Human/NPC1/npc1HumanNormal.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -179,9 +155,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Human/man_sunset.png
+/build:Human/NPC1/npc1HumanNormal.png
 
-#begin Human/pink_midnight.png
+#begin Human/NPC2/npc2HumanAngry.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -191,9 +167,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Human/pink_midnight.png
+/build:Human/NPC2/npc2HumanAngry.png
 
-#begin Human/pink_morning.png
+#begin Human/NPC2/npc2HumanHappy.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -203,9 +179,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Human/pink_morning.png
+/build:Human/NPC2/npc2HumanHappy.png
 
-#begin Human/pink_sunset.png
+#begin Human/NPC2/npc2HumanNormal.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -215,7 +191,43 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Human/pink_sunset.png
+/build:Human/NPC2/npc2HumanNormal.png
+
+#begin Human/NPC3/npc3HumanAngry.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Human/NPC3/npc3HumanAngry.png
+
+#begin Human/NPC3/npc3HumanHappy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Human/NPC3/npc3HumanHappy.png
+
+#begin Human/NPC3/npc3HumanNormal.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Human/NPC3/npc3HumanNormal.png
 
 #begin MainFont.spritefont
 /importer:FontDescriptionImporter

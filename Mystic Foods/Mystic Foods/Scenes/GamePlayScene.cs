@@ -22,8 +22,12 @@ namespace Mystic_Foods
         private const float _patienceMeterStart = 144f;
         private float _patienceReduceTimer = 0f;
         private const float patienceInterval = 0.2f;
+        Texture2D _textureHappy;
+        Texture2D _textureNeutral;
+        Texture2D _textureGrumpy;
 
-        int aaa;
+        private Texture2D _rectTexture;
+
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
@@ -34,10 +38,18 @@ namespace Mystic_Foods
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _contentManager = content;
-            // Load font
             _font = content.Load<SpriteFont>("MainFont");
+            LoadCustomerTextures();
 
-            _customerTexture = content.Load<Texture2D>(_currentCustomer.SpritePath);
+            _rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            _rectTexture.SetData(new[] { Color.White });
+        }
+
+        private void LoadCustomerTextures()
+        {
+            _textureHappy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathHappy);
+            _textureNeutral = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathNeutral);
+            _textureGrumpy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathGrumpy);
         }
 
         public void Update(GameTime gameTime)
@@ -53,8 +65,7 @@ namespace Mystic_Foods
             {
                 _currentCustomer = _customerManager.GetNextCustomer();
                 _patienceMeter = _patienceMeterStart;
-
-                _customerTexture = _contentManager.Load<Texture2D>(_currentCustomer.SpritePath);
+                LoadCustomerTextures();
             }
 
             // Patience reduce logic
@@ -67,6 +78,13 @@ namespace Mystic_Foods
                 _patienceMeter -= reduceAmount;
                 if (_patienceMeter < 0) _patienceMeter = 0;
                 _patienceReduceTimer = 0;
+            }
+            //Customer leave
+            if (_patienceMeter <= 0)
+            {
+                _currentCustomer = _customerManager.GetNextCustomer();
+                _patienceMeter = _patienceMeterStart;
+                LoadCustomerTextures();
             }
 
             _oldState = state;
@@ -88,7 +106,7 @@ namespace Mystic_Foods
             // Show Customer data
             if (_currentCustomer != null)
             {
-                string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}\nPreference: {_currentCustomer.Preference}\nVIP: {_currentCustomer.IsVIP}\nMood: {_currentCustomer.Mood}";
+                string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
                 Vector2 custPos = new Vector2(100, 180);
                 spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
 
@@ -96,7 +114,17 @@ namespace Mystic_Foods
                 string patienceText = $"Patience Left: {_patienceMeter:0}";
                 spriteBatch.DrawString(_font, patienceText, new Vector2(100, 320), Color.Red);
 
-                spriteBatch.Draw(_customerTexture, new Vector2(400, 0), Color.White);
+                //Draw Customer
+                Texture2D drawTexture = _textureHappy;
+                float patiencePerc = _patienceMeter / _patienceMeterStart;
+
+                if (patiencePerc >= 2f / 3f)
+                    drawTexture = _textureHappy;
+                else if (patiencePerc >= 1f / 3f)
+                    drawTexture = _textureNeutral;
+                else
+                    drawTexture = _textureGrumpy;
+                spriteBatch.Draw(drawTexture, new Vector2(400, 0), Color.White);
 
                 // Show Patience Meter แบบ progress bar
                 int barX = 300, barY = 350, barW = 300, barH = 20;
@@ -106,8 +134,8 @@ namespace Mystic_Foods
                 // Texture for progress bar
                 Texture2D rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
                 rectTexture.SetData(new[] { Color.White });
-                spriteBatch.Draw(rectTexture, new Rectangle(barX, barY, barW, barH), Color.Gray * 0.4f);
-                spriteBatch.Draw(rectTexture, patienceRect, Color.OrangeRed);
+                spriteBatch.Draw(_rectTexture, new Rectangle(barX, barY, barW, barH), Color.Gray * 0.4f);
+                spriteBatch.Draw(_rectTexture, patienceRect, Color.OrangeRed);
             }
 
             spriteBatch.End();
