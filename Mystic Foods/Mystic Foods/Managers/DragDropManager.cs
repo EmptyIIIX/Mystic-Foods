@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Systems;
 
@@ -7,14 +8,24 @@ namespace Mystic_Foods.Managers
     public static class DragDropManager
     {
         private static readonly List<IDraggable> _draggables = new();
-
         private static readonly List<ITargetable> _targets = new();
-
         private static IDraggable _dragItem;
+        public static event Action<IDraggable, ITargetable> OnDrop;
+        public static event Action<IDraggable> OnDragFailed;
 
         public static void AddDraggable(IDraggable item)
         {
             _draggables.Add(item);
+        }
+
+        public static void RemoveDraggable(IDraggable item)
+        {
+            _draggables.Remove(item);
+            if (_draggables == item)
+            {
+                _dragItem = null;
+                Mouse.SetCursor(MouseCursor.Arrow);
+            }
         }
 
         public static void AddTarget(ITargetable item)
@@ -40,13 +51,22 @@ namespace Mystic_Foods.Managers
 
         private static void CheckTarget()
         {
+            if (_dragItem == null) return;
+
+            bool droppedOnTarget = false;
             foreach (var item in _targets)
             {
                 if (item.Rectangle.Contains(InputManager.MousePosition))
                 {
                     _dragItem.Position = item.Position;
+                    OnDrop?.Invoke(_dragItem, item);
+                    droppedOnTarget = true;
                     break;
                 }
+            }
+            if (!droppedOnTarget)
+            {
+                OnDragFailed?.Invoke(_dragItem);
             }
         }
 

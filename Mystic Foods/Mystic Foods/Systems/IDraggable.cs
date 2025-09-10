@@ -12,5 +12,10 @@ namespace Mystic_Foods.Systems
         {
             DragDropManager.AddDraggable(this);
         }
+
+        void UnregisterDraggable()
+        {
+            DragDropManager.RemoveDraggable(this);
+        }
     }
 }
