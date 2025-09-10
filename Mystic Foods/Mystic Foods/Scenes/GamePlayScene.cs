@@ -17,38 +17,25 @@ namespace Mystic_Foods
         Texture2D _customerTexture;
         private ContentManager _contentManager;
 
-        Texture2D morning, sunset, midnight;
-        // Morning
-        Texture2D pink_morning, man_morning;
-        // Sunset
-        //Midnight
-
         // ระบบ Patience Meter
         private float _patienceMeter;
         private const float _patienceMeterStart = 144f;
         private float _patienceReduceTimer = 0f;
         private const float patienceInterval = 0.2f;
 
-        private CustomerType customerType;
         int aaa;
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
-            _currentCustomer = _customerManager.GetRandomCustomer();
+            _currentCustomer = _customerManager.GetNextCustomer();
             _patienceMeter = _patienceMeterStart;
         }
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
+            _contentManager = content;
             // Load font
             _font = content.Load<SpriteFont>("MainFont");
-            // Load Environments
-            //morning = content.Load<Texture2D>("Environments/view_morning");
-            //sunset = content.Load<Texture2D>("Environments/view_sunset");
-            //midnight = content.Load<Texture2D>("Environments/view_midnight");
-            // Load customers
-            pink_morning = content.Load<Texture2D>("Human/pink_morning");
-            man_morning = content.Load<Texture2D>("Human/man_morning");
 
             _customerTexture = content.Load<Texture2D>(_currentCustomer.SpritePath);
         }
@@ -64,7 +51,7 @@ namespace Mystic_Foods
             // random, reset Patience
             if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
             {
-                _currentCustomer = _customerManager.GetRandomCustomer();
+                _currentCustomer = _customerManager.GetNextCustomer();
                 _patienceMeter = _patienceMeterStart;
 
                 _customerTexture = _contentManager.Load<Texture2D>(_currentCustomer.SpritePath);
