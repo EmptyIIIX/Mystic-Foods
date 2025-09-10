@@ -17,8 +17,8 @@ namespace Mystic_Foods.Managers
 
         public void LoadContent(ContentManager content)
         {
-            var foodTexture = content.Load<Texture2D>("Environments/Food");
-            var plateTexture = content.Load<Texture2D>("Environments/Plate");
+            var foodTexture = content.Load<Texture2D>("foods/Food");
+            var plateTexture = content.Load<Texture2D>("foods/Plate");
 
             for (int i = 0; i < 3; i++)
             {
