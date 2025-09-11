@@ -9,6 +9,9 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
+        private float TimeStage = 721f;
+        private float TimePSec;
+
         private SpriteFont _font;
         public bool BackToMenuRequested = false;
         private KeyboardState _oldState;
@@ -54,9 +57,23 @@ namespace Mystic_Foods
         {
             var state = Keyboard.GetState();
 
+            //TimeStage every scene
+            TimePSec = 1.0f / 60.0f;
+            TimeStage -= TimePSec;
+
             // ESC
             if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
+            {
                 BackToMenuRequested = true;
+                TimeStage = 721f;
+            }
+
+            //Check time out to back to mainmenu scene
+            if(TimeStage <= 0)
+            {
+                BackToMenuRequested = true;
+                TimeStage = 721f;
+            }
 
             // random, reset Patience
             if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
@@ -135,10 +152,10 @@ namespace Mystic_Foods
 
                 // แสดงค่า Patience Meter
                 string patienceText = $"Patience Left: {_patienceMeter:0}";
-                spriteBatch.DrawString(_font, patienceText, new Vector2(100, 320), Color.Red);
+                spriteBatch.DrawString(_font, patienceText, new Vector2(100, 400), Color.Red);
 
                 // Show Patience Meter แบบ progress bar
-                int barX = 300, barY = 350, barW = 300, barH = 20;
+                int barX = 100, barY = 430, barW = 300, barH = 20;
                 float meterPerc = _patienceMeter / _patienceMeterStart;
                 Rectangle patienceRect = new Rectangle(barX, barY, (int)(barW * meterPerc), barH);
 
@@ -147,7 +164,14 @@ namespace Mystic_Foods
                 rectTexture.SetData(new[] { Color.White });
                 spriteBatch.Draw(rectTexture, new Rectangle(barX, barY, barW, barH), Color.Gray * 0.4f);
                 spriteBatch.Draw(rectTexture, patienceRect, Color.OrangeRed);
+
             }
+
+            string Time = $"\nTimeStage: {(int)TimeStage}";
+            spriteBatch.DrawString(_font, Time, new Vector2(100, 500), Color.Blue);
+
+            string TimeS = $"\nTimePerSec: {TimePSec}";
+            spriteBatch.DrawString(_font, TimeS, new Vector2(100, 600), Color.Blue);
 
             spriteBatch.End();
         }
