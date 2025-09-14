@@ -6,10 +6,9 @@ namespace Mystic_Foods
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string SpritePath { get; set; }
+        public string SpritePathHappy { get; set; }
+        public string SpritePathNeutral { get; set; }
+        public string SpritePathGrumpy { get; set; }
         public float Patience { get; set; }
-        public string Preference { get; set; }
-        public bool IsVIP { get; set; }
-        public string Mood { get; set; }
     }
 }

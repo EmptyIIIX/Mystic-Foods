@@ -17,40 +17,46 @@ namespace Mystic_Foods
         private KeyboardState _oldState;
         private CustomerManager _customerManager;
         private Customer _currentCustomer;
-
-        Texture2D morning, sunset, midnight;
-        // Morning
-        Texture2D pink_morning, man_morning;
-        // Sunset
-        //Midnight
+        Texture2D _customerTexture;
+        private ContentManager _contentManager;
 
         // ระบบ Patience Meter
         private float _patienceMeter;
         private const float _patienceMeterStart = 144f;
         private float _patienceReduceTimer = 0f;
-        private const float patienceInterval = 0.2f; // reduce frequency
+        private const float patienceInterval = 0.2f;
+        Texture2D _textureHappy;
+        Texture2D _textureNeutral;
+        Texture2D _textureGrumpy;
 
-        //private Morning morning;
-        private CustomerType customerType;
-        int aaa;
+        Texture2D bg, table;
+        private Texture2D _rectTexture;
+
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
-            _currentCustomer = _customerManager.GetRandomCustomer();
+            _currentCustomer = _customerManager.GetNextCustomer();
             _patienceMeter = _patienceMeterStart;
         }
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
-            // Load font
+            _contentManager = content;
             _font = content.Load<SpriteFont>("MainFont");
-            // Load Environments
-            //morning = content.Load<Texture2D>("Environments/view_morning");
-            //sunset = content.Load<Texture2D>("Environments/view_sunset");
-            //midnight = content.Load<Texture2D>("Environments/view_midnight");
-            // Load customers
-            pink_morning = content.Load<Texture2D>("Human/pink_morning");
-            man_morning = content.Load<Texture2D>("Human/man_morning");
+            LoadCustomerTextures();
+
+            _rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            _rectTexture.SetData(new[] { Color.White });
+
+            bg = content.Load<Texture2D>("Environments/BG/orderBG_morning");
+            table = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
+        }
+
+        private void LoadCustomerTextures()
+        {
+            _textureHappy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathHappy);
+            _textureNeutral = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathNeutral);
+            _textureGrumpy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathGrumpy);
         }
 
         public void Update(GameTime gameTime)
@@ -78,8 +84,9 @@ namespace Mystic_Foods
             // random, reset Patience
             if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
             {
-                _currentCustomer = _customerManager.GetRandomCustomer();
+                _currentCustomer = _customerManager.GetNextCustomer();
                 _patienceMeter = _patienceMeterStart;
+                LoadCustomerTextures();
             }
 
             // Patience reduce logic
@@ -93,6 +100,13 @@ namespace Mystic_Foods
                 if (_patienceMeter < 0) _patienceMeter = 0;
                 _patienceReduceTimer = 0;
             }
+            //Customer leave
+            if (_patienceMeter <= 0)
+            {
+                _currentCustomer = _customerManager.GetNextCustomer();
+                _patienceMeter = _patienceMeterStart;
+                LoadCustomerTextures();
+            }
 
             _oldState = state;
         }
@@ -100,40 +114,7 @@ namespace Mystic_Foods
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
-            //backgrounds = Backgrounds.Morning;
-            customerType = CustomerType.pinkMorning;
             spriteBatch.Begin();
-
-            //switch (backgrounds)// Draw backgrounds
-            //{
-            //    case Backgrounds.Morning:
-            //        spriteBatch.Draw(morning, new Vector2(0, 0), Color.White);
-            //        break;
-
-            //    case Backgrounds.Sunset:
-            //        aaa = 2 + 1;
-            //        break;
-
-            //    case Backgrounds.Midnight:
-            //        aaa = 3 + 1;
-            //        break;
-
-            //    default:
-            //        aaa = aaa + 1;
-            //        break;
-            //}
-
-            switch (customerType)
-            {
-                case CustomerType.pinkMorning:
-                    spriteBatch.Draw(pink_morning, new Vector2(400, 0), Color.White);
-                    break;
-                case CustomerType.pinkSunset:
-                    aaa += 1;
-                    break;
-                default:
-                    break;
-            }
 
             string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
             Vector2 size = _font.MeasureString(text);
@@ -146,7 +127,9 @@ namespace Mystic_Foods
             // Show Customer data
             if (_currentCustomer != null)
             {
-                string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}\nPreference: {_currentCustomer.Preference}\nVIP: {_currentCustomer.IsVIP}\nMood: {_currentCustomer.Mood}";
+                spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
+
+                string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
                 Vector2 custPos = new Vector2(100, 180);
                 spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
 
@@ -165,7 +148,24 @@ namespace Mystic_Foods
                 spriteBatch.Draw(rectTexture, new Rectangle(barX, barY, barW, barH), Color.Gray * 0.4f);
                 spriteBatch.Draw(rectTexture, patienceRect, Color.OrangeRed);
 
+                //Draw Customer
+                Texture2D drawTexture = _textureHappy;
+                float patiencePerc = _patienceMeter / _patienceMeterStart;
+                if (patiencePerc >= 2f / 3f)
+                    drawTexture = _textureHappy;
+                else if (patiencePerc >= 1f / 3f)
+                    drawTexture = _textureNeutral;
+                else
+                    drawTexture = _textureGrumpy;
+
+                //use rectangle to adjust scale
+                //0.9(855, 972) 0.8(760, 864)
+                Rectangle destinationRectangle = new Rectangle(300, 50, 760, 864);
+                spriteBatch.Draw(drawTexture, destinationRectangle, Color.White);
             }
+
+            //table pos recom pos.Y 890++
+            spriteBatch.Draw(table, new Vector2(0, 890), Color.White);
 
             string Time = $"\nTimeStage: {(int)TimeStage}";
             spriteBatch.DrawString(_font, Time, new Vector2(100, 500), Color.Blue);
