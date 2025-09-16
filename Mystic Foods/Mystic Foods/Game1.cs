@@ -43,6 +43,7 @@ namespace Mystic_Foods
             //make it start at main menu
             _currentScene = _mainMenuScene;
 
+
             base.Initialize();
         }
 

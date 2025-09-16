@@ -13,14 +13,17 @@ namespace Mystic_Foods.Managers
         private readonly List<Food> _food = new();
         private readonly List<Filling> _fillings = new();
         private readonly List<Dough> _doughs = new();
+        private readonly List<Wrapper> _wrapper = new();
         private readonly Dictionary<Filling, Vector2> _fillingOriginalPositions = new();
         private readonly Dictionary<Dough, Vector2> _doughOriginalPositions = new();
+        private readonly Dictionary<Wrapper, Vector2> _wrapperOriginalPositions = new();
         private Socket _plate;
         private TrashBin _trashBin;
         private Filling _placedFilling;
         private Dough _placedDough;
         private readonly Vector2 _originSai = new Vector2(600, 200);
         private readonly Vector2 _originPang = new Vector2(300, 400);
+        private readonly Vector2 _originWrapper = new Vector2(1362, 592);
         private readonly float _fillingSpacing = 350; // ระยะห่างระหว่าง Filling
         private readonly float _doughSpacing = 250; // ระยะห่างระหว่าง Dough
 
@@ -30,10 +33,13 @@ namespace Mystic_Foods.Managers
             DragDropManager.OnDragFailed += HandleDragFailed;
         }
 
+        #region LoadContent
+
         public void LoadContent(ContentManager content)
         {
             var foodTexture = content.Load<Texture2D>("foods/Food");
             var plateTexture = content.Load<Texture2D>("foods/Plate");
+            var wrapTexture = content.Load<Texture2D>("foods/Wrapper");
             var cheeseTexture = content.Load<Texture2D>("foods/sai1");
             var meatTexture = content.Load<Texture2D>("foods/sai2");
             var vegetableTexture = content.Load<Texture2D>("foods/sai3");
@@ -42,6 +48,8 @@ namespace Mystic_Foods.Managers
             var riceTexture = content.Load<Texture2D>("foods/pang3");
 
             var trashBinTexture = content.Load<Texture2D>("foods/Bin");
+
+            var wrappTexture = content.Load<Texture2D>("foods/Wrapper");
 
             //Fillings Sai
             var cheese = new Filling(cheeseTexture, _originSai, Filling.FillingType.Cheese);
@@ -65,15 +73,24 @@ namespace Mystic_Foods.Managers
             _doughOriginalPositions.Add(corn, new Vector2(_originPang.X, _originPang.Y + _doughSpacing));
             _doughOriginalPositions.Add(rice, new Vector2(_originPang.X, _originPang.Y + 2 * _doughSpacing));
 
+            //wrapper
+            var wrapper = new Wrapper(wrappTexture, _originWrapper);
+            _wrapper.Add(wrapper);
+            _wrapperOriginalPositions.Add(wrapper, _originWrapper);
+
+            //plate
             _plate = new Socket(plateTexture, new(940, 600));
 
-            _trashBin = new TrashBin(trashBinTexture, new Vector2(1800, 950));
+            _trashBin = new TrashBin(trashBinTexture, new Vector2(1700, 700));
         }
+        #endregion
+
+        #region HandleDrop
 
         private void HandleDrop(IDraggable item, ITargetable target)
         {
             // ถ้าถึงขีดจำกัดอาหาร 3 ชิ้น รีเซ็ตตำแหน่งของ sai, pang
-            if (_food.Count >= 3 && (item is Filling || item is Dough))
+            if (_food.Count >= 3 && (item is Filling || item is Dough || item is Wrapper))
             {
                 if (item is Filling filling)
                 {
@@ -82,6 +99,10 @@ namespace Mystic_Foods.Managers
                 else if (item is Dough dough)
                 {
                     dough.Position = _doughOriginalPositions[dough];
+                }
+                else if (item is Wrapper wrapper)
+                {
+                    wrapper.Position = _wrapperOriginalPositions[wrapper];
                 }
                 return;
             }
@@ -108,12 +129,14 @@ namespace Mystic_Foods.Managers
                     }
                 }
 
-                //ตรวจสอบการสร้าง Food
+                    //ตรวจสอบการสร้าง Food
                 var fillingOnPlate = _fillings.FirstOrDefault(f => f.Position == _plate.Position);
                 var doughOnPlate = _doughs.FirstOrDefault(d => d.Position == _plate.Position);
-                if (fillingOnPlate != null && doughOnPlate != null)
+                var wrapperOnPlate = _wrapper.FirstOrDefault(w => w.Position == _plate.Position);
+
+                if (fillingOnPlate != null && doughOnPlate != null && wrapperOnPlate != null)
                 {
-                    CreateFood(fillingOnPlate, doughOnPlate);
+                    CreateFood(fillingOnPlate, doughOnPlate, wrapperOnPlate);
                 }
             }
             else if (target == _trashBin && item is Food food && _food.Contains(food))
@@ -129,7 +152,14 @@ namespace Mystic_Foods.Managers
             {
                 dough.Position = _doughOriginalPositions[dough];
             }
+            else if (target == _trashBin && item is Wrapper wrapper)
+            {
+                wrapper.Position = _wrapperOriginalPositions[wrapper];
+            }
         }
+        #endregion
+
+        #region HandleDragFailed
 
         private void HandleDragFailed(IDraggable item)
         {
@@ -141,19 +171,28 @@ namespace Mystic_Foods.Managers
             {
                 dough.Position = _doughOriginalPositions[dough];
             }
+            else if (item is Wrapper wrapper)
+            {
+                wrapper.Position = _wrapperOriginalPositions[wrapper];
+            }
         }
+        #endregion
 
-        private void CreateFood(Filling filling, Dough dough)
+        #region CreateFood
+
+        private void CreateFood(Filling filling, Dough dough, Wrapper wrapper)
         {
             var foodTexture = Globals.Content.Load<Texture2D>("foods/Food");
             var newFood = new Food(foodTexture, _plate.Position);
             _food.Add(newFood);
             int fillingIndex = _fillings.IndexOf(filling);
             int doughIndex = _doughs.IndexOf(dough);
+            int wrapIndex = _wrapper.IndexOf(wrapper);
             filling.Position = new Vector2(_originSai.X + (fillingIndex * _fillingSpacing), _originSai.Y);
             dough.Position = new Vector2(_originPang.X, _originPang.Y + (doughIndex * _doughSpacing));
+            wrapper.Position = new Vector2(_originWrapper.X, _originWrapper.Y);
         }
-
+        #endregion
         public void Update()
         {
             InputManager.Update();
@@ -164,7 +203,10 @@ namespace Mystic_Foods.Managers
         {
             _plate.Draw();
             _trashBin.Draw();
-
+            foreach (var wrapper in _wrapper)
+            {
+                wrapper.Draw();
+            }
             foreach (var filling in _fillings)
             {
                 filling.Draw();

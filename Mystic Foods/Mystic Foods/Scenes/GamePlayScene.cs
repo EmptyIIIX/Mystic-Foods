@@ -40,6 +40,11 @@ namespace Mystic_Foods
             _patienceMeter = _patienceMeterStart;
         }
 
+        public void Initialize()
+        {
+
+        }
+
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             // Load font

@@ -12,6 +12,7 @@ namespace Mystic_Foods
 {
     public class MainMenuScene : IGameScene
     {
+        private GraphicsDeviceManager _graphics;
         private SpriteFont _font; //font use to draw string
         private int _selectedIndex = 0;
         private string[] _menuItems = { "Start Game", "Drag&Drop", "Exit" }; //selectable text
@@ -24,6 +25,14 @@ namespace Mystic_Foods
 
         // เก็บ bounding box ของแต่ละเมนู (เพื่อคลิกได้)
         private List<Rectangle> _menuItemRects = new List<Rectangle>();
+
+        public void Initialize()
+        {
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+            //_graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
+        }
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
