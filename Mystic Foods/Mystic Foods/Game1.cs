@@ -28,9 +28,15 @@ namespace Mystic_Foods
             IsMouseVisible = true;
 
             //screen resolution
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
-            //_graphics.IsFullScreen = true;
+            //เก็บค่าขนาดหน้าจอของdevice
+            int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            int screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            //set up หน้าต่างเกม
+            _graphics.PreferredBackBufferWidth = screenWidth;
+            _graphics.PreferredBackBufferHeight = screenHeight;
+            _graphics.IsFullScreen = false;
+            Window.AllowUserResizing = true;
+            Window.IsBorderless = false;//better fullscreen
             _graphics.ApplyChanges();
         }
 
@@ -43,8 +49,16 @@ namespace Mystic_Foods
             //make it start at main menu
             _currentScene = _mainMenuScene;
 
-
+            Window.ClientSizeChanged += OnClientSizeChanged;
             base.Initialize();
+        }
+
+        private void OnClientSizeChanged(object sender, System.EventArgs e)
+        {
+            //อัปเดตขนาด back bufferเมื่อหน้าต่างเปลี่ยนขนาด
+            _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
+            _graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
+            _graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
@@ -102,6 +116,11 @@ namespace Mystic_Foods
                 {
                     _dndScene.BackToMenuRequested = false;
                     _currentScene = _mainMenuScene;
+                }
+                if (_dndScene.ServeRequest)
+                {
+                    _dndScene.ServeRequest = false;
+                    _currentScene = _gamePlayScene;
                 }
             }
             #endregion

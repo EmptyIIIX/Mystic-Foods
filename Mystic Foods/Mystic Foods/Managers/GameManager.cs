@@ -90,7 +90,7 @@ namespace Mystic_Foods.Managers
         private void HandleDrop(IDraggable item, ITargetable target)
         {
             // ถ้าถึงขีดจำกัดอาหาร 3 ชิ้น รีเซ็ตตำแหน่งของ sai, pang
-            if (_food.Count >= 3 && (item is Filling || item is Dough || item is Wrapper))
+            if (_food.Count >= 1 && (item is Filling || item is Dough || item is Wrapper))
             {
                 if (item is Filling filling)
                 {

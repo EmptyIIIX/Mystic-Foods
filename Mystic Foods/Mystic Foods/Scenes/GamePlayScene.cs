@@ -18,11 +18,23 @@ namespace Mystic_Foods
         private CustomerManager _customerManager;
         private Customer _currentCustomer;
 
-        Texture2D morning, sunset, midnight;
         // Morning
-        Texture2D pink_morning, man_morning;
+        Texture2D 
+            morning,
+            pink_morning, 
+            man_morning,
+            counter_morning,
+            profile,
+            border,
+            ui_morning,
+            ui_money,
+            unit_money,
+            ui_menu;
         // Sunset
         //Midnight
+
+        //emotion
+        Texture2D happy;
 
         // ระบบ Patience Meter
         private float _patienceMeter;
@@ -49,13 +61,27 @@ namespace Mystic_Foods
         {
             // Load font
             _font = content.Load<SpriteFont>("MainFont");
-            // Load Environments
-            //morning = content.Load<Texture2D>("Environments/view_morning");
+
+            // Load level scene
+            morning = content.Load<Texture2D>("Environments/view_morning");
             //sunset = content.Load<Texture2D>("Environments/view_sunset");
             //midnight = content.Load<Texture2D>("Environments/view_midnight");
+
+            // Load environment
+            counter_morning = content.Load<Texture2D>("Environments/counter_morning");
+            profile = content.Load<Texture2D>("Environments/profile");
+            border = content.Load<Texture2D>("Environments/border");
+            ui_morning = content.Load<Texture2D>("Environments/UI_morning");
+            ui_money = content.Load<Texture2D>("Environments/UI_money");
+            unit_money = content.Load<Texture2D>("Environments/UnitMoney");
+            ui_menu = content.Load<Texture2D>("Environments/UI_menu");
+
+            //Load emotions
+            happy = content.Load<Texture2D>("Environments/emotion_happy"); //testing
+
             // Load customers
-            pink_morning = content.Load<Texture2D>("Human/pink_morning");
-            man_morning = content.Load<Texture2D>("Human/man_morning");
+            pink_morning = content.Load<Texture2D>("Customers/pink_morning");
+            man_morning = content.Load<Texture2D>("Customers/man_morning");
         }
 
         public void Update(GameTime gameTime)
@@ -108,7 +134,7 @@ namespace Mystic_Foods
             //backgrounds = Backgrounds.Morning;
             customerType = CustomerType.pinkMorning;
             spriteBatch.Begin();
-
+            #region background
             //switch (backgrounds)// Draw backgrounds
             //{
             //    case Backgrounds.Morning:
@@ -127,6 +153,9 @@ namespace Mystic_Foods
             //        aaa = aaa + 1;
             //        break;
             //}
+            #endregion
+
+            spriteBatch.Draw(morning, new Vector2(0, 0), Color.White);
 
             switch (customerType)
             {
@@ -140,13 +169,24 @@ namespace Mystic_Foods
                     break;
             }
 
-            string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
-            Vector2 size = _font.MeasureString(text);
-            spriteBatch.DrawString(
-                _font,
-                text,
-                new Vector2((800 - size.X) / 2, 60),
-                Color.Black);
+            spriteBatch.Draw(counter_morning, new Vector2(0, 1080 - 152), Color.White);// Counter morning
+            //spriteBatch.Draw(border, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(ui_morning, new Vector2(profile.Width + 10, ui_menu.Height / 5), Color.White);
+            spriteBatch.Draw(happy, new Vector2(profile.Width + ui_morning.Width + 20, ui_menu.Height / 5), Color.White);
+
+            spriteBatch.Draw(ui_money, new Vector2(1920 - ui_money.Width - ui_menu.Width - 50, ui_menu.Height / 5), Color.White);
+            spriteBatch.Draw(ui_menu, new Vector2(1920 - ui_menu.Width - 10, 0), Color.White);
+            //spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
+            //spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
+
+            //string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
+            //Vector2 size = _font.MeasureString(text);
+            //spriteBatch.DrawString(
+            //    _font,
+            //    text,
+            //    new Vector2((800 - size.X) / 2, 60),
+            //    Color.Black);
 
             // Show Customer data
             if (_currentCustomer != null)
@@ -175,8 +215,8 @@ namespace Mystic_Foods
             string Time = $"\nTimeStage: {(int)TimeStage}";
             spriteBatch.DrawString(_font, Time, new Vector2(100, 500), Color.Blue);
 
-            string TimeS = $"\nTimePerSec: {TimePSec}";
-            spriteBatch.DrawString(_font, TimeS, new Vector2(100, 600), Color.Blue);
+            //string TimeS = $"\nTimePerSec: {TimePSec}";
+            //spriteBatch.DrawString(_font, TimeS, new Vector2(100, 600), Color.Blue);
 
             spriteBatch.End();
         }
