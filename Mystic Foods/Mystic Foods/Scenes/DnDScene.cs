@@ -55,7 +55,8 @@ namespace Mystic_Foods
             //Rectangle for "Serve" button
             Vector2 size0 = _font.MeasureString(btnItems[0]);
             Rectangle rect0 = new Rectangle(
-                (int)((1920 / 2) - btnItems[0].Length),
+                //(int)((1920 / 2) - btnItems[0].Length),
+                1700,
                 900,
                 (int)size0.X,
                 (int)size0.Y
@@ -159,7 +160,8 @@ namespace Mystic_Foods
                 Color color = (i == _selectedIndex) ? Color.Yellow : Color.White;
                 if (i == 0)
                 {
-                    spriteBatch.DrawString(_font, btnItems[0], new Vector2((1920 / 2) - btnItems[0].Length, 900), color);
+                    //spriteBatch.DrawString(_font, btnItems[0], new Vector2((1920 / 2) - btnItems[0].Length, 900), color);
+                    spriteBatch.DrawString(_font, btnItems[0], new Vector2(1700, 900), color);
                 }
                 else if(i == 1)
                 {

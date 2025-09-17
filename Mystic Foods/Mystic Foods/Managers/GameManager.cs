@@ -81,7 +81,7 @@ namespace Mystic_Foods.Managers
             //plate
             _plate = new Socket(plateTexture, new(940, 600));
 
-            _trashBin = new TrashBin(trashBinTexture, new Vector2(1700, 700));
+            _trashBin = new TrashBin(trashBinTexture, new Vector2(1700, 500));
         }
         #endregion
 
