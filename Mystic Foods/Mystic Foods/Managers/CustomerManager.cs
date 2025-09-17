@@ -18,7 +18,7 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Human/NPC1/npc1HumanHappy",
                     SpritePathNeutral = "Human/NPC1/npc1HumanNormal",
                     SpritePathGrumpy = "Human/NPC1/npc1HumanAngry",
-                    Patience = 5f,
+                    Patience = 0.694f,
                 },
                 new Customer {
                     Id = 2,

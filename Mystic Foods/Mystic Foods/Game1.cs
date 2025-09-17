@@ -50,9 +50,9 @@ namespace Mystic_Foods
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Globals.Content = Content; //คำสั่งนี้ต้องสร้างก่อน _gameManager = new GameManager();
-            _gameManager = new GameManager(); //สร้าง GameManager หลัง Globals.Content
-            _gameManager.LoadContent(Content);//รูปหรือ assets สำหรับหน้าทำอาหาร(Cooking scene) ใส่ใน method นี้
+            Globals.Content = Content;
+            _gameManager = new GameManager();
+            _gameManager.LoadContent(Content);
 
             _dndScene = new DnDScene(_gameManager);
 
@@ -92,6 +92,11 @@ namespace Mystic_Foods
                 {
                     _gamePlayScene.BackToMenuRequested = false;
                     _currentScene = _mainMenuScene;
+                }
+                else if (_gamePlayScene.DnDRequested)
+                {
+                    _gamePlayScene.DnDRequested = false;
+                    _currentScene = _dndScene;
                 }
             }
             else if (_currentScene == _dndScene)
