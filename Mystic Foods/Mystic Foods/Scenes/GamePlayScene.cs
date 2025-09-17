@@ -36,7 +36,7 @@ namespace Mystic_Foods
         Texture2D _textureNeutral;
         Texture2D _textureGrumpy;
 
-        Texture2D bg, table, bgBox, dayBox, moneyBox, menuBox;
+        Texture2D bg, table, bgBox, dayBox, moneyBox, menuBox, profile;
         Texture2D wButton;
         Texture2D _happy, _natural, _angry;
 
@@ -67,10 +67,11 @@ namespace Mystic_Foods
             _natural = content.Load<Texture2D>("Emote/EmoteNatural");
             _angry = content.Load<Texture2D>("Emote/EmoteAngry");
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
+            profile = content.Load<Texture2D>("Etc/Cat1");
 
             wButton = content.Load<Texture2D>("DialogueUI/WhatButton");
 
-            _pauseButton = new Button(menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
+            _pauseButton = new Button(menuBox, _font, " ", new Rectangle(1670, 10, menuBox.Width, menuBox.Height));
             _pauseButton.Click += PauseButton_Click;
             _menuButton = new Button(wButton, _font, " ", new Rectangle(900, 500, 128, 63));
             _menuButton.Click += MenuButton_Click;
@@ -86,7 +87,7 @@ namespace Mystic_Foods
         public void Update(GameTime gameTime)
         {
             var state = Keyboard.GetState();
-
+            int Orders = 0;
             // random, reset Patience
             if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
             {
@@ -190,8 +191,9 @@ namespace Mystic_Foods
                 */
 
                 // แสดงค่า Patience Meter
+                Vector2 EmotionPos = new Vector2(850, menuBox.Height / 5);//สำหรับตำแหน่งของอีโมจิอารมณ์
                 string patienceText = $"{_patienceMeter:0}%";
-                spriteBatch.DrawString(_font, patienceText, new Vector2(875, 100), Color.Black);
+                spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
 
                 //Draw Customer & Patience
                 Texture2D drawTexture = _textureHappy;
@@ -199,17 +201,17 @@ namespace Mystic_Foods
                 if (patiencePerc >= 2f / 3f)
                 {
                     drawTexture = _textureHappy;
-                    spriteBatch.Draw(_happy, new Vector2(850, 15), Color.White);
+                    spriteBatch.Draw(_happy, EmotionPos, Color.White);
                 }
                 else if (patiencePerc >= 1f / 3f)
                 {
                     drawTexture = _textureNeutral;
-                    spriteBatch.Draw(_natural, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(_natural, EmotionPos, Color.White);
                 }
                 else
                 {
                     drawTexture = _textureGrumpy;
-                    spriteBatch.Draw(_angry, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(_angry, EmotionPos, Color.White);
                 }
 
                 //use rectangle to adjust scale
@@ -218,15 +220,21 @@ namespace Mystic_Foods
                 spriteBatch.Draw(drawTexture, destinationRectangle, Color.White);
             }
 
-            spriteBatch.Draw(dayBox, new Vector2(300, 15), Color.White);
-            spriteBatch.DrawString(_font, "Day 1", new Vector2(410, 35), Color.Black);
+            //profile
+            spriteBatch.Draw(profile, new Vector2(0, 0), Color.White );
 
-            spriteBatch.Draw(moneyBox, new Vector2(575, 15), Color.White);
-            //table pos recom pos.Y 890++
-            spriteBatch.Draw(table, new Vector2(0, 915), Color.White);
-
+            //Date and Time
+            int Days = 2;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             string Time = $"{(int)TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(410, 70), Color.Blue);
+            spriteBatch.Draw(dayBox, new Vector2(profile.Width + 10, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 110, (menuBox.Height / 5) + 20), Color.Black);
+            spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 110, (menuBox.Height / 5) + 55), Color.Blue);
+
+            //UI bar
+            spriteBatch.Draw(moneyBox, new Vector2(1920 - menuBox.Width - moneyBox.Width - 50, menuBox.Height / 5), Color.White);
+
+            //Environment and table pos recom pos.Y 890++
+            spriteBatch.Draw(table, new Vector2(0, 1080 - 152), Color.White);
 
             /*
             string TimeS = $"\nTimePerSec: {TimePSec}";

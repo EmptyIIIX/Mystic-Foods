@@ -37,19 +37,18 @@ namespace Mystic_Foods.Managers
 
         public void LoadContent(ContentManager content)
         {
-            var foodTexture = content.Load<Texture2D>("foods/Food");
+            var foodTexture = content.Load<Texture2D>("foods/3");
             var plateTexture = content.Load<Texture2D>("foods/Plate");
-            var wrapTexture = content.Load<Texture2D>("foods/Wrapper");
-            var cheeseTexture = content.Load<Texture2D>("foods/sai1");
-            var meatTexture = content.Load<Texture2D>("foods/sai2");
-            var vegetableTexture = content.Load<Texture2D>("foods/sai3");
-            var wheatTexture = content.Load<Texture2D>("foods/pang1");
-            var cornTexture = content.Load<Texture2D>("foods/pang2");
-            var riceTexture = content.Load<Texture2D>("foods/pang3");
+            var cheeseTexture = content.Load<Texture2D>("foods/4");
+            var meatTexture = content.Load<Texture2D>("foods/5");
+            var vegetableTexture = content.Load<Texture2D>("foods/6");
+            var wheatTexture = content.Load<Texture2D>("foods/7");
+            var cornTexture = content.Load<Texture2D>("foods/8");
+            var riceTexture = content.Load<Texture2D>("foods/9");
 
-            var trashBinTexture = content.Load<Texture2D>("foods/Bin");
+            var trashBinTexture = content.Load<Texture2D>("Etc/TrashBin");
 
-            var wrappTexture = content.Load<Texture2D>("foods/Wrapper");
+            var wrappTexture = content.Load<Texture2D>("foods/1");
 
             //Fillings Sai
             var cheese = new Filling(cheeseTexture, _originSai, Filling.FillingType.Cheese);
@@ -79,7 +78,7 @@ namespace Mystic_Foods.Managers
             _wrapperOriginalPositions.Add(wrapper, _originWrapper);
 
             //plate
-            _plate = new Socket(plateTexture, new(940, 600));
+            _plate = new Socket(plateTexture, new(858, 586));
 
             _trashBin = new TrashBin(trashBinTexture, new Vector2(1700, 500));
         }
@@ -182,7 +181,7 @@ namespace Mystic_Foods.Managers
 
         private void CreateFood(Filling filling, Dough dough, Wrapper wrapper)
         {
-            var foodTexture = Globals.Content.Load<Texture2D>("foods/Food");
+            var foodTexture = Globals.Content.Load<Texture2D>("foods/3");
             var newFood = new Food(foodTexture, _plate.Position);
             _food.Add(newFood);
             int fillingIndex = _fillings.IndexOf(filling);
@@ -207,13 +206,13 @@ namespace Mystic_Foods.Managers
             {
                 wrapper.Draw();
             }
-            foreach (var filling in _fillings)
-            {
-                filling.Draw();
-            }
             foreach (var dough in _doughs)
             {
                 dough.Draw();
+            }
+            foreach (var filling in _fillings)
+            {
+                filling.Draw();
             }
             foreach (var food in _food)
             {
