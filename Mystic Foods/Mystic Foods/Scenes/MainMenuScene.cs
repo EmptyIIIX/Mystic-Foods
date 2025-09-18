@@ -23,6 +23,9 @@ namespace Mystic_Foods
         private KeyboardState _oldState; //make it only pressable (can't hold)
         private MouseState _oldMouseState;
 
+        //BG
+        Texture2D _bg;
+
         // เก็บ bounding box ของแต่ละเมนู (เพื่อคลิกได้)
         private List<Rectangle> _menuItemRects = new List<Rectangle>();
 
@@ -43,6 +46,8 @@ namespace Mystic_Foods
                 );
                 _menuItemRects.Add(rect);
             }
+
+            _bg = content.Load<Texture2D>("Environments/BG/MainMenuBG");
         }
 
         public void Update(GameTime gameTime)
@@ -98,7 +103,8 @@ namespace Mystic_Foods
 
             spriteBatch.Begin();
 
-            string title = "Main Menu";
+            spriteBatch.Draw(_bg, new Vector2(0, 0), Color.White);
+            string title = "Mystic Food";
             Vector2 titleSize = _font.MeasureString(title);
             spriteBatch.DrawString(
                 _font,

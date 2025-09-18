@@ -35,6 +35,7 @@ namespace Mystic_Foods
         private List<Rectangle> btnItemRect = new List<Rectangle>();
 
         public bool BackToMenuRequested = false;
+        public bool BackToGame = false;
 
         public DnDScene(GameManager gameManager)
         {
@@ -137,7 +138,7 @@ namespace Mystic_Foods
             // กด ESC เพื่อกลับเมนู
             if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
             {
-                BackToMenuRequested = true;
+                BackToGame = true;
             }
             _oldState = state;
             _oldMouseState = mouse;

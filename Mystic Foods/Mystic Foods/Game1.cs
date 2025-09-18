@@ -55,7 +55,6 @@ namespace Mystic_Foods
 
         private void OnClientSizeChanged(object sender, System.EventArgs e)
         {
-            //อัปเดตขนาด back bufferเมื่อหน้าต่างเปลี่ยนขนาด
             _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
             _graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
             _graphics.ApplyChanges();
@@ -125,6 +124,11 @@ namespace Mystic_Foods
                 if (_dndScene.ServeRequest)
                 {
                     _dndScene.ServeRequest = false;
+                    _currentScene = _gamePlayScene;
+                }
+                if (_dndScene.BackToGame)
+                {
+                    _dndScene.BackToGame = false;
                     _currentScene = _gamePlayScene;
                 }
             }
