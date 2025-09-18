@@ -18,7 +18,11 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Human/NPC1/npc1HumanHappy",
                     SpritePathNeutral = "Human/NPC1/npc1HumanNormal",
                     SpritePathGrumpy = "Human/NPC1/npc1HumanAngry",
-                    Patience = 0.694f,
+                    Patience = 0.68f,
+                    Dia1 = "Cheeesssseeee Rice",
+                    Dia2 = "Rice Dough with Cheese Fillings",
+                    Dough = "Rice",
+                    Fillings = "Cheese"
                 },
                 new Customer {
                     Id = 2,
@@ -26,7 +30,11 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Human/NPC2/npc2HumanHappy",
                     SpritePathNeutral = "Human/NPC2/npc2HumanNormal",
                     SpritePathGrumpy = "Human/NPC2/npc2HumanAngry",
-                    Patience = 1f,
+                    Patience = 0.68f,
+                    Dia1 = "Meat & Corn is good",
+                    Dia2 = "Corn Dough with Meat Fillings",
+                    Dough = "Corn",
+                    Fillings = "Meat"
                 },
                 new Customer {
                     Id = 3,
@@ -34,8 +42,12 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Human/NPC3/npc3HumanHappy",
                     SpritePathNeutral = "Human/NPC3/npc3HumanNormal",
                     SpritePathGrumpy = "Human/NPC3/npc3HumanAngry",
-                    Patience = 1f,
-                },
+                    Patience = 0.68f,
+                    Dia1 = "Wheat Meat is good",
+                    Dia2 = "Wheat Dough with Meat Fillings",
+                    Dough = "Wheat",
+                    Fillings = "Meat"
+                }
             };
         }
 

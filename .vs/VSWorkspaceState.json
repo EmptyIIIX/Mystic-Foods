@@ -3,9 +3,11 @@
     "",
     "\\Mystic Foods",
     "\\Mystic Foods\\Mystic Foods",
-    "\\Mystic Foods\\Mystic Foods\\Content",
-    "\\Mystic Foods\\Mystic Foods\\Scenes"
+    "\\Mystic Foods\\Mystic Foods\\Customers",
+    "\\Mystic Foods\\Mystic Foods\\Managers",
+    "\\Mystic Foods\\Mystic Foods\\Scenes",
+    "\\Mystic Foods\\Mystic Foods\\Systems"
   ],
-  "SelectedNode": "\\Mystic Foods\\Mystic Foods\\Customers",
+  "SelectedNode": "\\Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
   "PreviewInSolutionExplorer": false
 }

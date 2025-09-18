@@ -19,13 +19,17 @@ namespace Mystic_Foods
         public bool DnDRequested = false;
         private KeyboardState _oldState;
         private CustomerManager _customerManager;
-        private Customer _currentCustomer;
+        public Customer _currentCustomer;
         private ContentManager _contentManager;
+
+        private bool _what = false;
 
         //pause
         private bool isPaused = false;
         private Button _pauseButton;
         private Button _menuButton;
+        private Button _yesButton;
+        private Button _whatButton;
 
         // ระบบ Patience Meter
         private float _patienceMeter;
@@ -37,7 +41,7 @@ namespace Mystic_Foods
         Texture2D _textureGrumpy;
 
         Texture2D bg, table, bgBox, dayBox, moneyBox, menuBox;
-        Texture2D wButton;
+        Texture2D whatButton, yesButton, diaBox;
         Texture2D _happy, _natural, _angry;
 
         private Texture2D _rectTexture;
@@ -68,12 +72,18 @@ namespace Mystic_Foods
             _angry = content.Load<Texture2D>("Emote/EmoteAngry");
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
 
-            wButton = content.Load<Texture2D>("DialogueUI/WhatButton");
+            whatButton = content.Load<Texture2D>("DialogueUI/WhatButton");
+            yesButton = content.Load<Texture2D>("DialogueUI/YesButton");
+            diaBox = content.Load<Texture2D>("DialogueUI/DialogueBox");
 
             _pauseButton = new Button(menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
             _pauseButton.Click += PauseButton_Click;
-            _menuButton = new Button(wButton, _font, " ", new Rectangle(900, 500, 128, 63));
+            _menuButton = new Button(whatButton, _font, " ", new Rectangle(900, 500, 128, 63));
             _menuButton.Click += MenuButton_Click;
+            _yesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
+            _yesButton.Click += YesButton_Click;
+            _whatButton = new Button(whatButton, _font, " ", new Rectangle(1550, 500, 128, 63));
+            _whatButton.Click += WhatButton_Click;
         }
 
         private void LoadCustomerTextures()
@@ -93,6 +103,7 @@ namespace Mystic_Foods
                 _currentCustomer = _customerManager.GetNextCustomer();
                 _patienceMeter = _patienceMeterStart;
                 LoadCustomerTextures();
+                _what = false;
             }
 
             //Check time out to back to mainmenu scene
@@ -103,15 +114,17 @@ namespace Mystic_Foods
             }
 
             // ESC
-            if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
-            {
-                BackToMenuRequested = true;
-                TimeStage = 721f;
-            }
+            //if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
+            //{
+            //    BackToMenuRequested = true;
+            //    TimeStage = 721f;
+            //}
 
             //Button
             _pauseButton.Update();
             _menuButton.Update();
+            _yesButton.Update();
+            _whatButton.Update();
 
             //P
             if (state.IsKeyDown(Keys.P) && _oldState.IsKeyUp(Keys.P))
@@ -149,7 +162,6 @@ namespace Mystic_Foods
                     LoadCustomerTextures();
                 }
             }
-
             _oldState = state;
         }
 
@@ -172,22 +184,10 @@ namespace Mystic_Foods
                 spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
                 spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
 
+                //Customer stats
                 string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
                 Vector2 custPos = new Vector2(100, 180);
                 spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
-
-                /*
-                // Show Patience Meter แบบ progress bar
-                int barX = 100, barY = 430, barW = 300, barH = 20;
-                float meterPerc = _patienceMeter / _patienceMeterStart;
-                Rectangle patienceRect = new Rectangle(barX, barY, (int)(barW * meterPerc), barH);
-
-                // Texture for progress bar
-                Texture2D rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-                rectTexture.SetData(new[] { Color.White });
-                spriteBatch.Draw(rectTexture, new Rectangle(barX, barY, barW, barH), Color.Gray * 0.4f);
-                spriteBatch.Draw(rectTexture, patienceRect, Color.OrangeRed);
-                */
 
                 // แสดงค่า Patience Meter
                 string patienceText = $"{_patienceMeter:0}%";
@@ -228,6 +228,19 @@ namespace Mystic_Foods
             string Time = $"{(int)TimeStage}";
             spriteBatch.DrawString(_font, Time, new Vector2(410, 70), Color.Blue);
 
+            //Dia
+            spriteBatch.Draw(diaBox, new Vector2(900, 300), Color.White);
+            _yesButton.Draw(spriteBatch);
+            if (_what == false)
+            {
+                _whatButton.Draw(spriteBatch);
+                spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, 425), Color.Black);
+            }
+            else if (_what == true)
+            {
+                spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 425), Color.Black);
+            }
+
             /*
             string TimeS = $"\nTimePerSec: {TimePSec}";
             spriteBatch.DrawString(_font, TimeS, new Vector2(100, 600), Color.Blue);
@@ -259,6 +272,16 @@ namespace Mystic_Foods
             isPaused = false;
 
             BackToMenuRequested = true;
+        }
+
+        private void YesButton_Click(Object sender, EventArgs e)
+        {
+            _what = false;
+            DnDRequested = true;
+        }
+        private void WhatButton_Click(Object sender, EventArgs e)
+        {
+            _what = true;
         }
     }
 }

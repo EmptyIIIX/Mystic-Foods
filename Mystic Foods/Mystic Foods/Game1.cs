@@ -107,6 +107,11 @@ namespace Mystic_Foods
                     _dndScene.BackToMenuRequested = false;
                     _currentScene = _mainMenuScene;
                 }
+                else if (_dndScene.Back2GamePlay)
+                {
+                    _dndScene.Back2GamePlay = false;
+                    _currentScene = _gamePlayScene;
+                }
             }
             #endregion
 

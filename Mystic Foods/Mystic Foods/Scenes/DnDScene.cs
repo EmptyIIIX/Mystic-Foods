@@ -16,6 +16,7 @@ namespace Mystic_Foods
         private KeyboardState _oldState;
 
         public bool BackToMenuRequested = false;
+        public bool Back2GamePlay = false;
 
         public DnDScene(GameManager gameManager)
         {
@@ -41,7 +42,7 @@ namespace Mystic_Foods
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
             {
-                BackToMenuRequested = true;
+                Back2GamePlay = true;
             }
             _oldState = state;
         }
@@ -53,10 +54,10 @@ namespace Mystic_Foods
             // วาด UI หรือหัวข้อก็ได้
             spriteBatch.Begin();
             spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
-            spriteBatch.End();
 
+            //Draw Order
+            
             // วาด Drag & Drop Object
-            spriteBatch.Begin();
             _gameManager.Draw();
             spriteBatch.End();
         }
