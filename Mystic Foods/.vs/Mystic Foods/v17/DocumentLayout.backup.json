@@ -51,8 +51,7 @@
               "ViewState": "AgIAAFAAAAAAAAAAAAA/wH4AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-08T08:21:14.115Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -65,8 +64,7 @@
               "ViewState": "AgIAAAgBAAAAAAAAAAAAwDIBAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-11T09:56:25.856Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -74,9 +72,9 @@
               "Title": "DnDScene.cs",
               "DocumentMoniker": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project-3-subject\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\DnDScene.cs",
               "RelativeDocumentMoniker": "Mystic Foods\\Scenes\\DnDScene.cs",
-              "ToolTip": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project-3-subject\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\DnDScene.cs \u2B24",
-              "RelativeToolTip": "Mystic Foods\\Scenes\\DnDScene.cs \u2B24",
-              "ViewState": "AgIAAMUAAAAAAAAAAADgv88AAAAAAAAAAAAAAA==",
+              "ToolTip": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project-3-subject\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\DnDScene.cs",
+              "RelativeToolTip": "Mystic Foods\\Scenes\\DnDScene.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAM8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-16T13:20:36.29Z",
               "IsPinned": true,
@@ -100,8 +98,7 @@
               "RelativeToolTip": "Mystic Foods\\Managers\\GameManager.cs",
               "ViewState": "AgIAAC8AAAAAAAAAAAAgwOoAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-18T15:42:53.76Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-18T15:42:53.76Z"
             },
             {
               "$type": "Document",
@@ -113,8 +110,7 @@
               "RelativeToolTip": "Mystic Foods\\Managers\\DragDropManager.cs",
               "ViewState": "AgIAAC8AAAAAAAAAAAAcwD8AAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-18T15:58:22.657Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-18T15:58:22.657Z"
             },
             {
               "$type": "Document",
@@ -126,8 +122,7 @@
               "RelativeToolTip": "Mystic Foods\\Managers\\CustomerManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T19:01:59.304Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-17T19:01:59.304Z"
             },
             {
               "$type": "Document",
@@ -139,8 +134,7 @@
               "RelativeToolTip": "Mystic Foods\\Customers\\Customer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T19:02:29.119Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-17T19:02:29.119Z"
             }
           ]
         }
