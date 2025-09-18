@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -10,6 +9,9 @@ namespace Mystic_Foods.Managers
 {
     public class GameManager
     {
+        private SpriteBatch _spriteBatch;
+        private SpriteFont _font;
+        private CustomerManager _customerManager;
         private readonly List<Food> _food = new();
         private readonly List<Filling> _fillings = new();
         private readonly List<Dough> _doughs = new();
@@ -22,21 +24,27 @@ namespace Mystic_Foods.Managers
         private Filling _placedFilling;
         private Dough _placedDough;
         private readonly Vector2 _originSai = new Vector2(600, 200);
-        private readonly Vector2 _originPang = new Vector2(300, 400);
+        private readonly Vector2 _originPang = new Vector2(300, 200);
         private readonly Vector2 _originWrapper = new Vector2(1362, 592);
         private readonly float _fillingSpacing = 350; // ระยะห่างระหว่าง Filling
         private readonly float _doughSpacing = 250; // ระยะห่างระหว่าง Dough
+
+        public static int IdFood;
+        public static int IdFilling; // IdFill = _filling.fillingType
+        public static int IdDough;
+        public static bool HasFood { get; private set; }
+        public static int IsCurrectOrder = -1;
 
         public GameManager()
         {
             DragDropManager.OnDrop += HandleDrop;
             DragDropManager.OnDragFailed += HandleDragFailed;
+            HasFood = false;
         }
-
-        #region LoadContent
 
         public void LoadContent(ContentManager content)
         {
+            // โค้ดเดิม ไม่ต้องแก้ไข
             var foodTexture = content.Load<Texture2D>("foods/3");
             var plateTexture = content.Load<Texture2D>("foods/Plate");
             var cheeseTexture = content.Load<Texture2D>("foods/4");
@@ -45,12 +53,9 @@ namespace Mystic_Foods.Managers
             var wheatTexture = content.Load<Texture2D>("foods/7");
             var cornTexture = content.Load<Texture2D>("foods/8");
             var riceTexture = content.Load<Texture2D>("foods/9");
-
             var trashBinTexture = content.Load<Texture2D>("Etc/TrashBin");
-
             var wrappTexture = content.Load<Texture2D>("foods/1");
 
-            //Fillings Sai
             var cheese = new Filling(cheeseTexture, _originSai, Filling.FillingType.Cheese);
             var meat = new Filling(meatTexture, new Vector2(_originSai.X + _fillingSpacing, _originSai.Y), Filling.FillingType.Meat);
             var vegetable = new Filling(vegetableTexture, new Vector2(_originSai.X + 2 * _fillingSpacing, _originSai.Y), Filling.FillingType.Vegetable);
@@ -61,7 +66,6 @@ namespace Mystic_Foods.Managers
             _fillingOriginalPositions.Add(meat, new Vector2(_originSai.X + _fillingSpacing, _originSai.Y));
             _fillingOriginalPositions.Add(vegetable, new Vector2(_originSai.X + 2 * _fillingSpacing, _originSai.Y));
 
-            //Dough Pang
             var wheat = new Dough(wheatTexture, _originPang, Dough.DoughType.Wheat);
             var corn = new Dough(cornTexture, new Vector2(_originPang.X, _originPang.Y + _doughSpacing), Dough.DoughType.Corn);
             var rice = new Dough(riceTexture, new Vector2(_originPang.X, _originPang.Y + 2 * _doughSpacing), Dough.DoughType.Rice);
@@ -72,23 +76,17 @@ namespace Mystic_Foods.Managers
             _doughOriginalPositions.Add(corn, new Vector2(_originPang.X, _originPang.Y + _doughSpacing));
             _doughOriginalPositions.Add(rice, new Vector2(_originPang.X, _originPang.Y + 2 * _doughSpacing));
 
-            //wrapper
             var wrapper = new Wrapper(wrappTexture, _originWrapper);
             _wrapper.Add(wrapper);
             _wrapperOriginalPositions.Add(wrapper, _originWrapper);
 
-            //plate
             _plate = new Socket(plateTexture, new(858, 586));
-
             _trashBin = new TrashBin(trashBinTexture, new Vector2(1700, 500));
         }
-        #endregion
-
-        #region HandleDrop
 
         private void HandleDrop(IDraggable item, ITargetable target)
         {
-            // ถ้าถึงขีดจำกัดอาหาร 3 ชิ้น รีเซ็ตตำแหน่งของ sai, pang
+            // ถ้ามีอาหารเกิน 1 ชิ้น ให้รีเซ็ตตำแหน่งของ sai, pang, wrapper
             if (_food.Count >= 1 && (item is Filling || item is Dough || item is Wrapper))
             {
                 if (item is Filling filling)
@@ -106,12 +104,14 @@ namespace Mystic_Foods.Managers
                 return;
             }
 
-            //_food.Count < 3
             if (target == _plate)
             {
                 if (item is Filling newFilling)
                 {
-                    //รีเซ็ต Filling อื่นที่อยู่บนจาน
+                    // อัปเดต _placedFilling และ IdFilling
+                    _placedFilling = newFilling;
+                    IdFilling = (int)newFilling.FillingKind;
+                    // รีเซ็ต Filling อื่นที่อยู่บนจาน
                     var otherFillings = _fillings.Where(f => f != newFilling && f.Position == _plate.Position).ToList();
                     foreach (var filling in otherFillings)
                     {
@@ -120,7 +120,10 @@ namespace Mystic_Foods.Managers
                 }
                 else if (item is Dough newDough)
                 {
-                    //รีเซ็ต Dough อื่นที่อยู่บนจาน
+                    // อัปเดต _placedDough และ IdDough
+                    _placedDough = newDough;
+                    IdDough = (int)newDough.DoughKind;
+                    // รีเซ็ต Dough อื่นที่อยู่บนจาน
                     var otherDoughs = _doughs.Where(d => d != newDough && d.Position == _plate.Position).ToList();
                     foreach (var dough in otherDoughs)
                     {
@@ -128,7 +131,7 @@ namespace Mystic_Foods.Managers
                     }
                 }
 
-                    //ตรวจสอบการสร้าง Food
+                // ตรวจสอบการสร้าง Food
                 var fillingOnPlate = _fillings.FirstOrDefault(f => f.Position == _plate.Position);
                 var doughOnPlate = _doughs.FirstOrDefault(d => d.Position == _plate.Position);
                 var wrapperOnPlate = _wrapper.FirstOrDefault(w => w.Position == _plate.Position);
@@ -142,56 +145,103 @@ namespace Mystic_Foods.Managers
             {
                 _food.Remove(food);
                 (food as IDraggable).UnregisterDraggable();
+                IdFood = 0;
+                HasFood = false;
             }
             else if (target == _trashBin && item is Filling filling)
             {
                 filling.Position = _fillingOriginalPositions[filling];
+                if (!_fillings.Any(f => f.Position == _plate.Position))
+                {
+                    IdFilling = 0;
+                }
             }
             else if (target == _trashBin && item is Dough dough)
             {
                 dough.Position = _doughOriginalPositions[dough];
+                if (!_doughs.Any(d => d.Position == _plate.Position))
+                {
+                    IdDough = 0;
+                }
             }
             else if (target == _trashBin && item is Wrapper wrapper)
             {
                 wrapper.Position = _wrapperOriginalPositions[wrapper];
             }
         }
-        #endregion
-
-        #region HandleDragFailed
 
         private void HandleDragFailed(IDraggable item)
         {
             if (item is Filling filling)
             {
                 filling.Position = _fillingOriginalPositions[filling];
+                if (!_fillings.Any(f => f.Position == _plate.Position))
+                {
+                    IdFilling = 0;
+                }
             }
             else if (item is Dough dough)
             {
                 dough.Position = _doughOriginalPositions[dough];
+                if (!_doughs.Any(d => d.Position == _plate.Position))
+                {
+                    IdDough = 0;
+                }
             }
             else if (item is Wrapper wrapper)
             {
                 wrapper.Position = _wrapperOriginalPositions[wrapper];
             }
         }
-        #endregion
-
-        #region CreateFood
 
         private void CreateFood(Filling filling, Dough dough, Wrapper wrapper)
         {
             var foodTexture = Globals.Content.Load<Texture2D>("foods/3");
             var newFood = new Food(foodTexture, _plate.Position);
             _food.Add(newFood);
+
+            // อัปเดต IdFilling, IdDough, และ IdFood
+            IdFilling = (int)filling.FillingKind;
+            IdDough = (int)dough.DoughKind;
+            IdFood = IdFilling * IdDough;
+            HasFood = true;
+
+            // รีเซ็ตตำแหน่งของวัตถุดิบ
             int fillingIndex = _fillings.IndexOf(filling);
             int doughIndex = _doughs.IndexOf(dough);
             int wrapIndex = _wrapper.IndexOf(wrapper);
             filling.Position = new Vector2(_originSai.X + (fillingIndex * _fillingSpacing), _originSai.Y);
             dough.Position = new Vector2(_originPang.X, _originPang.Y + (doughIndex * _doughSpacing));
             wrapper.Position = new Vector2(_originWrapper.X, _originWrapper.Y);
+
+            // รีเซ็ต IdFilling, IdDough, และ IdFood หลังสร้างอาหาร
+            IdFilling = 0;
+            IdDough = 0;
+            GamePlayScene.TotalMoney -= 10;
         }
-        #endregion
+
+        public void ServeFood()
+        {
+
+            if(IdFood == GamePlayScene._currentCustomer.IdOrder)
+            {
+                IsCurrectOrder = 1;
+                GamePlayScene.pay = GamePlayScene.price * GamePlayScene.weight;
+                GamePlayScene.TotalMoney += GamePlayScene.pay;
+            }
+            else
+            {
+                IsCurrectOrder= 0;
+                GamePlayScene.TotalMoney -= 1000;
+            }
+            if (_food.Count > 0)
+            {
+                _food.Clear();
+                HasFood = false;
+                IdFood = 0;
+            }
+        }
+
         public void Update()
         {
             InputManager.Update();

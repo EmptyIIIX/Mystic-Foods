@@ -13,7 +13,7 @@ namespace Mystic_Foods.Managers
         private static IDraggable _dragItem;
         public static event Action<IDraggable, ITargetable> OnDrop;
         public static event Action<IDraggable> OnDragFailed;
-
+        public static bool isIdFil = false;
         public static void AddDraggable(IDraggable item)
         {
             _draggables.Add(item);
@@ -62,6 +62,7 @@ namespace Mystic_Foods.Managers
                     _dragItem.Position = item.Position;
                     OnDrop?.Invoke(_dragItem, item);
                     droppedOnTarget = true;
+                    isIdFil = true;
                     break;
                 }
             }

@@ -7,7 +7,12 @@ namespace Mystic_Foods.Systems
 {
     public class Filling : Sprite, IDraggable
     {
-        public enum FillingType { Cheese, Meat, Vegetable }
+        public enum FillingType 
+        { 
+            Cheese = 10, 
+            Meat = 20, 
+            Vegetable = 30 
+        }
         public FillingType FillingKind { get; private set; }
         public string Type => $"Filling_{FillingKind}";
 

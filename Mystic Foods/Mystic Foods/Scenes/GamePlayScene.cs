@@ -11,23 +11,23 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        private float TimeStage = 721f;
-        private float TimePSec;
+        public static float TimeStage = 721f;
+        public static float TimePSec;
 
         private SpriteFont _font;
         public bool BackToMenuRequested = false;
         public bool DnDRequested = false;
         private KeyboardState _oldState;
         private CustomerManager _customerManager;
-        public Customer _currentCustomer;
+        public static Customer _currentCustomer;
         private ContentManager _contentManager;
 
         private bool _what = false;
 
         //pause
-        private bool isPaused = false;
-        private Button _pauseButton;
-        private Button _menuButton;
+        public static bool isPaused = false;
+        public static Button _pauseButton;
+        public static Button _menuButton;
         private Button _yesButton;
         private Button _whatButton;
 
@@ -40,11 +40,16 @@ namespace Mystic_Foods
         Texture2D _textureNeutral;
         Texture2D _textureGrumpy;
 
-        Texture2D bg, table, bgBox, dayBox, moneyBox, menuBox, profile;
-        Texture2D whatButton, yesButton, diaBox;
-        Texture2D _happy, _natural, _angry;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
+        public static Texture2D whatButton, yesButton, diaBox;
+        public static Texture2D _happy, _natural, _angry;
 
-        private Texture2D _rectTexture;
+        public static Texture2D _rectTexture;
+
+        public static float TotalMoney = 100.0f;
+        public static float pay;
+        public static float price = 120.0f;
+        public static float weight = 0.0f;
 
         public GamePlayScene(CustomerManager cm)
         {
@@ -52,6 +57,8 @@ namespace Mystic_Foods
             _currentCustomer = _customerManager.GetNextCustomer();
             _patienceMeter = _patienceMeterStart;
         }
+
+        public GamePlayScene() {}
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
@@ -63,7 +70,7 @@ namespace Mystic_Foods
             _rectTexture.SetData(new[] { Color.White });
 
             bg = content.Load<Texture2D>("Environments/BG/orderBG_morning");
-            table = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
+            counter = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
             bgBox = content.Load<Texture2D>("Etc/OutLine");
             dayBox = content.Load<Texture2D>("Etc/Day");
             moneyBox = content.Load<Texture2D>("Etc/Money");
@@ -170,7 +177,10 @@ namespace Mystic_Foods
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
             spriteBatch.Begin();
+            spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
 
+            /*
             string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
             Vector2 size = _font.MeasureString(text);
             spriteBatch.DrawString(
@@ -178,12 +188,10 @@ namespace Mystic_Foods
                 text,
                 new Vector2((800 - size.X) / 2, 60),
                 Color.Black);
-
+             */
             // Show Customer data
             if (_currentCustomer != null)
             {
-                spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
-                spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
 
                 //Customer stats
                 string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
@@ -196,58 +204,51 @@ namespace Mystic_Foods
                 spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
 
                 //Draw Customer & Patience
-                Texture2D drawTexture = _textureHappy;
-                float patiencePerc = _patienceMeter / _patienceMeterStart;
-                if (patiencePerc >= 2f / 3f)
-                {
-                    drawTexture = _textureHappy;
-                    spriteBatch.Draw(_happy, EmotionPos, Color.White);
-                }
-                else if (patiencePerc >= 1f / 3f)
-                {
-                    drawTexture = _textureNeutral;
-                    spriteBatch.Draw(_natural, EmotionPos, Color.White);
-                }
-                else
-                {
-                    drawTexture = _textureGrumpy;
-                    spriteBatch.Draw(_angry, EmotionPos, Color.White);
-                }
+                DrawEmotion(spriteBatch, EmotionPos);
 
                 //use rectangle to adjust scale
                 //0.9(855, 972) 0.8(760, 864)
-                Rectangle destinationRectangle = new Rectangle(300, 75, 760, 864);
-                spriteBatch.Draw(drawTexture, destinationRectangle, Color.White);
+                
             }
-            //profile
-            spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
 
+            #region UI info
+
+            //profile
+            //spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(dayBox, new Vector2(profile.Width + 10, menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 110, (menuBox.Height / 5) + 20), Color.Black);
 
             spriteBatch.Draw(moneyBox, new Vector2(1920 - menuBox.Width - moneyBox.Width - 50, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(1920 - menuBox.Width - (moneyBox.Width / 2) - 25, (menuBox.Height / 5) + (moneyBox.Height / 4) + 10), Color.Yellow);
             //table pos recom pos.Y 890++
-            spriteBatch.Draw(table, new Vector2(0, 915), Color.White);
+            spriteBatch.Draw(counter, new Vector2(0, 1080 - counter.Height), Color.White);
 
             string Time = $"{(int)TimeStage}";
             spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 110, (menuBox.Height / 5) + 55), Color.Blue);
+            #endregion
 
+            #region Dialouge
             //Dia
-            spriteBatch.Draw(diaBox, new Vector2(900, 200), Color.White);
+            Vector2 diaBoxPos = new Vector2(900, 200);
+            spriteBatch.Draw(diaBox, diaBoxPos, Color.White);
             _yesButton.Draw(spriteBatch);
             if (_what == false)
             {
                 _whatButton.Draw(spriteBatch);
-                spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, 425), Color.Black);
+                spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2)), Color.Black);
             }
             else if (_what == true)
             {
-                spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 425), Color.Black);
+                spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2)), Color.Black);
             }
+            #endregion
 
             /*
+            spriteBatch.DrawString(_font, $" IdOrder : {_currentCustomer.IdOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 100), Color.Black);
+            spriteBatch.DrawString(_font, $" CurrectOrder : {GameManager.IsCurrectOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 200), Color.Black);
+
             string TimeS = $"\nTimePerSec: {TimePSec}";
             spriteBatch.DrawString(_font, TimeS, new Vector2(100, 600), Color.Blue);
             */
@@ -264,11 +265,11 @@ namespace Mystic_Foods
             spriteBatch.End();
         }
 
-        private void PauseButton_Click(object sender, EventArgs e)
+        public void PauseButton_Click(object sender, EventArgs e)
         {
             isPaused = !isPaused;
         }
-        private void MenuButton_Click(Object sender, EventArgs e)
+        public void MenuButton_Click(Object sender, EventArgs e)
         {
             //reset Scene
             _currentCustomer = _customerManager.GetNextCustomer();
@@ -279,7 +280,32 @@ namespace Mystic_Foods
 
             BackToMenuRequested = true;
         }
+        public void DrawEmotion(SpriteBatch spriteBatch, Vector2 EmotionPos)
+        {
+            float patiencePerc = _patienceMeter / _patienceMeterStart;
+            Texture2D drawTexture;
+            if (patiencePerc >= 2f / 3f)
+            {
+                drawTexture = _textureHappy;
+                spriteBatch.Draw(_happy, EmotionPos, Color.White);
+                weight = 1.00f;
+            }
+            else if (patiencePerc >= 1f / 3f)
+            {
+                drawTexture = _textureNeutral;
+                spriteBatch.Draw(_natural, EmotionPos, Color.White);
+                weight = 0.75f;
+            }
+            else
+            {
+                drawTexture = _textureGrumpy;
+                spriteBatch.Draw(_angry, EmotionPos, Color.White);
+                weight = 0.50f;
+            }
 
+            Rectangle destinationRectangle = new Rectangle(300, 75, 760, 864);
+            spriteBatch.Draw(drawTexture, destinationRectangle, Color.White);
+        }
         private void YesButton_Click(Object sender, EventArgs e)
         {
             _what = false;

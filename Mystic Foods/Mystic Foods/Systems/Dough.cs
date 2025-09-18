@@ -7,7 +7,12 @@ namespace Mystic_Foods.Systems
 {
     public class Dough : Sprite, IDraggable
     {
-        public enum DoughType { Wheat, Corn, Rice }
+        public enum DoughType 
+        { 
+            Wheat = 10, 
+            Corn = 20, 
+            Rice = 30 
+        }
         public DoughType DoughKind { get; private set; }
         public string Type => $"Dough_{DoughKind}";
 
