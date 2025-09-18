@@ -40,7 +40,7 @@ namespace Mystic_Foods
         Texture2D _textureNeutral;
         Texture2D _textureGrumpy;
 
-        Texture2D bg, table, bgBox, dayBox, moneyBox, menuBox;
+        Texture2D bg, table, bgBox, dayBox, moneyBox, menuBox, profile;
         Texture2D whatButton, yesButton, diaBox;
         Texture2D _happy, _natural, _angry;
 
@@ -71,6 +71,7 @@ namespace Mystic_Foods
             _natural = content.Load<Texture2D>("Emote/EmoteNatural");
             _angry = content.Load<Texture2D>("Emote/EmoteAngry");
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
+            profile = content.Load<Texture2D>("Etc/Cat1");
 
             whatButton = content.Load<Texture2D>("DialogueUI/WhatButton");
             yesButton = content.Load<Texture2D>("DialogueUI/YesButton");
@@ -190,8 +191,9 @@ namespace Mystic_Foods
                 spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
 
                 // แสดงค่า Patience Meter
+                Vector2 EmotionPos = new Vector2(850, menuBox.Height / 5);//สำหรับตำแหน่งของอีโมจิอารมณ์
                 string patienceText = $"{_patienceMeter:0}%";
-                spriteBatch.DrawString(_font, patienceText, new Vector2(875, 100), Color.Black);
+                spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
 
                 //Draw Customer & Patience
                 Texture2D drawTexture = _textureHappy;
@@ -199,17 +201,17 @@ namespace Mystic_Foods
                 if (patiencePerc >= 2f / 3f)
                 {
                     drawTexture = _textureHappy;
-                    spriteBatch.Draw(_happy, new Vector2(850, 15), Color.White);
+                    spriteBatch.Draw(_happy, EmotionPos, Color.White);
                 }
                 else if (patiencePerc >= 1f / 3f)
                 {
                     drawTexture = _textureNeutral;
-                    spriteBatch.Draw(_natural, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(_natural, EmotionPos, Color.White);
                 }
                 else
                 {
                     drawTexture = _textureGrumpy;
-                    spriteBatch.Draw(_angry, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(_angry, EmotionPos, Color.White);
                 }
 
                 //use rectangle to adjust scale
@@ -217,19 +219,23 @@ namespace Mystic_Foods
                 Rectangle destinationRectangle = new Rectangle(300, 75, 760, 864);
                 spriteBatch.Draw(drawTexture, destinationRectangle, Color.White);
             }
+            //profile
+            spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
 
-            spriteBatch.Draw(dayBox, new Vector2(300, 15), Color.White);
-            spriteBatch.DrawString(_font, "Day 1", new Vector2(410, 35), Color.Black);
+            //Date and Time
+            int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
+            spriteBatch.Draw(dayBox, new Vector2(profile.Width + 10, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 110, (menuBox.Height / 5) + 20), Color.Black);
 
-            spriteBatch.Draw(moneyBox, new Vector2(575, 15), Color.White);
+            spriteBatch.Draw(moneyBox, new Vector2(1920 - menuBox.Width - moneyBox.Width - 50, menuBox.Height / 5), Color.White);
             //table pos recom pos.Y 890++
             spriteBatch.Draw(table, new Vector2(0, 915), Color.White);
 
             string Time = $"{(int)TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(410, 70), Color.Blue);
+            spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 110, (menuBox.Height / 5) + 55), Color.Blue);
 
             //Dia
-            spriteBatch.Draw(diaBox, new Vector2(900, 300), Color.White);
+            spriteBatch.Draw(diaBox, new Vector2(900, 200), Color.White);
             _yesButton.Draw(spriteBatch);
             if (_what == false)
             {

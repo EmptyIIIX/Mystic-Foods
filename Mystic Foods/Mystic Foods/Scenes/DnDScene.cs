@@ -46,7 +46,7 @@ namespace Mystic_Foods
         {
             if (_contentLoaded) return;
             _font = content.Load<SpriteFont>("MainFont");
-            bg = content.Load<Texture2D>("Environments/bg_morning");
+            bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
             table = content.Load<Texture2D>("Environments/Table");
             _contentLoaded = true;
             Globals.SpriteBatch = spriteBatch;
