@@ -20,7 +20,7 @@ namespace Mystic_Foods.Managers
                     SpritePathNeutral = "Human/NPC1/npc1HumanNormal",
                     SpritePathGrumpy = "Human/NPC1/npc1HumanAngry",
                     Patience = 0.68f,
-                    Dia1 = "Cheeesssseeee Rice",
+                    Dia1 = "Cheese Rice",
                     Dia2 = "Rice Dough with Cheese Fillings",
                     DiaHappy = "Pink happy",
                     DiaNormal = "Pink Normal",

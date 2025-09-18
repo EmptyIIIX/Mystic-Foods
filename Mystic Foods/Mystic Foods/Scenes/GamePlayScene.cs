@@ -194,7 +194,8 @@ namespace Mystic_Foods
             {
 
                 //Customer stats
-                string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
+                //string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
+                string cust = $"Name: {_currentCustomer.Name}";
                 Vector2 custPos = new Vector2(100, 180);
                 spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
 
@@ -211,7 +212,7 @@ namespace Mystic_Foods
                 
             }
 
-            #region UI info
+            #region UI-info
 
             //profile
             //spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);

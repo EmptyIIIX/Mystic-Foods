@@ -232,7 +232,6 @@ namespace Mystic_Foods.Managers
             else
             {
                 IsCurrectOrder= 0;
-                GamePlayScene.TotalMoney -= 1000;
             }
             if (_food.Count > 0)
             {

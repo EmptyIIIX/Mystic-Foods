@@ -26,9 +26,12 @@ namespace Mystic_Foods
         // เก็บ bounding box ของแต่ละเมนู (เพื่อคลิกได้)
         private List<Rectangle> _menuItemRects = new List<Rectangle>();
 
+        Texture2D Menu_bg;
+
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _font = content.Load<SpriteFont>("MainFont");
+            Menu_bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
             // สร้าง rectangle ของแต่ละเมนูสำหรับตรวจ mouse
             _menuItemRects.Clear();
@@ -97,7 +100,7 @@ namespace Mystic_Foods
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateBlue);
 
             spriteBatch.Begin();
-
+            spriteBatch.Draw(Menu_bg, new Vector2(0, 0), Color.White);
             string title = "Main Menu";
             Vector2 titleSize = _font.MeasureString(title);
             spriteBatch.DrawString(
