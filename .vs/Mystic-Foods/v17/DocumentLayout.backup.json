@@ -46,7 +46,8 @@
               "RelativeToolTip": "Mystic Foods\\Mystic Foods\\Customers\\Customer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-14T10:34:52.029Z"
+              "WhenOpened": "2025-09-14T10:34:52.029Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -58,7 +59,8 @@
               "RelativeToolTip": "Mystic Foods\\Mystic Foods\\Managers\\CustomerManager.cs",
               "ViewState": "AgIAAB4AAAAAAAAAAADwvzsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-14T10:34:50.127Z"
+              "WhenOpened": "2025-09-14T10:34:50.127Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -68,7 +70,7 @@
               "RelativeDocumentMoniker": "Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
               "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
               "RelativeToolTip": "Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAADwvx8AAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAADwvx8AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-14T10:34:24.839Z",
               "EditorCaption": ""
@@ -83,7 +85,8 @@
               "RelativeToolTip": "Mystic Foods\\Mystic Foods\\Game1.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T04:27:07.691Z"
+              "WhenOpened": "2025-08-10T04:27:07.691Z",
+              "EditorCaption": ""
             }
           ]
         }
