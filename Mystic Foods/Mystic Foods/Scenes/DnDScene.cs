@@ -137,6 +137,8 @@ namespace Mystic_Foods
                 {
                     ServeRequest = true;
                     _gameManager.ServeFood(); // รีเซ็ตอาหารและสถานะ
+                    
+                    
                 }
             }
             #region btn test

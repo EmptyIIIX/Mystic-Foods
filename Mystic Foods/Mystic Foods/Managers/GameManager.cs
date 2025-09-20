@@ -9,9 +9,6 @@ namespace Mystic_Foods.Managers
 {
     public class GameManager
     {
-        private SpriteBatch _spriteBatch;
-        private SpriteFont _font;
-        private CustomerManager _customerManager;
         private readonly List<Food> _food = new();
         private readonly List<Filling> _fillings = new();
         private readonly List<Dough> _doughs = new();
@@ -33,7 +30,7 @@ namespace Mystic_Foods.Managers
         public static int IdFilling; // IdFill = _filling.fillingType
         public static int IdDough;
         public static bool HasFood { get; private set; }
-        public static int IsCurrectOrder = -1;
+        public static int countDia = 2;
 
         public GameManager()
         {
@@ -222,17 +219,17 @@ namespace Mystic_Foods.Managers
 
         public void ServeFood()
         {
-
             if(IdFood == GamePlayScene._currentCustomer.IdOrder)
             {
-                IsCurrectOrder = 1;
+                countDia = 1;
                 GamePlayScene.pay = GamePlayScene.price * GamePlayScene.weight;
                 GamePlayScene.TotalMoney += GamePlayScene.pay;
             }
             else
             {
-                IsCurrectOrder= 0;
+                countDia = 0;
             }
+
             if (_food.Count > 0)
             {
                 _food.Clear();

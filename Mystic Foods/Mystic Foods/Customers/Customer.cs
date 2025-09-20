@@ -13,6 +13,8 @@ namespace Mystic_Foods
         public float Patience { get; set; }
         public string Dia1 { get; set; }
         public string Dia2 { get; set; }
+        public string DiaCurrect { get; set; }
+        public string DiaWrong { get; set; }
         public string DiaHappy { get; set; }
         public string DiaNormal { get; set; }
         public string DiaAngry { get; set; }

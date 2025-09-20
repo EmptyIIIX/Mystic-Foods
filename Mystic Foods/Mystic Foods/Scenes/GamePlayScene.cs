@@ -21,15 +21,16 @@ namespace Mystic_Foods
         private CustomerManager _customerManager;
         public static Customer _currentCustomer;
         private ContentManager _contentManager;
+        public GameManager _gameManager;
 
-        private bool _what = false;
+        //public static bool _what = false; เอาออก เพราะจะติดตรงการพูด dialogue
 
         //pause
         public static bool isPaused = false;
         public static Button _pauseButton;
         public static Button _menuButton;
-        private Button _yesButton;
-        private Button _whatButton;
+        public Button _yesButton;
+        public Button _whatButton;
 
         // ระบบ Patience Meter
         private float _patienceMeter;
@@ -41,7 +42,7 @@ namespace Mystic_Foods
         Texture2D _textureGrumpy;
 
         public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
-        public static Texture2D whatButton, yesButton, diaBox;
+        public Texture2D whatButton, yesButton, diaBox;
         public static Texture2D _happy, _natural, _angry;
 
         public static Texture2D _rectTexture;
@@ -65,6 +66,8 @@ namespace Mystic_Foods
             _contentManager = content;
             _font = content.Load<SpriteFont>("MainFont");
             LoadCustomerTextures();
+
+            _gameManager = new GameManager();
 
             _rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             _rectTexture.SetData(new[] { Color.White });
@@ -111,7 +114,7 @@ namespace Mystic_Foods
                 _currentCustomer = _customerManager.GetNextCustomer();
                 _patienceMeter = _patienceMeterStart;
                 LoadCustomerTextures();
-                _what = false;
+                GameManager.countDia = 2;
             }
 
             //Check time out to back to mainmenu scene
@@ -232,18 +235,34 @@ namespace Mystic_Foods
 
             #region Dialouge
             //Dia
-            Vector2 diaBoxPos = new Vector2(900, 200);
-            spriteBatch.Draw(diaBox, diaBoxPos, Color.White);
+            spriteBatch.Draw(diaBox, new Vector2(900, 200), Color.White);
+            Vector2 diaPos = new Vector2(900, 200);
+
             _yesButton.Draw(spriteBatch);
-            if (_what == false)
+
+            switch (GameManager.countDia)
             {
-                _whatButton.Draw(spriteBatch);
-                spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2)), Color.Black);
+                case 0:
+                    spriteBatch.DrawString(_font, _currentCustomer.DiaWrong, new Vector2(1000, 300), Color.Black);
+                    _whatButton.Draw(spriteBatch);
+                    break;
+                case 1:
+                    spriteBatch.DrawString(_font, _currentCustomer.DiaCurrect, new Vector2(1000, 300), Color.Black);
+                    break;
+                case 2:
+                    spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, 300), Color.Black);
+                    _whatButton.Draw(spriteBatch);
+
+                    break;
+                case 3:
+                    spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 300), Color.Black);
+
+                    break;
+                case -1:
+                    spriteBatch.DrawString(_font, "", new Vector2(1000, 300), Color.Black);
+                    break;
             }
-            else if (_what == true)
-            {
-                spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2)), Color.Black);
-            }
+
             #endregion
 
             /*
@@ -251,8 +270,10 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $" CurrectOrder : {GameManager.IsCurrectOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 200), Color.Black);
 
             string TimeS = $"\nTimePerSec: {TimePSec}";
-            spriteBatch.DrawString(_font, TimeS, new Vector2(100, 600), Color.Blue);
             */
+            spriteBatch.DrawString(_font, $"Count Dialogue : {GameManager.countDia}", new Vector2(100, 300), Color.Blue);
+            //spriteBatch.DrawString(_font, $"_what : {_what}", new Vector2(100, 400), Color.Blue);
+
 
             if (isPaused)
             {
@@ -309,12 +330,12 @@ namespace Mystic_Foods
         }
         private void YesButton_Click(Object sender, EventArgs e)
         {
-            _what = false;
+            GameManager.countDia = -1;
             DnDRequested = true;
         }
         private void WhatButton_Click(Object sender, EventArgs e)
         {
-            _what = true;
+            GameManager.countDia = 3;
         }
     }
 }
