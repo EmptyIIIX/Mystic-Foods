@@ -21,7 +21,6 @@ namespace Mystic_Foods
         private CustomerManager _customerManager;
         public static Customer _currentCustomer;
         private ContentManager _contentManager;
-        public GameManager _gameManager;
 
         //public static bool _what = false; เอาออก เพราะจะติดตรงการพูด dialogue
 
@@ -42,7 +41,7 @@ namespace Mystic_Foods
         Texture2D _textureGrumpy;
 
         public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
-        public Texture2D whatButton, yesButton, diaBox;
+        public static Texture2D whatButton, yesButton, diaBox;
         public static Texture2D _happy, _natural, _angry;
 
         public static Texture2D _rectTexture;
@@ -66,8 +65,6 @@ namespace Mystic_Foods
             _contentManager = content;
             _font = content.Load<SpriteFont>("MainFont");
             LoadCustomerTextures();
-
-            _gameManager = new GameManager();
 
             _rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             _rectTexture.SetData(new[] { Color.White });

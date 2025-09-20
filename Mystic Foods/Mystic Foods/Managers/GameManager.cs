@@ -9,6 +9,9 @@ namespace Mystic_Foods.Managers
 {
     public class GameManager
     {
+        private SpriteBatch _spriteBatch;
+        private SpriteFont _font;
+        private CustomerManager _customerManager;
         private readonly List<Food> _food = new();
         private readonly List<Filling> _fillings = new();
         private readonly List<Dough> _doughs = new();
@@ -83,7 +86,7 @@ namespace Mystic_Foods.Managers
 
         private void HandleDrop(IDraggable item, ITargetable target)
         {
-            // ถ้ามีอาหารเกิน 1 ชิ้น ให้รีเซ็ตตำแหน่งของ sai, pang, wrapper
+            //ถ้ามีอาหารเกิน 1 ชิ้น ให้รีเซ็ตตำแหน่งของ sai, pang, wrapper
             if (_food.Count >= 1 && (item is Filling || item is Dough || item is Wrapper))
             {
                 if (item is Filling filling)
@@ -225,13 +228,17 @@ namespace Mystic_Foods.Managers
                 GamePlayScene.pay = GamePlayScene.price * GamePlayScene.weight;
                 GamePlayScene.TotalMoney += GamePlayScene.pay;
             }
-            else
+            else if(IdFood != GamePlayScene._currentCustomer.IdOrder)
             {
                 countDia = 0;
             }
 
             if (_food.Count > 0)
             {
+                foreach (var food in _food)
+                {
+                    (food as IDraggable).UnregisterDraggable();
+                }
                 _food.Clear();
                 HasFood = false;
                 IdFood = 0;
