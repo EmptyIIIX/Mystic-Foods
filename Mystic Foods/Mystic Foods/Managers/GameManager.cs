@@ -19,13 +19,13 @@ namespace Mystic_Foods.Managers
         private readonly Dictionary<Filling, Vector2> _fillingOriginalPositions = new();
         private readonly Dictionary<Dough, Vector2> _doughOriginalPositions = new();
         private readonly Dictionary<Wrapper, Vector2> _wrapperOriginalPositions = new();
-        private Socket _plate;
+        private Socket _plate, _steam1;
         private TrashBin _trashBin;
         private Filling _placedFilling;
         private Dough _placedDough;
-        private readonly Vector2 _originSai = new Vector2(600, 200);
-        private readonly Vector2 _originPang = new Vector2(300, 200);
-        private readonly Vector2 _originWrapper = new Vector2(1362, 592);
+        private readonly Vector2 _originSai = new Vector2(804, 243);
+        private readonly Vector2 _originPang = new Vector2(504, 243);
+        private readonly Vector2 _originWrapper = new Vector2(1566, 635);
         private readonly float _fillingSpacing = 350;
         private readonly float _doughSpacing = 250;
 
@@ -54,6 +54,7 @@ namespace Mystic_Foods.Managers
             var trashBinTexture = content.Load<Texture2D>("Etc/TrashBin");
             var wrappTexture = content.Load<Texture2D>("foods/1");
             var foodTexture = content.Load<Texture2D>("foods/3");
+            var steam1Texture = content.Load<Texture2D>("Environments/tools/steamer1");
 
             var Coconut_Amber = new Filling(Coconut_AmberTexture, _originSai, Filling.FillingType.Coconut_Amber);
             var Pandan_Taro_Cream = new Filling(Pandan_Taro_CreamTexture, new Vector2(_originSai.X + _fillingSpacing, _originSai.Y), Filling.FillingType.Pandan_Taro_Cream);
@@ -79,8 +80,9 @@ namespace Mystic_Foods.Managers
             _wrapper.Add(wrapper);
             _wrapperOriginalPositions.Add(wrapper, _originWrapper);
 
-            _plate = new Socket(plateTexture, new(858, 586));
-            _trashBin = new TrashBin(trashBinTexture, new Vector2(1700, 500));
+            _plate = new Socket(plateTexture, new(1062, 629));
+            _steam1 = new Socket(steam1Texture, new(2475, 540));
+            _trashBin = new TrashBin(trashBinTexture, new Vector2(160, 800));
         }
 
         private void HandleDrop(IDraggable item, ITargetable target)
@@ -259,6 +261,7 @@ namespace Mystic_Foods.Managers
         {
             _plate.Draw(cameraPos);
             _trashBin.Draw(cameraPos);
+            _steam1.Draw(cameraPos);
             foreach (var wrapper in _wrapper)
             {
                 wrapper.Draw(cameraPos);

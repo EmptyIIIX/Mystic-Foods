@@ -36,7 +36,7 @@ namespace Mystic_Foods
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.IsFullScreen = false;
             Window.AllowUserResizing = true;
-            Window.IsBorderless = false;//better fullscreen
+            Window.IsBorderless = true;//better fullscreen
             _graphics.ApplyChanges();
         }
 

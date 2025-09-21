@@ -21,8 +21,8 @@ namespace Mystic_Foods
         private KeyboardState _oldState;
         private MouseState _oldMouseState;
         private int _selectedIndex = 2;
-
         private bool Scroll = false;
+        private Vector2 emotion = new Vector2(800, 162 / 5);
 
         Texture2D bg;
         private Vector2 cameraPos = Vector2.Zero;
@@ -55,7 +55,7 @@ namespace Mystic_Foods
             if (_contentLoaded) return;
             _font = content.Load<SpriteFont>("MainFont");
             bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
-            table = content.Load<Texture2D>("Environments/Table");
+            table = content.Load<Texture2D>("Environments/tools/Table");
             _contentLoaded = true;
             Globals.SpriteBatch = spriteBatch;
 
@@ -82,7 +82,6 @@ namespace Mystic_Foods
             btnItemRect.Add(rect1);
 
         }
-
         public void Update(GameTime gameTime)
         {
             // ใช้การลากวางตามปกติ
@@ -170,7 +169,7 @@ namespace Mystic_Foods
             spriteBatch.Draw(bg, -cameraPos, Color.White);
 
             // วาด table ตาม camera
-            spriteBatch.Draw(table, new Vector2(100, 100) - cameraPos, Color.White);
+            spriteBatch.Draw(table, new Vector2(304, 143) - cameraPos, Color.White);
             _gameManager.Draw(cameraPos);
             spriteBatch.End();
 
@@ -187,21 +186,20 @@ namespace Mystic_Foods
                 /*
                 spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 60), Color.White);
                 spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
+                 */
                 spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
-                 */
-                #region UI info
-
+            #region UI info
+            GamePlayScene.DrawEmotionIcon(_font, spriteBatch, emotion);
                 //Date and Time
-                int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
+            int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(GamePlayScene.dayBox, new Vector2(GamePlayScene.profile.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(GamePlayScene.profile.Width + 110, (GamePlayScene.menuBox.Height / 5) + 20), Color.Black);
 
             spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(1920 - GamePlayScene.menuBox.Width - GamePlayScene.moneyBox.Width - 50, GamePlayScene.menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(1920 - GamePlayScene.menuBox.Width - (GamePlayScene.moneyBox.Width / 2) - 25, (GamePlayScene.menuBox.Height / 5) + (GamePlayScene.moneyBox.Height / 4) + 10), Color.Yellow);
             //table pos recom pos.Y 890++
-            spriteBatch.Draw(GamePlayScene.counter, new Vector2(0, 1080 - GamePlayScene.counter.Height), Color.White);
 
             string Time = $"{(int)GamePlayScene.TimeStage}";
             spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 110, (GamePlayScene.menuBox.Height / 5) + 55), Color.Blue);

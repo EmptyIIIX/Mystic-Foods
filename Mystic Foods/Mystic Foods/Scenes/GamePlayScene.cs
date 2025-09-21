@@ -32,13 +32,13 @@ namespace Mystic_Foods
         public Button _whatButton;
 
         // ระบบ Patience Meter
-        private float _patienceMeter;
+        public static float _patienceMeter;
         private const float _patienceMeterStart = 100f;
         private float _patienceReduceTimer = 0f;
         private const float patienceInterval = 0.2f;
-        Texture2D _textureHappy;
-        Texture2D _textureNeutral;
-        Texture2D _textureGrumpy;
+        public static Texture2D _textureHappy;
+        public static Texture2D _textureNeutral;
+        public static Texture2D _textureGrumpy;
 
         public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
         public static Texture2D whatButton, yesButton, diaBox;
@@ -249,11 +249,9 @@ namespace Mystic_Foods
                 case 2:
                     spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, 300), Color.Black);
                     _whatButton.Draw(spriteBatch);
-
                     break;
                 case 3:
                     spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 300), Color.Black);
-
                     break;
                 case -1:
                     spriteBatch.DrawString(_font, "", new Vector2(1000, 300), Color.Black);
@@ -262,8 +260,8 @@ namespace Mystic_Foods
 
             #endregion
 
+            spriteBatch.DrawString(_font, $" IdOrder : {_currentCustomer.IdOrder}", new Vector2(1000, 400), Color.Black);
             /*
-            spriteBatch.DrawString(_font, $" IdOrder : {_currentCustomer.IdOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 100), Color.Black);
             spriteBatch.DrawString(_font, $" CurrectOrder : {GameManager.IsCurrectOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 200), Color.Black);
 
             string TimeS = $"\nTimePerSec: {TimePSec}";
@@ -299,7 +297,7 @@ namespace Mystic_Foods
 
             BackToMenuRequested = true;
         }
-        public void DrawEmotion(SpriteBatch spriteBatch, Vector2 EmotionPos)
+        public static void DrawEmotion(SpriteBatch spriteBatch, Vector2 EmotionPos)
         {
             float patiencePerc = _patienceMeter / _patienceMeterStart;
             Texture2D drawTexture;
@@ -324,6 +322,24 @@ namespace Mystic_Foods
 
             Rectangle destinationRectangle = new Rectangle(300, 75, 760, 864);
             spriteBatch.Draw(drawTexture, destinationRectangle, Color.White);
+        }
+        public static void DrawEmotionIcon(SpriteFont _font, SpriteBatch spriteBatch, Vector2 EmotionPos)
+        {
+            float patiencePerc = _patienceMeter / _patienceMeterStart;
+            if (patiencePerc >= 2f / 3f)
+            {
+                spriteBatch.Draw(_happy, EmotionPos, Color.White);
+            }
+            else if (patiencePerc >= 1f / 3f)
+            {
+                spriteBatch.Draw(_natural, EmotionPos, Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(_angry, EmotionPos, Color.White);
+            }
+            string patienceText = $"{_patienceMeter:0}%";
+            spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
         }
         private void YesButton_Click(Object sender, EventArgs e)
         {
