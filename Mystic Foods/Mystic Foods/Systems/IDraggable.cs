@@ -7,6 +7,7 @@ namespace Mystic_Foods.Systems
     {
         Rectangle Rectangle { get; }
         Vector2 Position { get; set; }
+        Rectangle GetRectangle(Vector2 cameraPos);
 
         void RegisterDraggable()
         {

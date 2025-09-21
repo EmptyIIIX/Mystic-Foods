@@ -11,9 +11,18 @@ namespace Mystic_Foods.Managers
         private static readonly List<IDraggable> _draggables = new();
         private static readonly List<ITargetable> _targets = new();
         private static IDraggable _dragItem;
+
         public static event Action<IDraggable, ITargetable> OnDrop;
         public static event Action<IDraggable> OnDragFailed;
-        public static bool isIdFil = false;
+
+        private static Vector2 _cameraPos = Vector2.Zero;
+
+        // เรียกจาก Scene.Update() เพื่อ sync cameraPos
+        public static void SetCamera(Vector2 cameraPos)
+        {
+            _cameraPos = cameraPos;
+        }
+
         public static void AddDraggable(IDraggable item)
         {
             _draggables.Add(item);
@@ -22,7 +31,7 @@ namespace Mystic_Foods.Managers
         public static void RemoveDraggable(IDraggable item)
         {
             _draggables.Remove(item);
-            if (_draggables == item)
+            if (_dragItem == item)
             {
                 _dragItem = null;
                 Mouse.SetCursor(MouseCursor.Arrow);
@@ -38,9 +47,9 @@ namespace Mystic_Foods.Managers
         {
             if (InputManager.MouseClicked)
             {
-                foreach (var item in  _draggables)
+                foreach (var item in _draggables)
                 {
-                    if (item.Rectangle.Contains(InputManager.MousePosition))
+                    if (item.GetRectangle(_cameraPos).Contains(InputManager.MousePosition))
                     {
                         _dragItem = item;
                         Mouse.SetCursor(MouseCursor.Hand);
@@ -57,12 +66,11 @@ namespace Mystic_Foods.Managers
             bool droppedOnTarget = false;
             foreach (var item in _targets)
             {
-                if (item.Rectangle.Contains(InputManager.MousePosition))
+                if (item.GetRectangle(_cameraPos).Contains(InputManager.MousePosition))
                 {
                     _dragItem.Position = item.Position;
                     OnDrop?.Invoke(_dragItem, item);
                     droppedOnTarget = true;
-                    isIdFil = true;
                     break;
                 }
             }
@@ -71,6 +79,7 @@ namespace Mystic_Foods.Managers
                 OnDragFailed?.Invoke(_dragItem);
             }
         }
+
 
         private static void CheckDragStop()
         {
@@ -86,9 +95,10 @@ namespace Mystic_Foods.Managers
         {
             CheckDragStart();
 
-            if (_dragItem is not  null)
+            if (_dragItem is not null)
             {
-                _dragItem.Position = InputManager.MousePosition;
+                // MousePosition เป็น screen → แปลงเป็น world ก่อนอัปเดต
+                _dragItem.Position = InputManager.MousePosition + _cameraPos;
                 CheckDragStop();
             }
         }

@@ -26,11 +26,11 @@ namespace Mystic_Foods.Managers
         private readonly Vector2 _originSai = new Vector2(600, 200);
         private readonly Vector2 _originPang = new Vector2(300, 200);
         private readonly Vector2 _originWrapper = new Vector2(1362, 592);
-        private readonly float _fillingSpacing = 350; // ระยะห่างระหว่าง Filling
-        private readonly float _doughSpacing = 250; // ระยะห่างระหว่าง Dough
+        private readonly float _fillingSpacing = 350;
+        private readonly float _doughSpacing = 250;
 
         public static int IdFood;
-        public static int IdFilling; // IdFill = _filling.fillingType
+        public static int IdFilling;
         public static int IdDough;
         public static bool HasFood { get; private set; }
         public static int countDia = 2;
@@ -44,7 +44,6 @@ namespace Mystic_Foods.Managers
 
         public void LoadContent(ContentManager content)
         {
-            // โค้ดเดิม ไม่ต้องแก้ไข
             var plateTexture = content.Load<Texture2D>("foods/Plate");
             var Coconut_AmberTexture = content.Load<Texture2D>("foods/Coconut Amber");
             var Pandan_Taro_CreamTexture = content.Load<Texture2D>("foods/Pandan Taro Cream");
@@ -215,7 +214,7 @@ namespace Mystic_Foods.Managers
             var newFood = new Food(foodTexture, _plate.Position);
             _food.Add(newFood);
 
-            //Re-register Food เพื่อให้ rect อยู่ชั้นบนสุด
+            //Re-register Food เพื่อให้ rect อยู่ชั้นบนสุด ตอนนี้ยังไม่ได้
             (newFood as IDraggable).UnregisterDraggable();
             (newFood as IDraggable).RegisterDraggable();
 
@@ -256,25 +255,25 @@ namespace Mystic_Foods.Managers
             DragDropManager.Update();
         }
 
-        public void Draw()
+        public void Draw(Vector2 cameraPos)
         {
-            _plate.Draw();
-            _trashBin.Draw();
+            _plate.Draw(cameraPos);
+            _trashBin.Draw(cameraPos);
             foreach (var wrapper in _wrapper)
             {
-                wrapper.Draw();
+                wrapper.Draw(cameraPos);
             }
             foreach (var dough in _doughs)
             {
-                dough.Draw();
+                dough.Draw(cameraPos);
             }
             foreach (var filling in _fillings)
             {
-                filling.Draw();
+                filling.Draw(cameraPos);
             }
             foreach (var food in _food)
             {
-                food.Draw();
+                food.Draw(cameraPos);
             }
         }
     }

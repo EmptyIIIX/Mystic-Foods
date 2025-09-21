@@ -28,9 +28,7 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "P Order wrong",
                     DiaHappy = "Pink happy",
                     DiaNormal = "Pink Normal",
-                    DiaAngry = "Pink Angry",
-                    Dough = "Rice",
-                    Fillings = "Cheese"
+                    DiaAngry = "Pink Angry"
                 },
                 new Customer {
                     Id = 2,
@@ -46,9 +44,7 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "M Order wrong",
                     DiaHappy = "Man happy",
                     DiaNormal = "Man Normal",
-                    DiaAngry = "Man Angry",
-                    Dough = "Corn",
-                    Fillings = "Meat"
+                    DiaAngry = "Man Angry"
                 },
                 new Customer {
                     Id = 3,
@@ -64,9 +60,7 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "G Order wrong",
                     DiaHappy = "Granny happy",
                     DiaNormal = "Granny Normal",
-                    DiaAngry = "Granny Angry",
-                    Dough = "Wheat",
-                    Fillings = "Meat"
+                    DiaAngry = "Granny Angry"
                 }
             };
 
@@ -86,9 +80,7 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "P2 Order wrong",
                     DiaHappy = "Pink happy",
                     DiaNormal = "Pink Normal",
-                    DiaAngry = "Pink Angry",
-                    Dough = "Rice",
-                    Fillings = "Cheese"
+                    DiaAngry = "Pink Angry"
                 },
                 new Customer {
                     Id = 2,
@@ -104,9 +96,7 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "G2 Order wrong",
                     DiaHappy = "Granny happy",
                     DiaNormal = "Granny Normal",
-                    DiaAngry = "Granny Angry",
-                    Dough = "Wheat",
-                    Fillings = "Meat"
+                    DiaAngry = "Granny Angry"
                 }
             };
         }

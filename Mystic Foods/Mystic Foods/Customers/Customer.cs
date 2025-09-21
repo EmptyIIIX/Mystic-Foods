@@ -18,7 +18,5 @@ namespace Mystic_Foods
         public string DiaHappy { get; set; }
         public string DiaNormal { get; set; }
         public string DiaAngry { get; set; }
-        public string Fillings { get; set; }
-        public string Dough { get; set; }
     }
 }

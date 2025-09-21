@@ -25,10 +25,14 @@ namespace Mystic_Foods
         private bool Scroll = false;
 
         Texture2D bg;
-        //private Vector2 cameraPos = new Vector2();
-        //private Vector2 scroll_factor = new Vector2(5.0f, 1);
-        //private int CameraLeftBoundary = 5;
-        //private int CameraRightBoundary = 1900;
+        private Vector2 cameraPos = Vector2.Zero;
+        private float CameraSpeed = 0f;
+        private Vector2 scroll_factor = new Vector2(5.0f, 1);
+        private int CameraLeftBoundary2 = 5;
+        private int CameraLeftBoundary1 = 100;
+
+        private int CameraRightBoundary1 = 1805;
+        private int CameraRightBoundary2 = 1900;
 
         Texture2D table;
 
@@ -84,6 +88,7 @@ namespace Mystic_Foods
             // ใช้การลากวางตามปกติ
             Globals.Update(gameTime);
             _gameManager.Update();
+            DragDropManager.SetCamera(cameraPos);
 
             GamePlayScene.TimePSec = 1.0f / 60.0f;
             GamePlayScene.TimeStage -= GamePlayScene.TimePSec;
@@ -96,21 +101,29 @@ namespace Mystic_Foods
 
             var state = Keyboard.GetState();
             var mouse = Mouse.GetState();
+
             #region scroll camera
-            //Scroll = false;
-            //if (_mousePosition.X <= CameraLeftBoundary)
-            //{
-            //    Scroll = true;
-            //    cameraPos.X -= 5 * scroll_factor.X;
-            //    if (cameraPos.X < 0) cameraPos.X = 0;
-            //}
-            //else if (_mousePosition.X >= CameraRightBoundary)
-            //{
-            //    Scroll = true;
-            //    cameraPos.X += 5 * scroll_factor.X;
-            //    //จำกัดไม่ให้กล้องเลื่อนเกินขอบขวาของภาพ (4200 - 1920)
-            //    if (cameraPos.X > 4200 - 1920) cameraPos.X = 4200 - 1920;
-            //}
+            // เลื่อนกล้องเมื่อเมาส์อยู่ใกล้ขอบซ้ายหรือขวา
+            Scroll = false;
+            if (mouse.X <= CameraLeftBoundary2) CameraSpeed = 30f;
+            else if (mouse.X <= CameraLeftBoundary1 && mouse.X > CameraLeftBoundary2) CameraSpeed = 10f;
+
+            if (mouse.X >= CameraRightBoundary2) CameraSpeed = 30f;
+            else if (mouse.X >= CameraRightBoundary1 && mouse.X < CameraRightBoundary2) CameraSpeed = 10f;
+
+            if (mouse.X <= CameraLeftBoundary1)
+            {
+                Scroll = true;
+                cameraPos.X -= CameraSpeed;
+                if (cameraPos.X < 0) cameraPos.X = 0; //จำกัดขอบซ้าย
+            }
+            else if (mouse.X >= CameraRightBoundary1)
+            {
+                Scroll = true;
+                cameraPos.X += CameraSpeed;
+
+                if (cameraPos.X > 4200 - 1920) cameraPos.X = 4200 - 1920; //จำกัดขอบขวา
+            }
             #endregion
 
             Point mousePos = mouse.Position;
@@ -137,44 +150,8 @@ namespace Mystic_Foods
                 {
                     ServeRequest = true;
                     _gameManager.ServeFood(); // รีเซ็ตอาหารและสถานะ
-                    
-                    
                 }
             }
-            #region btn test
-            //for (int i = 0; i < btnItemRect.Count; i++)
-            //{
-            //    if (btnItemRect[0].Contains(mousePos))
-            //    {
-            //        _selectedIndex = 0;
-            //    }
-            //    else if (btnItemRect[1].Contains(mousePos))
-            //    {
-            //        _selectedIndex = 1;
-            //    }
-            //    else _selectedIndex = 2;
-            //}
-
-            ////คลิกปุ่ม Serve or steam
-            //if (mouse.LeftButton == ButtonState.Pressed && _oldMouseState.LeftButton == ButtonState.Released)
-            //{
-            //    for (int i = 0; i < btnItemRect.Count; i++)
-            //    {
-            //        if (btnItemRect[i].Contains(mouse.Position))
-            //        {
-            //            if (i == 0) 
-            //            { 
-            //                ServeRequest = true; 
-
-            //            }
-            //            if (i == 1) 
-            //            { 
-            //                SteamRequest = true; 
-            //            }
-            //        }
-            //    }
-            //}
-            #endregion
             // กด ESC เพื่อกลับเมนู
             if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
             {
@@ -190,9 +167,14 @@ namespace Mystic_Foods
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateGray);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(table, new Vector2(100, 100), Color.White);
-            _gameManager.Draw();
+            spriteBatch.Draw(bg, -cameraPos, Color.White);
+
+            // วาด table ตาม camera
+            spriteBatch.Draw(table, new Vector2(100, 100) - cameraPos, Color.White);
+            _gameManager.Draw(cameraPos);
+            spriteBatch.End();
+
+            spriteBatch.Begin();
 
             // Draw button serve, steam
             if (GameManager.HasFood)
@@ -200,12 +182,6 @@ namespace Mystic_Foods
                 Color color = (_selectedIndex == 0) ? Color.Yellow : Color.White;
                 spriteBatch.DrawString(_font, btnItems[0], new Vector2(1700, 900), color);
             }
-            // ปุ่ม Steam (ถ้ายังคงต้องการให้แสดงเสมอ)
-            //Color steamColor = (_selectedIndex == 1) ? Color.Yellow : Color.White;
-            //spriteBatch.DrawString(_font, btnItems[1], new Vector2(0, 0), steamColor);
-            spriteBatch.End();
-
-            spriteBatch.Begin();
             spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
 
                 /*
@@ -229,6 +205,7 @@ namespace Mystic_Foods
 
             string Time = $"{(int)GamePlayScene.TimeStage}";
             spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 110, (GamePlayScene.menuBox.Height / 5) + 55), Color.Blue);
+            spriteBatch.DrawString(_font, $"Mouse Pos: {_mousePosition}", new Vector2(100, 100), Color.Blue);
             #endregion
             if (GamePlayScene.isPaused)
             {
