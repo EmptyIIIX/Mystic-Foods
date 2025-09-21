@@ -9,9 +9,9 @@ namespace Mystic_Foods.Systems
     {
         public enum FillingType 
         { 
-            Cheese = 10, 
-            Meat = 20, 
-            Vegetable = 30 
+            Coconut_Amber = 10, 
+            Pandan_Taro_Cream = 20, 
+            Lotus_Root_Spirit = 30 
         }
         public FillingType FillingKind { get; private set; }
         public string Type => $"Filling_{FillingKind}";

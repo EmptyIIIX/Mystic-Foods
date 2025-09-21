@@ -25,18 +25,6 @@
 /processorParam:TextureFormat=Color
 /build:Customers/Human/Dawn/NPC1/npc1HumanAngry.png;Customers/Human/Dawn/NPC1/npc1HumanAngry
 
-#begin Customers/Human/Dawn/NPC1/npc1HumanAngry.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Customers/Human/Dawn/NPC1/npc1HumanAngry.png;Customers/Human/Dawn/NPC1/npc1HumanAngry
-
 #begin Customers/Human/Dawn/NPC1/npc1HumanHappy.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -48,30 +36,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Customers/Human/Dawn/NPC1/npc1HumanHappy.png;Customers/Human/Dawn/NPC1/npc1HumanHappy
-
-#begin Customers/Human/Dawn/NPC1/npc1HumanHappy.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Customers/Human/Dawn/NPC1/npc1HumanHappy.png;Customers/Human/Dawn/NPC1/npc1HumanHappy
-
-#begin Customers/Human/Dawn/NPC1/npc1HumanNormal.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Customers/Human/Dawn/NPC1/npc1HumanNormal.png;Customers/Human/Dawn/NPC1/npc1HumanNormal
 
 #begin Customers/Human/Dawn/NPC1/npc1HumanNormal.png
 /importer:TextureImporter
@@ -97,18 +61,6 @@
 /processorParam:TextureFormat=Color
 /build:Customers/Human/Dawn/NPC2/npc2HumanAngry.png;Customers/Human/Dawn/NPC2/npc2HumanAngry
 
-#begin Customers/Human/Dawn/NPC2/npc2HumanAngry.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Customers/Human/Dawn/NPC2/npc2HumanAngry.png;Customers/Human/Dawn/NPC2/npc2HumanAngry
-
 #begin Customers/Human/Dawn/NPC2/npc2HumanHappy.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -120,30 +72,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Customers/Human/Dawn/NPC2/npc2HumanHappy.png;Customers/Human/Dawn/NPC2/npc2HumanHappy
-
-#begin Customers/Human/Dawn/NPC2/npc2HumanHappy.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Customers/Human/Dawn/NPC2/npc2HumanHappy.png;Customers/Human/Dawn/NPC2/npc2HumanHappy
-
-#begin Customers/Human/Dawn/NPC2/npc2HumanNormal.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Customers/Human/Dawn/NPC2/npc2HumanNormal.png;Customers/Human/Dawn/NPC2/npc2HumanNormal
 
 #begin Customers/Human/Dawn/NPC2/npc2HumanNormal.png
 /importer:TextureImporter
@@ -169,18 +97,6 @@
 /processorParam:TextureFormat=Color
 /build:Customers/Human/Dawn/NPC3/npc3HumanAngry.png;Customers/Human/Dawn/NPC3/npc3HumanAngry
 
-#begin Customers/Human/Dawn/NPC3/npc3HumanAngry.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Customers/Human/Dawn/NPC3/npc3HumanAngry.png;Customers/Human/Dawn/NPC3/npc3HumanAngry
-
 #begin Customers/Human/Dawn/NPC3/npc3HumanHappy.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -192,30 +108,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Customers/Human/Dawn/NPC3/npc3HumanHappy.png;Customers/Human/Dawn/NPC3/npc3HumanHappy
-
-#begin Customers/Human/Dawn/NPC3/npc3HumanHappy.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Customers/Human/Dawn/NPC3/npc3HumanHappy.png;Customers/Human/Dawn/NPC3/npc3HumanHappy
-
-#begin Customers/Human/Dawn/NPC3/npc3HumanNormal.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Customers/Human/Dawn/NPC3/npc3HumanNormal.png;Customers/Human/Dawn/NPC3/npc3HumanNormal
 
 #begin Customers/Human/Dawn/NPC3/npc3HumanNormal.png
 /importer:TextureImporter
@@ -817,7 +709,7 @@
 /processorParam:TextureFormat=Color
 /build:foods/3.png
 
-#begin foods/4.png
+#begin foods/Coconut Amber.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -827,9 +719,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:foods/4.png
+/build:foods/Coconut Amber.png
 
-#begin foods/5.png
+#begin foods/Golden Moon.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -839,9 +731,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:foods/5.png
+/build:foods/Golden Moon.png
 
-#begin foods/6.png
+#begin foods/Jasmine Moon.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -851,9 +743,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:foods/6.png
+/build:foods/Jasmine Moon.png
 
-#begin foods/7.png
+#begin foods/Lotus Blossom.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -863,9 +755,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:foods/7.png
+/build:foods/Lotus Blossom.png
 
-#begin foods/8.png
+#begin foods/Lotus Root Spirit.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -875,9 +767,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:foods/8.png
+/build:foods/Lotus Root Spirit.png
 
-#begin foods/9.png
+#begin foods/Pandan Taro Cream.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -887,7 +779,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:foods/9.png
+/build:foods/Pandan Taro Cream.png
 
 #begin foods/Plate.png
 /importer:TextureImporter

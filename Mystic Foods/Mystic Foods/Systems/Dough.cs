@@ -9,9 +9,9 @@ namespace Mystic_Foods.Systems
     {
         public enum DoughType 
         { 
-            Wheat = 10, 
-            Corn = 20, 
-            Rice = 30 
+            Jasmine_Moon = 10, 
+            Lotus_Blossom = 20, 
+            Golden_Moon = 30 
         }
         public DoughType DoughKind { get; private set; }
         public string Type => $"Dough_{DoughKind}";

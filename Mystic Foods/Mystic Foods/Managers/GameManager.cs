@@ -45,36 +45,36 @@ namespace Mystic_Foods.Managers
         public void LoadContent(ContentManager content)
         {
             // โค้ดเดิม ไม่ต้องแก้ไข
-            var foodTexture = content.Load<Texture2D>("foods/3");
             var plateTexture = content.Load<Texture2D>("foods/Plate");
-            var cheeseTexture = content.Load<Texture2D>("foods/4");
-            var meatTexture = content.Load<Texture2D>("foods/5");
-            var vegetableTexture = content.Load<Texture2D>("foods/6");
-            var wheatTexture = content.Load<Texture2D>("foods/7");
-            var cornTexture = content.Load<Texture2D>("foods/8");
-            var riceTexture = content.Load<Texture2D>("foods/9");
+            var Coconut_AmberTexture = content.Load<Texture2D>("foods/Coconut Amber");
+            var Pandan_Taro_CreamTexture = content.Load<Texture2D>("foods/Pandan Taro Cream");
+            var Lotus_Root_SpiritTexture = content.Load<Texture2D>("foods/Lotus Root Spirit");
+            var Jasmine_MoonTexture = content.Load<Texture2D>("foods/Jasmine Moon");
+            var Lotus_BlossomTexture = content.Load<Texture2D>("foods/Lotus Blossom");
+            var Golden_MoonTexture = content.Load<Texture2D>("foods/Golden Moon");
             var trashBinTexture = content.Load<Texture2D>("Etc/TrashBin");
             var wrappTexture = content.Load<Texture2D>("foods/1");
+            var foodTexture = content.Load<Texture2D>("foods/3");
 
-            var cheese = new Filling(cheeseTexture, _originSai, Filling.FillingType.Cheese);
-            var meat = new Filling(meatTexture, new Vector2(_originSai.X + _fillingSpacing, _originSai.Y), Filling.FillingType.Meat);
-            var vegetable = new Filling(vegetableTexture, new Vector2(_originSai.X + 2 * _fillingSpacing, _originSai.Y), Filling.FillingType.Vegetable);
-            _fillings.Add(cheese);
-            _fillings.Add(meat);
-            _fillings.Add(vegetable);
-            _fillingOriginalPositions.Add(cheese, _originSai);
-            _fillingOriginalPositions.Add(meat, new Vector2(_originSai.X + _fillingSpacing, _originSai.Y));
-            _fillingOriginalPositions.Add(vegetable, new Vector2(_originSai.X + 2 * _fillingSpacing, _originSai.Y));
+            var Coconut_Amber = new Filling(Coconut_AmberTexture, _originSai, Filling.FillingType.Coconut_Amber);
+            var Pandan_Taro_Cream = new Filling(Pandan_Taro_CreamTexture, new Vector2(_originSai.X + _fillingSpacing, _originSai.Y), Filling.FillingType.Pandan_Taro_Cream);
+            var Lotus_Root_Spirit = new Filling(Lotus_Root_SpiritTexture, new Vector2(_originSai.X + 2 * _fillingSpacing, _originSai.Y), Filling.FillingType.Lotus_Root_Spirit);
+            _fillings.Add(Coconut_Amber);
+            _fillings.Add(Pandan_Taro_Cream);
+            _fillings.Add(Lotus_Root_Spirit);
+            _fillingOriginalPositions.Add(Coconut_Amber, _originSai);
+            _fillingOriginalPositions.Add(Pandan_Taro_Cream, new Vector2(_originSai.X + _fillingSpacing, _originSai.Y));
+            _fillingOriginalPositions.Add(Lotus_Root_Spirit, new Vector2(_originSai.X + 2 * _fillingSpacing, _originSai.Y));
 
-            var wheat = new Dough(wheatTexture, _originPang, Dough.DoughType.Wheat);
-            var corn = new Dough(cornTexture, new Vector2(_originPang.X, _originPang.Y + _doughSpacing), Dough.DoughType.Corn);
-            var rice = new Dough(riceTexture, new Vector2(_originPang.X, _originPang.Y + 2 * _doughSpacing), Dough.DoughType.Rice);
-            _doughs.Add(wheat);
-            _doughs.Add(corn);
-            _doughs.Add(rice);
-            _doughOriginalPositions.Add(wheat, _originPang);
-            _doughOriginalPositions.Add(corn, new Vector2(_originPang.X, _originPang.Y + _doughSpacing));
-            _doughOriginalPositions.Add(rice, new Vector2(_originPang.X, _originPang.Y + 2 * _doughSpacing));
+            var Jasmine_Moon = new Dough(Jasmine_MoonTexture, _originPang, Dough.DoughType.Jasmine_Moon);
+            var Lotus_Blossom = new Dough(Lotus_BlossomTexture, new Vector2(_originPang.X, _originPang.Y + _doughSpacing), Dough.DoughType.Lotus_Blossom);
+            var Golden_Moon = new Dough(Golden_MoonTexture, new Vector2(_originPang.X, _originPang.Y + 2 * _doughSpacing), Dough.DoughType.Golden_Moon);
+            _doughs.Add(Jasmine_Moon);
+            _doughs.Add(Lotus_Blossom);
+            _doughs.Add(Golden_Moon);
+            _doughOriginalPositions.Add(Jasmine_Moon, _originPang);
+            _doughOriginalPositions.Add(Lotus_Blossom, new Vector2(_originPang.X, _originPang.Y + _doughSpacing));
+            _doughOriginalPositions.Add(Golden_Moon, new Vector2(_originPang.X, _originPang.Y + 2 * _doughSpacing));
 
             var wrapper = new Wrapper(wrappTexture, _originWrapper);
             _wrapper.Add(wrapper);
@@ -196,10 +196,6 @@ namespace Mystic_Foods.Managers
 
         private void CreateFood(Filling filling, Dough dough, Wrapper wrapper)
         {
-            var foodTexture = Globals.Content.Load<Texture2D>("foods/3");
-            var newFood = new Food(foodTexture, _plate.Position);
-            _food.Add(newFood);
-
             // อัปเดต IdFilling, IdDough, และ IdFood
             IdFilling = (int)filling.FillingKind;
             IdDough = (int)dough.DoughKind;
@@ -213,6 +209,15 @@ namespace Mystic_Foods.Managers
             filling.Position = new Vector2(_originSai.X + (fillingIndex * _fillingSpacing), _originSai.Y);
             dough.Position = new Vector2(_originPang.X, _originPang.Y + (doughIndex * _doughSpacing));
             wrapper.Position = new Vector2(_originWrapper.X, _originWrapper.Y);
+
+            //สร้าง food
+            var foodTexture = Globals.Content.Load<Texture2D>("foods/3");
+            var newFood = new Food(foodTexture, _plate.Position);
+            _food.Add(newFood);
+
+            //Re-register Food เพื่อให้ rect อยู่ชั้นบนสุด
+            (newFood as IDraggable).UnregisterDraggable();
+            (newFood as IDraggable).RegisterDraggable();
 
             // รีเซ็ต IdFilling, IdDough, และ IdFood หลังสร้างอาหาร
             IdFilling = 0;
