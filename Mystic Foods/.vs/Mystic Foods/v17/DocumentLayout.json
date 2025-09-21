@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "Mystic Foods\\Game1.cs",
               "ToolTip": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project-3-subject\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Game1.cs",
               "RelativeToolTip": "Mystic Foods\\Game1.cs",
-              "ViewState": "AgIAAG8AAAAAAAAAAAAowHAAAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAowIAAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-08T08:21:14.115Z",
               "IsPinned": true,
@@ -60,8 +60,7 @@
               "RelativeToolTip": "Mystic Foods\\Scenes\\DnDScene.cs",
               "ViewState": "AgIAACsAAAAAAAAAAAAnwFUAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-21T04:32:20.408Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-21T04:32:20.408Z"
             },
             {
               "$type": "Document",
@@ -73,8 +72,7 @@
               "RelativeToolTip": "Mystic Foods\\Managers\\GameManager.cs",
               "ViewState": "AgIAAAEAAAAAAAAAAAAuwAMBAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-21T08:09:37.916Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-21T08:09:37.916Z"
             },
             {
               "$type": "Document",
@@ -86,8 +84,7 @@
               "RelativeToolTip": "Mystic Foods\\Managers\\DragDropManager.cs",
               "ViewState": "AgIAAC8AAAAAAAAAAADwvzsAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-21T04:32:09.935Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-21T04:32:09.935Z"
             }
           ]
         }
