@@ -17,7 +17,7 @@ namespace Mystic_Foods.Managers
                 new Customer {
                     Id = 1,
                     Name = "Pink",
-                    IdOrder = 100,
+                    IdOrder = 110,
                     SpritePathHappy = "Customers/Human/Dawn/NPC1/npc1HumanHappy",
                     SpritePathNeutral = "Customers/Human/Dawn/NPC1/npc1HumanNormal",
                     SpritePathGrumpy = "Customers/Human/Dawn/NPC1/npc1HumanAngry",
@@ -33,7 +33,7 @@ namespace Mystic_Foods.Managers
                 new Customer {
                     Id = 2,
                     Name = "Man",
-                    IdOrder = 400,
+                    IdOrder = 410,
                     SpritePathHappy = "Customers/Human/Dawn/NPC2/npc2HumanHappy",
                     SpritePathNeutral = "Customers/Human/Dawn/NPC2/npc2HumanNormal",
                     SpritePathGrumpy = "Customers/Human/Dawn/NPC2/npc2HumanAngry",
@@ -49,7 +49,7 @@ namespace Mystic_Foods.Managers
                 new Customer {
                     Id = 3,
                     Name = "Granny",
-                    IdOrder = 900,
+                    IdOrder = 910,
                     SpritePathHappy = "Customers/Human/Dawn/NPC3/npc3HumanHappy",
                     SpritePathNeutral = "Customers/Human/Dawn/NPC3/npc3HumanNormal",
                     SpritePathGrumpy = "Customers/Human/Dawn/NPC3/npc3HumanAngry",

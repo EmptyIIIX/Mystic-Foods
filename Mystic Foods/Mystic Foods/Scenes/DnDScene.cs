@@ -190,6 +190,7 @@ namespace Mystic_Foods
                 spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
+                spriteBatch.DrawString(_font, $"Time steam : {GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
             #region UI info
             GamePlayScene.DrawEmotionIcon(_font, spriteBatch, emotion);
                 //Date and Time

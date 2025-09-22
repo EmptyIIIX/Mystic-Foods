@@ -25,12 +25,13 @@ namespace Mystic_Foods.Managers
 
         public static void AddDraggable(IDraggable item)
         {
-            _draggables.Add(item);
+            if (!_draggables.Contains(item))
+                _draggables.Add(item);
         }
 
         public static void RemoveDraggable(IDraggable item)
         {
-            _draggables.Remove(item);
+            _draggables.RemoveAll(d => d == item);
             if (_dragItem == item)
             {
                 _dragItem = null;

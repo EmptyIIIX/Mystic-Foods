@@ -33,7 +33,10 @@ namespace Mystic_Foods.Managers
         public static int IdFilling;
         public static int IdDough;
         public static bool HasFood { get; private set; }
+        public static bool isChangeFood;
+        public static bool readySteam = false;
         public static int countDia = 2;
+        public static float countSteam = 3f;
 
         public GameManager()
         {
@@ -140,6 +143,16 @@ namespace Mystic_Foods.Managers
                 if (fillingOnPlate != null && doughOnPlate != null && wrapperOnPlate != null)
                 {
                     CreateFood(fillingOnPlate, doughOnPlate, wrapperOnPlate);
+                    isChangeFood = false;
+                }
+            }
+            else if (target == _steam1)
+            {
+
+                if (item is Food food && isChangeFood == false)
+                {
+                    readySteam = true;
+                    if (countSteam <= 0) ChangeFood(food);
                 }
             }
             else if (target == _trashBin && item is Food food && _food.Contains(food))
@@ -148,6 +161,16 @@ namespace Mystic_Foods.Managers
                 (food as IDraggable).UnregisterDraggable();
                 IdFood = 0;
                 HasFood = false;
+                isChangeFood = false;
+                readySteam = false;
+                countSteam = 3f;
+            }
+            else if (target == _trashBin && item is Food changeFood && _food.Contains(changeFood))
+            {
+                _food.Remove(changeFood);
+                (changeFood as IDraggable).UnregisterDraggable();
+                HasFood = false;
+                isChangeFood = false;
             }
             else if (target == _trashBin && item is Filling filling)
             {
@@ -216,14 +239,31 @@ namespace Mystic_Foods.Managers
             var newFood = new Food(foodTexture, _plate.Position);
             _food.Add(newFood);
 
-            //Re-register Food เพื่อให้ rect อยู่ชั้นบนสุด ตอนนี้ยังไม่ได้
-            (newFood as IDraggable).UnregisterDraggable();
-            (newFood as IDraggable).RegisterDraggable();
-
             // รีเซ็ต IdFilling, IdDough, และ IdFood หลังสร้างอาหาร
             IdFilling = 0;
             IdDough = 0;
             GamePlayScene.TotalMoney -= 10;
+        }
+        private void ChangeFood(Food food)
+        {
+            //delete the food
+            _food.Remove(food);
+            (food as IDraggable).UnregisterDraggable();
+
+            //change asset from food to changeFood
+            var foodTexture = Globals.Content.Load<Texture2D>("foods/2");
+            var changeFood = new Food(foodTexture, _steam1.Position);
+            (changeFood as IDraggable).RegisterDraggable();
+            _food.Add(changeFood);
+
+            IdFood += 10;
+            isChangeFood = true;
+            HasFood = true;
+        }
+
+        private void ChangeItems(Filling filling, Dough dough)
+        {
+
         }
 
         public void ServeFood()
@@ -234,27 +274,30 @@ namespace Mystic_Foods.Managers
                 GamePlayScene.pay = GamePlayScene.price * GamePlayScene.weight;
                 GamePlayScene.TotalMoney += GamePlayScene.pay;
             }
-            else if(IdFood != GamePlayScene._currentCustomer.IdOrder)
+            else
             {
                 countDia = 0;
             }
 
-            if (_food.Count > 0)
+            foreach (var food in _food)
             {
-                foreach (var food in _food)
-                {
-                    (food as IDraggable).UnregisterDraggable();
-                }
-                _food.Clear();
-                HasFood = false;
-                IdFood = 0;
+                (food as IDraggable).UnregisterDraggable();
             }
+
+            _food.Clear();
+            HasFood = false;
+            isChangeFood = false;
+            readySteam = false;
+            IdFood = 0;
+            countSteam = 3f;
         }
 
         public void Update()
         {
             InputManager.Update();
             DragDropManager.Update();
+            if(readySteam == true) countSteam -= GamePlayScene.TimePSec;
+            if(countSteam <= 0.0f) countSteam = 0.0f;
         }
 
         public void Draw(Vector2 cameraPos)
