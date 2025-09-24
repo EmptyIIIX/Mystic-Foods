@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Mystic_Foods
@@ -35,6 +36,7 @@ namespace Mystic_Foods
         private int CameraRightBoundary2 = 1900;
 
         Texture2D table;
+        public Button DnD_menuButton;
 
         private string[] btnItems = { "Serve", "Steam" };
         public bool ServeRequest = false;
@@ -42,6 +44,7 @@ namespace Mystic_Foods
         private List<Rectangle> btnItemRect = new List<Rectangle>();
 
         public bool BackToMenuRequested = false;
+        public bool BackToGame = false;
 
         public DnDScene(GameManager gameManager)
         {
@@ -81,6 +84,8 @@ namespace Mystic_Foods
             );
             btnItemRect.Add(rect1);
 
+            DnD_menuButton = new Button(table, _font, " ", new Rectangle(900, 500, 128, 63));
+            DnD_menuButton.Click += DnDMenuButton_Click;
         }
         public void Update(GameTime gameTime)
         {
@@ -88,6 +93,11 @@ namespace Mystic_Foods
             Globals.Update(gameTime);
             _gameManager.Update();
             DragDropManager.SetCamera(cameraPos);
+
+            //button
+            GamePlayScene._pauseButton.Update();
+            DnD_menuButton.Update();
+
 
             GamePlayScene.TimePSec = 1.0f / 60.0f;
             GamePlayScene.TimeStage -= GamePlayScene.TimePSec;
@@ -156,6 +166,22 @@ namespace Mystic_Foods
             {
                 BackToMenuRequested = true;
             }
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (!GamePlayScene.isPaused)
+            {
+                //TimeStage every scene
+                GamePlayScene.TimePSec = 1.0f / 60.0f;
+                GamePlayScene.TimeStage -= GamePlayScene.TimePSec;
+
+                // Patience reduce logic
+                GamePlayScene._patienceMeter -= GamePlayScene._patienceDecreaseRate * deltaTime;
+                //Customer leave
+                if (GamePlayScene._patienceMeter <= 0)
+                {
+                    BackToGame = true;
+                }
+            }
             _oldState = state;
             _oldMouseState = mouse;
         }
@@ -191,20 +217,32 @@ namespace Mystic_Foods
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
                 spriteBatch.DrawString(_font, $"Time steam : {GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
+
             #region UI info
-            GamePlayScene.DrawEmotionIcon(_font, spriteBatch, emotion);
-                //Date and Time
+
+            //profile
+            spriteBatch.Draw(GamePlayScene.profile, new Vector2(0, 0), Color.White);
+            //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(GamePlayScene.dayBox, new Vector2(GamePlayScene.profile.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(GamePlayScene.profile.Width + 110, (GamePlayScene.menuBox.Height / 5) + 20), Color.Black);
-
-            spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(1920 - GamePlayScene.menuBox.Width - GamePlayScene.moneyBox.Width - 50, GamePlayScene.menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(1920 - GamePlayScene.menuBox.Width - (GamePlayScene.moneyBox.Width / 2) - 25, (GamePlayScene.menuBox.Height / 5) + (GamePlayScene.moneyBox.Height / 4) + 10), Color.Yellow);
-            //table pos recom pos.Y 890++
-
+            //time
             string Time = $"{(int)GamePlayScene.TimeStage}";
             spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 110, (GamePlayScene.menuBox.Height / 5) + 55), Color.Blue);
-            spriteBatch.DrawString(_font, $"Mouse Pos: {_mousePosition}", new Vector2(100, 100), Color.Blue);
+
+            /* สำรองไว้ก่อน
+            spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(1920 - menuBox.Width - (moneyBox.Width / 2) - 25, (menuBox.Height / 5) + (moneyBox.Height / 4) + 10), Color.Yellow);
+            */
+
+            spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + (GamePlayScene.moneyBox.Width / 2) + 35, (GamePlayScene.menuBox.Height / 5) + 20), Color.Yellow);
+
+            Vector2 EmotionPos = new Vector2(GamePlayScene.moneyBox.Width + GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5);
+            string patienceText = $"{GamePlayScene._patienceMeter:0}%";
+            spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (GamePlayScene._happy.Width / 5) + 10, EmotionPos.Y + GamePlayScene._happy.Height), Color.Black);
+            GamePlayScene.DrawEmotionIcon(_font, spriteBatch, EmotionPos);
+
             #endregion
             if (GamePlayScene.isPaused)
             {
@@ -212,10 +250,23 @@ namespace Mystic_Foods
 
                 //DrawString(SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
                 spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                GamePlayScene._menuButton.Draw(spriteBatch);
+
+
+                // should create separate menu button
+                DnD_menuButton.Draw(spriteBatch);
             }
             GamePlayScene._pauseButton.Draw(spriteBatch);
             spriteBatch.End();
+        }
+
+        public void DnDMenuButton_Click(object sender, EventArgs e)
+        {
+            //reset Scene
+            GamePlayScene._patienceMeter = GamePlayScene._patienceMeterStart;
+            GamePlayScene.TimeStage = 721f;
+            GamePlayScene.isPaused = false;
+
+            BackToMenuRequested = true;
         }
     }
 }
