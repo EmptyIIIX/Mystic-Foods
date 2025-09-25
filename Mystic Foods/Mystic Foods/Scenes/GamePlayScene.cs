@@ -27,15 +27,14 @@ namespace Mystic_Foods
         //pause
         public static bool isPaused = false;
         public static Button _pauseButton;
-        public static Button _menuButton;
+        public Button _menuButton;
         public Button _yesButton;
         public Button _whatButton;
 
         // ระบบ Patience Meter
-        public static float _patienceMeter;
-        private const float _patienceMeterStart = 100f;
-        private float _patienceReduceTimer = 0f;
-        private const float patienceInterval = 0.2f;
+        public static float _patienceMeter;        // current patience
+        public static float _patienceMeterStart = 100f;   // default / max patience
+        public static float _patienceDecreaseRate = 0.68f; // decrease rate
         public static Texture2D _textureHappy;
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
@@ -104,6 +103,7 @@ namespace Mystic_Foods
         public void Update(GameTime gameTime)
         {
             var state = Keyboard.GetState();
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // random, reset Patience
             if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
@@ -152,16 +152,7 @@ namespace Mystic_Foods
                 TimeStage -= TimePSec;
 
                 // Patience reduce logic
-                _patienceReduceTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (_patienceReduceTimer >= patienceInterval && _currentCustomer != null)
-                {
-                    float patiencePerSecond = _currentCustomer.Patience;
-                    float reduceAmount = patiencePerSecond * patienceInterval; // reducing equation
-
-                    _patienceMeter -= reduceAmount;
-                    if (_patienceMeter < 0) _patienceMeter = 0;
-                    _patienceReduceTimer = 0;
-                }
+                _patienceMeter -= _patienceDecreaseRate * deltaTime;
                 //Customer leave
                 if (_patienceMeter <= 0)
                 {
@@ -199,14 +190,6 @@ namespace Mystic_Foods
                 Vector2 custPos = new Vector2(100, 180);
                 spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
 
-                // แสดงค่า Patience Meter
-                Vector2 EmotionPos = new Vector2(850, menuBox.Height / 5);//สำหรับตำแหน่งของอีโมจิอารมณ์
-                string patienceText = $"{_patienceMeter:0}%";
-                spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
-
-                //Draw Customer & Patience
-                DrawEmotion(spriteBatch, EmotionPos);
-
                 //use rectangle to adjust scale
                 //0.9(855, 972) 0.8(760, 864)
                 
@@ -215,19 +198,32 @@ namespace Mystic_Foods
             #region UI-info
 
             //profile
-            //spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(dayBox, new Vector2(profile.Width + 10, menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 110, (menuBox.Height / 5) + 20), Color.Black);
-
-            spriteBatch.Draw(moneyBox, new Vector2(1920 - menuBox.Width - moneyBox.Width - 50, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(1920 - menuBox.Width - (moneyBox.Width / 2) - 25, (menuBox.Height / 5) + (moneyBox.Height / 4) + 10), Color.Yellow);
-            //table pos recom pos.Y 890++
-            spriteBatch.Draw(counter, new Vector2(0, 1080 - counter.Height), Color.White);
-
+            //time
             string Time = $"{(int)TimeStage}";
             spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 110, (menuBox.Height / 5) + 55), Color.Blue);
+
+            /* สำรองไว้ก่อน
+            spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(1920 - menuBox.Width - (moneyBox.Width / 2) - 25, (menuBox.Height / 5) + (moneyBox.Height / 4) + 10), Color.Yellow);
+            */
+
+            spriteBatch.Draw(moneyBox, new Vector2(profile.Width + dayBox.Width + 10, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(profile.Width + dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 20), Color.Yellow);
+
+            //Draw Emotion
+            // แสดงค่า Patience Meter
+            Vector2 EmotionPos = new Vector2(moneyBox.Width + profile.Width + dayBox.Width + 10, menuBox.Height / 5);//สำหรับตำแหน่งของอีโมจิอารมณ์
+            string patienceText = $"{_patienceMeter:0}%";
+            spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5) + 10, EmotionPos.Y + _happy.Height), Color.Black);
+            DrawEmotionIcon(_font, spriteBatch, EmotionPos);
+
+            //table pos
+            spriteBatch.Draw(counter, new Vector2(0, 1080 - counter.Height), Color.White);
             #endregion
 
             #region Dialouge
@@ -282,24 +278,13 @@ namespace Mystic_Foods
             spriteBatch.End();
         }
 
-        public void PauseButton_Click(object sender, EventArgs e)
-        {
-            isPaused = !isPaused;
-        }
-        public void MenuButton_Click(Object sender, EventArgs e)
-        {
-            //reset Scene
-            _currentCustomer = _customerManager.GetNextCustomer();
-            _patienceMeter = _patienceMeterStart;
-            LoadCustomerTextures();
-            TimeStage = 721f;
-            isPaused = false;
-
-            BackToMenuRequested = true;
-        }
+        //พับเก็บ
+        #region DrawEmotion
+        /*
         public static void DrawEmotion(SpriteBatch spriteBatch, Vector2 EmotionPos)
         {
             float patiencePerc = _patienceMeter / _patienceMeterStart;
+
             Texture2D drawTexture;
             if (patiencePerc >= 2f / 3f)
             {
@@ -320,9 +305,13 @@ namespace Mystic_Foods
                 weight = 0.50f;
             }
 
+
             Rectangle destinationRectangle = new Rectangle(300, 75, 760, 864);
             spriteBatch.Draw(drawTexture, destinationRectangle, Color.White);
         }
+        */
+        #endregion
+
         public static void DrawEmotionIcon(SpriteFont _font, SpriteBatch spriteBatch, Vector2 EmotionPos)
         {
             float patiencePerc = _patienceMeter / _patienceMeterStart;
@@ -338,9 +327,10 @@ namespace Mystic_Foods
             {
                 spriteBatch.Draw(_angry, EmotionPos, Color.White);
             }
-            string patienceText = $"{_patienceMeter:0}%";
-            spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
+            //string patienceText = $"{_patienceMeter:0}%";
+            //spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
         }
+
         private void YesButton_Click(Object sender, EventArgs e)
         {
             GameManager.countDia = -1;
@@ -349,6 +339,21 @@ namespace Mystic_Foods
         private void WhatButton_Click(Object sender, EventArgs e)
         {
             GameManager.countDia = 3;
+        }
+        public void PauseButton_Click(object sender, EventArgs e)
+        {
+            isPaused = !isPaused;
+        }
+        public void MenuButton_Click(Object sender, EventArgs e)
+        {
+            //reset Scene
+            _currentCustomer = _customerManager.GetNextCustomer();
+            _patienceMeter = _patienceMeterStart;
+            LoadCustomerTextures();
+            TimeStage = 721f;
+            isPaused = false;
+
+            BackToMenuRequested = true;
         }
     }
 }

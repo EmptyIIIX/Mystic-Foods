@@ -10,7 +10,6 @@ namespace Mystic_Foods
         public string SpritePathHappy { get; set; }
         public string SpritePathNeutral { get; set; }
         public string SpritePathGrumpy { get; set; }
-        public float Patience { get; set; }
         public string Dia1 { get; set; }
         public string Dia2 { get; set; }
         public string DiaCurrect { get; set; }
