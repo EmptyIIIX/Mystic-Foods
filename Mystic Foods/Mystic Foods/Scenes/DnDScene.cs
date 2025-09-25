@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Diagnostics.Metrics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -6,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Mystic_Foods
 {
@@ -25,18 +26,20 @@ namespace Mystic_Foods
         private Vector2 emotion = new Vector2(800, 162 / 5);
 
         Texture2D bg;
-        private Vector2 cameraPos = Vector2.Zero;
+        public Vector2 cameraPos = Vector2.Zero;
         private float CameraSpeed = 0f;
         private Vector2 scroll_factor = new Vector2(5.0f, 1);
         private int CameraLeftBoundary2 = 5;
         private int CameraLeftBoundary1 = 100;
-
         private int CameraRightBoundary1 = 1805;
         private int CameraRightBoundary2 = 1900;
 
         Texture2D table;
 
         private string[] btnItems = { "Serve", "Steam" };
+        public static Button _cookingBtn, _OkBtn;
+        public static Texture2D CookingBtn, OkBtn;
+        public static bool isCountDownSteam = false;
         public bool ServeRequest = false;
         private bool SteamRequest = false;
         private List<Rectangle> btnItemRect = new List<Rectangle>();
@@ -56,6 +59,14 @@ namespace Mystic_Foods
             _font = content.Load<SpriteFont>("MainFont");
             bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
             table = content.Load<Texture2D>("Environments/tools/Table");
+            CookingBtn = content.Load<Texture2D>("Etc/CookBtn");
+            //OkBtn = content.Load<Texture2D>("ServeBtn");
+
+            _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(1105, 940, 262, 109));
+            _cookingBtn.Click += CookingBtn_Click;
+            //_OkBtn = new Button(OkBtn, _font, " ", new Rectangle(1105, 940, 262, 109));
+            //_OkBtn.Click += ChangeButton_Steam;
+
             _contentLoaded = true;
             Globals.SpriteBatch = spriteBatch;
 
@@ -88,6 +99,24 @@ namespace Mystic_Foods
             Globals.Update(gameTime);
             _gameManager.Update();
             DragDropManager.SetCamera(cameraPos);
+
+            if (GameManager.readySteam) _cookingBtn.Update();
+
+            if (isCountDownSteam)
+            {
+                GameManager.countSteam -= GamePlayScene.TimePSec;
+                if (GameManager.countSteam <= 0f)
+                {
+                    GameManager.countSteam = 0.0f;
+                    if (GameManager.readySteam && !GameManager.isChangeFood && _gameManager._food.Any())
+                    {
+                        var food = _gameManager._food.First();
+                        _gameManager.ChangeFood(food);
+
+                    }
+                }
+                
+            }
 
             GamePlayScene.TimePSec = 1.0f / 60.0f;
             GamePlayScene.TimeStage -= GamePlayScene.TimePSec;
@@ -174,6 +203,10 @@ namespace Mystic_Foods
             spriteBatch.End();
 
             spriteBatch.Begin();
+            if (GameManager.readySteam)
+            {
+                _cookingBtn.Draw(spriteBatch);
+            }
 
             // Draw button serve, steam
             if (GameManager.HasFood)
@@ -190,7 +223,7 @@ namespace Mystic_Foods
                 spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
-                spriteBatch.DrawString(_font, $"Time steam : {GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
+                spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
             #region UI info
             GamePlayScene.DrawEmotionIcon(_font, spriteBatch, emotion);
                 //Date and Time
@@ -215,7 +248,20 @@ namespace Mystic_Foods
                 GamePlayScene._menuButton.Draw(spriteBatch);
             }
             GamePlayScene._pauseButton.Draw(spriteBatch);
+
             spriteBatch.End();
         }
+
+        public void CookingBtn_Click(object sender, EventArgs e)
+        {
+            //GameManager.readySteam = true;
+            isCountDownSteam = true;
+            
+        }
+
+        //public void ChangeButton_Steam(object sender, EventArgs e)
+        //{
+
+        //}
     }
 }

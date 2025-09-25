@@ -22,6 +22,7 @@ namespace Mystic_Foods.Systems
 
         public event EventHandler Click;  // event เวลากดปุ่ม
         public bool Clicked { get; private set; }
+        public Rectangle Rectangle => _rectangle;
 
         public Button(Texture2D texture, SpriteFont font, string text, Rectangle rectangle)
         {
@@ -62,6 +63,27 @@ namespace Mystic_Foods.Systems
                 var textPosition = new Vector2(
                     _rectangle.X + (_rectangle.Width / 2) - (textSize.X / 2),
                     _rectangle.Y + (_rectangle.Height / 2) - (textSize.Y / 2));
+
+                spriteBatch.DrawString(_font, _text, textPosition, Color.Black);
+            }
+        }
+        public void Draw(SpriteBatch spriteBatch, Vector2 cameraPos)
+        {
+            var color = _isHovering ? Color.Gray: Color.White;
+
+            var drawRect = new Rectangle(
+                _rectangle.X - (int)cameraPos.X,
+                _rectangle.Y - (int)cameraPos.Y,
+                _rectangle.Width,
+                _rectangle.Height
+            );
+            spriteBatch.Draw( _texture, drawRect, color);
+            if (!string.IsNullOrEmpty( _text))
+            {
+                var textSize = _font.MeasureString(_text);
+                var textPosition = new Vector2(
+                    drawRect.X + (drawRect.Width / 2) - (textSize.X / 2),
+                    drawRect.Y + (drawRect.Height / 2) - (textSize.Y / 2));
 
                 spriteBatch.DrawString(_font, _text, textPosition, Color.Black);
             }
