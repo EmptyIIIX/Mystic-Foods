@@ -385,6 +385,18 @@
 /processorParam:TextureFormat=Color
 /build:Environments/BG/MenuBG.png
 
+#begin Environments/BG/MenuBG.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Environments/BG/MenuBG.png
+
 #begin Environments/BG/orderBG_midnight.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -493,7 +505,7 @@
 /processorParam:TextureFormat=Color
 /build:Environments/Counter/orderCounter_sunset.png
 
-#begin Environments/steamer.png
+#begin Environments/tools/steamer1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -503,9 +515,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Environments/steamer.png
+/build:Environments/tools/steamer1.png
 
-#begin Environments/Table.png
+#begin Environments/tools/steamer2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -515,7 +527,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Environments/Table.png
+/build:Environments/tools/steamer2.png
+
+#begin Environments/tools/Table.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Environments/tools/Table.png
 
 #begin Etc/Blank.png
 /importer:TextureImporter
@@ -577,6 +601,18 @@
 /processorParam:TextureFormat=Color
 /build:Etc/Cat4.png
 
+#begin Etc/CookBtn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/CookBtn.png
+
 #begin Etc/Day.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -624,6 +660,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Etc/OutLine.png
+
+#begin Etc/ServeBtn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/ServeBtn.png
+
+#begin Etc/SteamBtn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/SteamBtn.png
 
 #begin Etc/TrashBin.png
 /importer:TextureImporter

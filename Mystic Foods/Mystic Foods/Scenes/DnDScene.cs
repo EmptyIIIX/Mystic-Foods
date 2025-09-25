@@ -1,11 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Diagnostics.Metrics;
 using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Mystic_Foods
@@ -21,27 +27,33 @@ namespace Mystic_Foods
         private KeyboardState _oldState;
         private MouseState _oldMouseState;
         private int _selectedIndex = 2;
-
         private bool Scroll = false;
+        private Vector2 emotion = new Vector2(800, 162 / 5);
 
         Texture2D bg;
-        private Vector2 cameraPos = Vector2.Zero;
+        public Vector2 cameraPos = Vector2.Zero;
         private float CameraSpeed = 0f;
         private Vector2 scroll_factor = new Vector2(5.0f, 1);
         private int CameraLeftBoundary2 = 5;
         private int CameraLeftBoundary1 = 100;
-
         private int CameraRightBoundary1 = 1805;
         private int CameraRightBoundary2 = 1900;
 
         Texture2D table;
+        Texture2D steam2;
+        public Button DnD_menuButton;
 
         private string[] btnItems = { "Serve", "Steam" };
+        public static Button _cookingBtn, _OkBtn;
+        public static Texture2D CookingBtn;
+        public static bool isCountDownSteam = false;
         public bool ServeRequest = false;
         private bool SteamRequest = false;
         private List<Rectangle> btnItemRect = new List<Rectangle>();
 
         public bool BackToMenuRequested = false;
+        public static bool isClickCook = false;
+        public bool BackToGame = false;
 
         public DnDScene(GameManager gameManager)
         {
@@ -55,7 +67,14 @@ namespace Mystic_Foods
             if (_contentLoaded) return;
             _font = content.Load<SpriteFont>("MainFont");
             bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
-            table = content.Load<Texture2D>("Environments/Table");
+            table = content.Load<Texture2D>("Environments/tools/Table");
+            CookingBtn = content.Load<Texture2D>("Etc/CookBtn");
+            steam2 = content.Load<Texture2D>("Environments/tools/steamer2");
+            //OkBtn = content.Load<Texture2D>("ServeBtn");
+
+            _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(1105, 940, 262, 109));
+            _cookingBtn.Click += CookingBtn_Click;
+
             _contentLoaded = true;
             Globals.SpriteBatch = spriteBatch;
 
@@ -81,14 +100,37 @@ namespace Mystic_Foods
             );
             btnItemRect.Add(rect1);
 
+            DnD_menuButton = new Button(table, _font, " ", new Rectangle(900, 500, 128, 63));
+            DnD_menuButton.Click += DnDMenuButton_Click;
         }
-
         public void Update(GameTime gameTime)
         {
             // ใช้การลากวางตามปกติ
             Globals.Update(gameTime);
             _gameManager.Update();
             DragDropManager.SetCamera(cameraPos);
+
+            if (GameManager.readySteam) _cookingBtn.Update();
+
+            if (isCountDownSteam)
+            {
+                GameManager.countSteam -= GamePlayScene.TimePSec;
+                if (GameManager.countSteam <= 0f)
+                {
+                    GameManager.countSteam = 0.0f;
+                    if (GameManager.readySteam && !GameManager.isChangeFood && _gameManager._food.Any())
+                    {
+                        var food = _gameManager._food.First();
+                        _gameManager.ChangeFood(food);
+                        isClickCook = false;
+                    }
+                }
+                
+            }
+            //button
+            GamePlayScene._pauseButton.Update();
+            DnD_menuButton.Update();
+
 
             GamePlayScene.TimePSec = 1.0f / 60.0f;
             GamePlayScene.TimeStage -= GamePlayScene.TimePSec;
@@ -157,6 +199,22 @@ namespace Mystic_Foods
             {
                 BackToMenuRequested = true;
             }
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (!GamePlayScene.isPaused)
+            {
+                //TimeStage every scene
+                GamePlayScene.TimePSec = 1.0f / 60.0f;
+                GamePlayScene.TimeStage -= GamePlayScene.TimePSec;
+
+                // Patience reduce logic
+                GamePlayScene._patienceMeter -= GamePlayScene._patienceDecreaseRate * deltaTime;
+                //Customer leave
+                if (GamePlayScene._patienceMeter <= 0)
+                {
+                    BackToGame = true;
+                }
+            }
             _oldState = state;
             _oldMouseState = mouse;
         }
@@ -170,11 +228,12 @@ namespace Mystic_Foods
             spriteBatch.Draw(bg, -cameraPos, Color.White);
 
             // วาด table ตาม camera
-            spriteBatch.Draw(table, new Vector2(100, 100) - cameraPos, Color.White);
+            spriteBatch.Draw(table, new Vector2(304, 143) - cameraPos, Color.White);
             _gameManager.Draw(cameraPos);
             spriteBatch.End();
 
             spriteBatch.Begin();
+            
 
             // Draw button serve, steam
             if (GameManager.HasFood)
@@ -187,25 +246,38 @@ namespace Mystic_Foods
                 /*
                 spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 60), Color.White);
                 spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
+                 */
                 spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
-                 */
-                #region UI info
+                spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
+                spriteBatch.DrawString(_font, $"ready to cook steam : {isClickCook}", new Vector2(500, 620), Color.Blue);
 
-                //Date and Time
-                int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
+            #region UI info
+
+            //profile
+            spriteBatch.Draw(GamePlayScene.profile, new Vector2(0, 0), Color.White);
+            //Date and Time
+            int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(GamePlayScene.dayBox, new Vector2(GamePlayScene.profile.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(GamePlayScene.profile.Width + 110, (GamePlayScene.menuBox.Height / 5) + 20), Color.Black);
-
-            spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(1920 - GamePlayScene.menuBox.Width - GamePlayScene.moneyBox.Width - 50, GamePlayScene.menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(1920 - GamePlayScene.menuBox.Width - (GamePlayScene.moneyBox.Width / 2) - 25, (GamePlayScene.menuBox.Height / 5) + (GamePlayScene.moneyBox.Height / 4) + 10), Color.Yellow);
-            //table pos recom pos.Y 890++
-            spriteBatch.Draw(GamePlayScene.counter, new Vector2(0, 1080 - GamePlayScene.counter.Height), Color.White);
-
+            //time
             string Time = $"{(int)GamePlayScene.TimeStage}";
             spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 110, (GamePlayScene.menuBox.Height / 5) + 55), Color.Blue);
-            spriteBatch.DrawString(_font, $"Mouse Pos: {_mousePosition}", new Vector2(100, 100), Color.Blue);
+
+            /* สำรองไว้ก่อน
+            spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(1920 - menuBox.Width - (moneyBox.Width / 2) - 25, (menuBox.Height / 5) + (moneyBox.Height / 4) + 10), Color.Yellow);
+            */
+
+            spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + (GamePlayScene.moneyBox.Width / 2) + 35, (GamePlayScene.menuBox.Height / 5) + 20), Color.Yellow);
+
+            Vector2 EmotionPos = new Vector2(GamePlayScene.moneyBox.Width + GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5);
+            string patienceText = $"{GamePlayScene._patienceMeter:0}%";
+            spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (GamePlayScene._happy.Width / 5) + 10, EmotionPos.Y + GamePlayScene._happy.Height), Color.Black);
+            GamePlayScene.DrawEmotionIcon(_font, spriteBatch, EmotionPos);
+
             #endregion
             if (GamePlayScene.isPaused)
             {
@@ -213,10 +285,42 @@ namespace Mystic_Foods
 
                 //DrawString(SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
                 spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                GamePlayScene._menuButton.Draw(spriteBatch);
+
+
+                // should create separate menu button
+                DnD_menuButton.Draw(spriteBatch);
             }
             GamePlayScene._pauseButton.Draw(spriteBatch);
+            if (GameManager.readySteam)
+            {
+                if (GameManager.countSteam > 0 && isClickCook) 
+                {
+                    spriteBatch.Draw(steam2, new Vector2(2475 - steam2.Width / 2, 460 - steam2.Height / 2) - cameraPos, Color.White);
+                }
+                _cookingBtn.Draw(spriteBatch);
+            }
             spriteBatch.End();
+        }
+
+        public void CookingBtn_Click(object sender, EventArgs e)
+        {
+            //GameManager.readySteam = true;
+            isCountDownSteam = true;
+            isClickCook = true;
+        }
+
+        //public void ChangeButton_Steam(object sender, EventArgs e)
+        //{
+
+        //}
+        public void DnDMenuButton_Click(object sender, EventArgs e)
+        {
+            //reset Scene
+            GamePlayScene._patienceMeter = GamePlayScene._patienceMeterStart;
+            GamePlayScene.TimeStage = 721f;
+            GamePlayScene.isPaused = false;
+
+            BackToMenuRequested = true;
         }
     }
 }

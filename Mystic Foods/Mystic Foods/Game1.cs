@@ -36,7 +36,7 @@ namespace Mystic_Foods
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.IsFullScreen = false;
             Window.AllowUserResizing = true;
-            Window.IsBorderless = false;//better fullscreen
+            Window.IsBorderless = true;//better fullscreen
             _graphics.ApplyChanges();
         }
 
@@ -125,6 +125,11 @@ namespace Mystic_Foods
                 if (_dndScene.ServeRequest)
                 {
                     _dndScene.ServeRequest = false;
+                    _currentScene = _gamePlayScene;
+                }
+                if (_dndScene.BackToGame)
+                {
+                    _dndScene.BackToGame = false;
                     _currentScene = _gamePlayScene;
                 }
             }
