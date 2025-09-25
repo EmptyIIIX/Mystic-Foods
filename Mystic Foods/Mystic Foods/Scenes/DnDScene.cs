@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics.Metrics;
 using Microsoft.Xna.Framework;
-﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Mystic_Foods
 {
@@ -43,7 +37,7 @@ namespace Mystic_Foods
         Texture2D steam2;
         public Button DnD_menuButton;
 
-        private string[] btnItems = { "Serve", "Steam" };
+        private string[] btnItems = { "Serve", "Steam" };// it'll be change
         public static Button _cookingBtn, _OkBtn;
         public static Texture2D CookingBtn;
         public static bool isCountDownSteam = false;
@@ -308,11 +302,6 @@ namespace Mystic_Foods
             isCountDownSteam = true;
             isClickCook = true;
         }
-
-        //public void ChangeButton_Steam(object sender, EventArgs e)
-        //{
-
-        //}
         public void DnDMenuButton_Click(object sender, EventArgs e)
         {
             //reset Scene

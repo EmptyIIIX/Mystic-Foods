@@ -12,6 +12,7 @@ namespace Mystic_Foods.Managers
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
         private CustomerManager _customerManager;
+
         public List<Food> _food = new();
         private readonly List<Filling> _fillings = new();
         private readonly List<Dough> _doughs = new();
@@ -47,6 +48,7 @@ namespace Mystic_Foods.Managers
 
         public void LoadContent(ContentManager content)
         {
+            #region load assets
             var Coconut_AmberTexture = content.Load<Texture2D>("foods/Coconut Amber");
             var Pandan_Taro_CreamTexture = content.Load<Texture2D>("foods/Pandan Taro Cream");
             var Lotus_Root_SpiritTexture = content.Load<Texture2D>("foods/Lotus Root Spirit");
@@ -61,7 +63,9 @@ namespace Mystic_Foods.Managers
             var foodTexture = content.Load<Texture2D>("foods/3");
 
             var steam1Texture = content.Load<Texture2D>("Environments/tools/steamer1");
+            #endregion
 
+            #region add ingredient to list
             var Coconut_Amber = new Filling(Coconut_AmberTexture, _originSai, Filling.FillingType.Coconut_Amber);
             var Pandan_Taro_Cream = new Filling(Pandan_Taro_CreamTexture, new Vector2(_originSai.X + _fillingSpacing, _originSai.Y), Filling.FillingType.Pandan_Taro_Cream);
             var Lotus_Root_Spirit = new Filling(Lotus_Root_SpiritTexture, new Vector2(_originSai.X + 2 * _fillingSpacing, _originSai.Y), Filling.FillingType.Lotus_Root_Spirit);
@@ -85,6 +89,7 @@ namespace Mystic_Foods.Managers
             var wrapper = new Wrapper(wrappTexture, _originWrapper);
             _wrapper.Add(wrapper);
             _wrapperOriginalPositions.Add(wrapper, _originWrapper);
+            #endregion
 
             _plate = new Socket(plateTexture, new(1062, 629));
             _steam1 = new Socket(steam1Texture, new(2475, 460));
@@ -94,6 +99,7 @@ namespace Mystic_Foods.Managers
 
         private void HandleDrop(IDraggable item, ITargetable target)
         {
+            #region check count of food
             //ถ้ามีอาหารเกิน 1 ชิ้น ให้รีเซ็ตตำแหน่งของ sai, pang, wrapper
             if (_food.Count >= 1 && (item is Filling || item is Dough || item is Wrapper))
             {
@@ -111,7 +117,9 @@ namespace Mystic_Foods.Managers
                 }
                 return;
             }
+            #endregion
 
+            #region Plate
             if (target == _plate)
             {
                 if (item is Filling newFilling)
@@ -150,6 +158,9 @@ namespace Mystic_Foods.Managers
                     isChangeFood = false;
                 }
             }
+            #endregion
+
+            #region steamer
             else if (target == _steam1)
             {
 
@@ -162,6 +173,9 @@ namespace Mystic_Foods.Managers
                 }
 
             }
+            #endregion
+
+            #region TrashBin
             else if (target == _trashBin && item is Food food && _food.Contains(food))
             {
                 _food.Remove(food);
@@ -201,6 +215,7 @@ namespace Mystic_Foods.Managers
             {
                 wrapper.Position = _wrapperOriginalPositions[wrapper];
             }
+            #endregion
         }
 
         private void HandleDragFailed(IDraggable item)
@@ -272,12 +287,6 @@ namespace Mystic_Foods.Managers
             countSteam = 3f;
             DnDScene.isCountDownSteam = false;
         }
-
-        private void ChangeItems(Filling filling, Dough dough)
-        {
-
-        }
-
         public void ServeFood()
         {
             if(IdFood == GamePlayScene._currentCustomer.IdOrder)
@@ -311,9 +320,6 @@ namespace Mystic_Foods.Managers
         {
             InputManager.Update();
             DragDropManager.Update();
-            //if(readySteam == true) countSteam -= GamePlayScene.TimePSec;
-            //if(countSteam <= 0.0f) countSteam = 0.0f;
-            //if (countSteam <= 0) ChangeFood(foods);
         }
 
         public void Draw(Vector2 cameraPos)
