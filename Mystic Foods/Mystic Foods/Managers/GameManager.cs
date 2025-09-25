@@ -38,7 +38,6 @@ namespace Mystic_Foods.Managers
         public static int countDia = 2;
         public static float countSteam = 3f;
 
-        public static Button _steamBtn;
         public GameManager()
         {
             DragDropManager.OnDrop += HandleDrop;
@@ -62,7 +61,6 @@ namespace Mystic_Foods.Managers
             var foodTexture = content.Load<Texture2D>("foods/3");
 
             var steam1Texture = content.Load<Texture2D>("Environments/tools/steamer1");
-            var steamBtnTexture = content.Load<Texture2D>("Etc/CookBtn");
 
             var Coconut_Amber = new Filling(Coconut_AmberTexture, _originSai, Filling.FillingType.Coconut_Amber);
             var Pandan_Taro_Cream = new Filling(Pandan_Taro_CreamTexture, new Vector2(_originSai.X + _fillingSpacing, _originSai.Y), Filling.FillingType.Pandan_Taro_Cream);
@@ -92,7 +90,6 @@ namespace Mystic_Foods.Managers
             _steam1 = new Socket(steam1Texture, new(2475, 460));
             _trashBin = new TrashBin(trashBinTexture, new Vector2(160, 800));
 
-            _steamBtn = new Button(steamBtnTexture, _font, "", new Rectangle(1105, 940, 262, 109));
         }
 
         private void HandleDrop(IDraggable item, ITargetable target)
@@ -160,7 +157,7 @@ namespace Mystic_Foods.Managers
                 {
                     readySteam = true;
                     DragDropManager.RemoveDraggable(food);
-                    System.Diagnostics.Debug.WriteLine($"Food placed on steam1: {food}, readySteam={readySteam}");
+                    //System.Diagnostics.Debug.WriteLine($"Food placed on steam1: {food}, readySteam={readySteam}");
 
                 }
 
@@ -306,6 +303,7 @@ namespace Mystic_Foods.Managers
             IdFood = 0;
             countSteam = 3f;
             DnDScene.isCountDownSteam = false;
+            DnDScene.isClickCook = false;
         }
 
         public void Update()

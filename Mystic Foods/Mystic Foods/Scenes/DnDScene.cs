@@ -35,16 +35,18 @@ namespace Mystic_Foods
         private int CameraRightBoundary2 = 1900;
 
         Texture2D table;
+        Texture2D steam2;
 
         private string[] btnItems = { "Serve", "Steam" };
         public static Button _cookingBtn, _OkBtn;
-        public static Texture2D CookingBtn, OkBtn;
+        public static Texture2D CookingBtn;
         public static bool isCountDownSteam = false;
         public bool ServeRequest = false;
         private bool SteamRequest = false;
         private List<Rectangle> btnItemRect = new List<Rectangle>();
 
         public bool BackToMenuRequested = false;
+        public static bool isClickCook = false;
 
         public DnDScene(GameManager gameManager)
         {
@@ -60,12 +62,11 @@ namespace Mystic_Foods
             bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
             table = content.Load<Texture2D>("Environments/tools/Table");
             CookingBtn = content.Load<Texture2D>("Etc/CookBtn");
+            steam2 = content.Load<Texture2D>("Environments/tools/steamer2");
             //OkBtn = content.Load<Texture2D>("ServeBtn");
 
             _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(1105, 940, 262, 109));
             _cookingBtn.Click += CookingBtn_Click;
-            //_OkBtn = new Button(OkBtn, _font, " ", new Rectangle(1105, 940, 262, 109));
-            //_OkBtn.Click += ChangeButton_Steam;
 
             _contentLoaded = true;
             Globals.SpriteBatch = spriteBatch;
@@ -203,10 +204,7 @@ namespace Mystic_Foods
             spriteBatch.End();
 
             spriteBatch.Begin();
-            if (GameManager.readySteam)
-            {
-                _cookingBtn.Draw(spriteBatch);
-            }
+            
 
             // Draw button serve, steam
             if (GameManager.HasFood)
@@ -248,7 +246,11 @@ namespace Mystic_Foods
                 GamePlayScene._menuButton.Draw(spriteBatch);
             }
             GamePlayScene._pauseButton.Draw(spriteBatch);
-
+            if (GameManager.readySteam)
+            {
+                if (GameManager.countSteam > 0 && isClickCook) spriteBatch.Draw(steam2, new Vector2(2475 - steam2.Width / 2, 460 - steam2.Height / 2) - cameraPos, Color.White);
+                _cookingBtn.Draw(spriteBatch);
+            }
             spriteBatch.End();
         }
 
@@ -256,7 +258,7 @@ namespace Mystic_Foods
         {
             //GameManager.readySteam = true;
             isCountDownSteam = true;
-            
+            isClickCook = true;
         }
 
         //public void ChangeButton_Steam(object sender, EventArgs e)
