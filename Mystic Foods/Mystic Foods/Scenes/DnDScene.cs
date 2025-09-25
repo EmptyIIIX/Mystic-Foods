@@ -122,7 +122,7 @@ namespace Mystic_Foods
                     {
                         var food = _gameManager._food.First();
                         _gameManager.ChangeFood(food);
-
+                        isClickCook = false;
                     }
                 }
                 
@@ -251,7 +251,7 @@ namespace Mystic_Foods
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
                 spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
-                spriteBatch.DrawString(_font, $"Time steam : {GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
+                spriteBatch.DrawString(_font, $"ready to cook steam : {isClickCook}", new Vector2(500, 620), Color.Blue);
 
             #region UI info
 
@@ -293,7 +293,10 @@ namespace Mystic_Foods
             GamePlayScene._pauseButton.Draw(spriteBatch);
             if (GameManager.readySteam)
             {
-                if (GameManager.countSteam > 0 && isClickCook) spriteBatch.Draw(steam2, new Vector2(2475 - steam2.Width / 2, 460 - steam2.Height / 2) - cameraPos, Color.White);
+                if (GameManager.countSteam > 0 && isClickCook) 
+                {
+                    spriteBatch.Draw(steam2, new Vector2(2475 - steam2.Width / 2, 460 - steam2.Height / 2) - cameraPos, Color.White);
+                }
                 _cookingBtn.Draw(spriteBatch);
             }
             spriteBatch.End();

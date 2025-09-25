@@ -179,6 +179,7 @@ namespace Mystic_Foods.Managers
                 (changeFood as IDraggable).UnregisterDraggable();
                 HasFood = false;
                 isChangeFood = false;
+                DnDScene.isClickCook = false;
             }
             else if (target == _trashBin && item is Filling filling)
             {
