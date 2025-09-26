@@ -318,14 +318,17 @@ namespace Mystic_Foods
             if (patiencePerc >= 2f / 3f)
             {
                 spriteBatch.Draw(_happy, EmotionPos, Color.White);
+                weight = 1.0f;
             }
             else if (patiencePerc >= 1f / 3f)
             {
                 spriteBatch.Draw(_natural, EmotionPos, Color.White);
+                weight = 0.75f;
             }
             else
             {
                 spriteBatch.Draw(_angry, EmotionPos, Color.White);
+                weight = 0.25f;
             }
             //string patienceText = $"{_patienceMeter:0}%";
             //spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);

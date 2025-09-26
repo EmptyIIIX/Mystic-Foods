@@ -66,7 +66,7 @@ namespace Mystic_Foods
             steam2 = content.Load<Texture2D>("Environments/tools/steamer2");
             //OkBtn = content.Load<Texture2D>("ServeBtn");
 
-            _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(1105, 940, 262, 109));
+            _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(1365, 940, 262, 109));
             _cookingBtn.Click += CookingBtn_Click;
 
             _contentLoaded = true;
@@ -123,7 +123,7 @@ namespace Mystic_Foods
             }
             //button
             GamePlayScene._pauseButton.Update();
-            DnD_menuButton.Update();
+            if (GamePlayScene.isPaused == true) DnD_menuButton.Update();
 
 
             GamePlayScene.TimePSec = 1.0f / 60.0f;
@@ -246,6 +246,7 @@ namespace Mystic_Foods
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
                 spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
                 spriteBatch.DrawString(_font, $"ready to cook steam : {isClickCook}", new Vector2(500, 620), Color.Blue);
+                spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
 
             #region UI info
 
@@ -291,7 +292,7 @@ namespace Mystic_Foods
                 {
                     spriteBatch.Draw(steam2, new Vector2(2475 - steam2.Width / 2, 460 - steam2.Height / 2) - cameraPos, Color.White);
                 }
-                _cookingBtn.Draw(spriteBatch);
+                _cookingBtn.DrawCooking(spriteBatch, cameraPos);
             }
             spriteBatch.End();
         }

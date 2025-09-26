@@ -23,7 +23,6 @@ namespace Mystic_Foods.Systems
         public event EventHandler Click;  // event เวลากดปุ่ม
         public bool Clicked { get; private set; }
         public Rectangle Rectangle => _rectangle;
-
         public Button(Texture2D texture, SpriteFont font, string text, Rectangle rectangle)
         {
             _texture = texture;
@@ -67,10 +66,9 @@ namespace Mystic_Foods.Systems
                 spriteBatch.DrawString(_font, _text, textPosition, Color.Black);
             }
         }
-        public void Draw(SpriteBatch spriteBatch, Vector2 cameraPos)
+        public void DrawCooking(SpriteBatch spriteBatch, Vector2 cameraPos)
         {
             var color = _isHovering ? Color.Gray: Color.White;
-
             var drawRect = new Rectangle(
                 _rectangle.X - (int)cameraPos.X,
                 _rectangle.Y - (int)cameraPos.Y,
