@@ -51,6 +51,31 @@ namespace Mystic_Foods.Systems
                 }
             }
         }
+        public void UpdateStaticBtn(Vector2 cameraPos)
+        {
+            _previousMouse = _currentMouse;
+            _currentMouse = Mouse.GetState();
+
+            var mouseWorld = new Point(
+                _currentMouse.X + (int)cameraPos.X,
+                _currentMouse.Y + (int)cameraPos.Y
+            );
+
+            var mouseRectangle = new Rectangle(mouseWorld.X, mouseWorld.Y, 1, 1);
+
+            _isHovering = false;
+
+            if (mouseRectangle.Intersects(_rectangle))
+            {
+                _isHovering = true;
+
+                if (_currentMouse.LeftButton == ButtonState.Released &&
+                    _previousMouse.LeftButton == ButtonState.Pressed)
+                {
+                    Click?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             var color = _isHovering ? Color.Gray : Color.White;

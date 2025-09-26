@@ -248,7 +248,6 @@ namespace Mystic_Foods.Managers
             IdFilling = (int)filling.FillingKind;
             IdDough = (int)dough.DoughKind;
             IdFood = IdFilling * IdDough;
-            HasFood = true;
 
             // รีเซ็ตตำแหน่งของวัตถุดิบ
             int fillingIndex = _fillings.IndexOf(filling);

@@ -11,7 +11,8 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeStage = 721f;
+        public static float TimeDefault = 360f;
+        public static float TimeStage = TimeDefault;
         public static float TimePSec;
 
         private SpriteFont _font;
@@ -39,7 +40,7 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, pauseBtn;
         public static Texture2D whatButton, yesButton, diaBox;
         public static Texture2D _happy, _natural, _angry;
 
@@ -78,6 +79,7 @@ namespace Mystic_Foods
             _angry = content.Load<Texture2D>("Emote/EmoteAngry");
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
             profile = content.Load<Texture2D>("Etc/Cat1");
+            pauseBtn = content.Load<Texture2D>("Etc/PauseBtn");
 
             whatButton = content.Load<Texture2D>("DialogueUI/WhatButton");
             yesButton = content.Load<Texture2D>("DialogueUI/YesButton");
@@ -105,48 +107,33 @@ namespace Mystic_Foods
             var state = Keyboard.GetState();
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // random, reset Patience
-            if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
-            {
-                _currentCustomer = _customerManager.GetNextCustomer();
-                _patienceMeter = _patienceMeterStart;
-                LoadCustomerTextures();
-                GameManager.countDia = 2;
-            }
-
-            //Check time out to back to mainmenu scene
-            if (TimeStage <= 0)
-            {
-                BackToMenuRequested = true;
-                TimeStage = 721f;
-            }
-
-            // ESC
-            //if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
-            //{
-            //    BackToMenuRequested = true;
-            //    TimeStage = 721f;
-            //}
-
             //Button
             _pauseButton.Update();
             _menuButton.Update();
-            _yesButton.Update();
-            _whatButton.Update();
 
-            //P
-            if (state.IsKeyDown(Keys.P) && _oldState.IsKeyUp(Keys.P))
-            {
-                isPaused = !isPaused;
-            }
             if (isPaused)
             {
-                _oldState = state;
-                return;
-            }
+                #region Stop the game
 
-            if (!isPaused)
+
+
+                #endregion
+            }
+            else
             {
+                #region Playing the game
+
+                // random, reset Patience
+                if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
+                {
+                    _currentCustomer = _customerManager.GetNextCustomer();
+                    _patienceMeter = _patienceMeterStart;
+                    LoadCustomerTextures();
+                    GameManager.countDia = 2;
+                }
+                _yesButton.Update();
+                _whatButton.Update();
+
                 //TimeStage every scene
                 TimePSec = 1.0f / 60.0f;
                 TimeStage -= TimePSec;
@@ -160,8 +147,36 @@ namespace Mystic_Foods
                     _patienceMeter = _patienceMeterStart;
                     LoadCustomerTextures();
                 }
+                //Check time out to back to mainmenu scene
+                if (TimeStage <= 0)
+                {
+                    BackToMenuRequested = true;
+                    TimeStage = TimeDefault;
+                }
+                #endregion
             }
-            _oldState = state;
+
+
+            // ESC
+            //if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
+            //{
+            //    BackToMenuRequested = true;
+            //    TimeStage = 721f;
+            //}
+
+
+            //P
+            if (state.IsKeyDown(Keys.P) && _oldState.IsKeyUp(Keys.P))
+            {
+                isPaused = !isPaused;
+            }
+            if (isPaused)
+            {
+                _oldState = state;
+                return;
+            }
+
+                _oldState = state;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -277,41 +292,6 @@ namespace Mystic_Foods
             _pauseButton.Draw(spriteBatch);
             spriteBatch.End();
         }
-
-        //พับเก็บ
-        #region DrawEmotion
-        /*
-        public static void DrawEmotion(SpriteBatch spriteBatch, Vector2 EmotionPos)
-        {
-            float patiencePerc = _patienceMeter / _patienceMeterStart;
-
-            Texture2D drawTexture;
-            if (patiencePerc >= 2f / 3f)
-            {
-                drawTexture = _textureHappy;
-                spriteBatch.Draw(_happy, EmotionPos, Color.White);
-                weight = 1.00f;
-            }
-            else if (patiencePerc >= 1f / 3f)
-            {
-                drawTexture = _textureNeutral;
-                spriteBatch.Draw(_natural, EmotionPos, Color.White);
-                weight = 0.75f;
-            }
-            else
-            {
-                drawTexture = _textureGrumpy;
-                spriteBatch.Draw(_angry, EmotionPos, Color.White);
-                weight = 0.50f;
-            }
-
-
-            Rectangle destinationRectangle = new Rectangle(300, 75, 760, 864);
-            spriteBatch.Draw(drawTexture, destinationRectangle, Color.White);
-        }
-        */
-        #endregion
-
         public static void DrawEmotionIcon(SpriteFont _font, SpriteBatch spriteBatch, Vector2 EmotionPos)
         {
             float patiencePerc = _patienceMeter / _patienceMeterStart;
@@ -353,7 +333,7 @@ namespace Mystic_Foods
             _currentCustomer = _customerManager.GetNextCustomer();
             _patienceMeter = _patienceMeterStart;
             LoadCustomerTextures();
-            TimeStage = 721f;
+            TimeStage = TimeDefault;
             isPaused = false;
 
             BackToMenuRequested = true;
