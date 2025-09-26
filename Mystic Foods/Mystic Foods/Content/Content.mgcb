@@ -373,6 +373,18 @@
 /processorParam:TextureFormat=Color
 /build:Emote/EmoteSun.png
 
+#begin Emote/sprite_emotion_icon.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Emote/sprite_emotion_icon.png
+
 #begin Environments/BG/MenuBG.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -625,6 +637,18 @@
 /processorParam:TextureFormat=Color
 /build:Etc/Money.png
 
+#begin Etc/NameTitle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/NameTitle.png
+
 #begin Etc/Night.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -636,6 +660,54 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Etc/Night.png
+
+#begin Etc/option_credit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/option_credit.png
+
+#begin Etc/option_exit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/option_exit.png
+
+#begin Etc/option_setting.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/option_setting.png
+
+#begin Etc/option_start game.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/option_start game.png
 
 #begin Etc/OutLine.png
 /importer:TextureImporter
@@ -660,6 +732,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Etc/PauseBtn.png
+
+#begin Etc/PointArrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/PointArrow.png
 
 #begin Etc/ServeBtn.png
 /importer:TextureImporter

@@ -24,10 +24,10 @@ namespace Mystic_Foods
         private bool Scroll = false;
         private Vector2 emotion = new Vector2(800, 162 / 5);
 
-        Texture2D bg;
+        Texture2D bg, ArrowCam;
+        private Vector2 scroll_factor = new Vector2(5.0f, 1);
         public Vector2 cameraPos = Vector2.Zero;
         private float CameraSpeed = 0f;
-        private Vector2 scroll_factor = new Vector2(5.0f, 1);
         private int CameraLeftBoundary2 = 5;
         private int CameraLeftBoundary1 = 100;
         private int CameraRightBoundary1 = 1805;
@@ -58,11 +58,12 @@ namespace Mystic_Foods
         {
             _gamePlayScene = new GamePlayScene();
             if (_contentLoaded) return;
-            _font = content.Load<SpriteFont>("MainFont");
             bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
+            steam2 = content.Load<Texture2D>("Environments/tools/steamer2");
             table = content.Load<Texture2D>("Environments/tools/Table");
             CookingBtn = content.Load<Texture2D>("Etc/CookBtn");
-            steam2 = content.Load<Texture2D>("Environments/tools/steamer2");
+            _font = content.Load<SpriteFont>("MainFont");
+            ArrowCam = content.Load<Texture2D>("Etc/PointArrow");
             //OkBtn = content.Load<Texture2D>("ServeBtn");
 
             _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(2490 - (CookingBtn.Width / 2), 900, 262, 109));
@@ -237,7 +238,6 @@ namespace Mystic_Foods
             spriteBatch.End();
 
             spriteBatch.Begin();
-            
 
             // Draw button serve, steam
             if (GameManager.HasFood)
@@ -265,10 +265,10 @@ namespace Mystic_Foods
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(GamePlayScene.dayBox, new Vector2(GamePlayScene.profile.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(GamePlayScene.profile.Width + 110, (GamePlayScene.menuBox.Height / 5) + 20), Color.Black);
+            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(GamePlayScene.profile.Width + 135, (GamePlayScene.menuBox.Height / 5) + 20), Color.Black);
             //time
             string Time = $"{(int)GamePlayScene.TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 110, (GamePlayScene.menuBox.Height / 5) + 55), Color.Blue);
+            spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 145, (GamePlayScene.menuBox.Height / 5) + 55), Color.Blue);
 
             /* สำรองไว้ก่อน
             spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
@@ -276,14 +276,17 @@ namespace Mystic_Foods
             */
 
             spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + (GamePlayScene.moneyBox.Width / 2) + 35, (GamePlayScene.menuBox.Height / 5) + 20), Color.Yellow);
+            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + (GamePlayScene.moneyBox.Width / 2) + 35, (GamePlayScene.menuBox.Height / 5) + 36), Color.Yellow);
 
             Vector2 EmotionPos = new Vector2(GamePlayScene.moneyBox.Width + GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5);
+            Vector2 percentPantiencePos = new Vector2(EmotionPos.X + 145, GamePlayScene.menuBox.Height / 5 + 36);
+
             string patienceText = $"{GamePlayScene._patienceMeter:0}%";
-            spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (GamePlayScene._happy.Width / 5) + 10, EmotionPos.Y + GamePlayScene._happy.Height), Color.Black);
+            spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Yellow);
             GamePlayScene.DrawEmotionIcon(_font, spriteBatch, EmotionPos);
 
             #endregion
+
             if (GameManager.readySteam)
             {
                 if (GameManager.countSteam > 0 && isClickCook) 
@@ -292,6 +295,7 @@ namespace Mystic_Foods
                 }
                 _cookingBtn.DrawCooking(spriteBatch, cameraPos);
             }
+
             if (GamePlayScene.isPaused)
             {
                 spriteBatch.Draw(GamePlayScene._rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
@@ -304,6 +308,9 @@ namespace Mystic_Foods
                 DnD_menuButton.Draw(spriteBatch);
             }
             GamePlayScene._pauseButton.Draw(spriteBatch);
+
+            if (cameraPos.X < 4200 - 1920) spriteBatch.Draw(ArrowCam, new Vector2(1920 - ArrowCam.Width, 540), null, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0f);//ทางขวาของจอ
+            if (cameraPos.X > 0) spriteBatch.Draw(ArrowCam, new Vector2(0, 540), Color.White);//ทางซ้ายของจอ
             spriteBatch.End();
         }
         public void CookingBtn_Click(object sender, EventArgs e)

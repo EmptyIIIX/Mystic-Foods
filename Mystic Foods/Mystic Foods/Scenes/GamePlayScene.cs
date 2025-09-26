@@ -41,6 +41,7 @@ namespace Mystic_Foods
         public static Texture2D _textureGrumpy;
 
         public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, pauseBtn;
+        public static Texture2D spriteEmoIcon;
         public static Texture2D whatButton, yesButton, diaBox;
         public static Texture2D _happy, _natural, _angry;
 
@@ -74,9 +75,12 @@ namespace Mystic_Foods
             bgBox = content.Load<Texture2D>("Etc/OutLine");
             dayBox = content.Load<Texture2D>("Etc/Day");
             moneyBox = content.Load<Texture2D>("Etc/Money");
-            _happy = content.Load<Texture2D>("Emote/EmoteHappy");
-            _natural = content.Load<Texture2D>("Emote/EmoteNatural");
-            _angry = content.Load<Texture2D>("Emote/EmoteAngry");
+
+            spriteEmoIcon = content.Load<Texture2D>("Emote/sprite_emotion_icon");
+            //_happy = content.Load<Texture2D>("Emote/EmoteHappy");
+            //_natural = content.Load<Texture2D>("Emote/EmoteNatural");
+            //_angry = content.Load<Texture2D>("Emote/EmoteAngry");
+
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
             profile = content.Load<Texture2D>("Etc/Cat1");
             pauseBtn = content.Load<Texture2D>("Etc/PauseBtn");
@@ -217,10 +221,10 @@ namespace Mystic_Foods
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(dayBox, new Vector2(profile.Width + 10, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 110, (menuBox.Height / 5) + 20), Color.Black);
+            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 135, (menuBox.Height / 5) + 20), Color.Black);
             //time
             string Time = $"{(int)TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 110, (menuBox.Height / 5) + 55), Color.Blue);
+            spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 145, (menuBox.Height / 5) + 55), Color.Blue);
 
             /* สำรองไว้ก่อน
             spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
@@ -228,13 +232,15 @@ namespace Mystic_Foods
             */
 
             spriteBatch.Draw(moneyBox, new Vector2(profile.Width + dayBox.Width + 10, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(profile.Width + dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 20), Color.Yellow);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(profile.Width + dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 36), Color.Yellow);
 
             //Draw Emotion
             // แสดงค่า Patience Meter
             Vector2 EmotionPos = new Vector2(moneyBox.Width + profile.Width + dayBox.Width + 10, menuBox.Height / 5);//สำหรับตำแหน่งของอีโมจิอารมณ์
+            Vector2 percentPantiencePos = new Vector2(EmotionPos.X + 145, menuBox.Height / 5 + 36);
+
             string patienceText = $"{_patienceMeter:0}%";
-            spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5) + 10, EmotionPos.Y + _happy.Height), Color.Black);
+            spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Yellow);
             DrawEmotionIcon(_font, spriteBatch, EmotionPos);
 
             //table pos
@@ -297,23 +303,25 @@ namespace Mystic_Foods
             float patiencePerc = _patienceMeter / _patienceMeterStart;
             if (patiencePerc >= 2f / 3f)
             {
-                spriteBatch.Draw(_happy, EmotionPos, Color.White);
+                //spriteBatch.Draw(_happy, EmotionPos, Color.White);
+                spriteBatch.Draw(spriteEmoIcon, EmotionPos, new Rectangle(0, 0, 264, 104), Color.White);
                 weight = 1.0f;
             }
             else if (patiencePerc >= 1f / 3f)
             {
-                spriteBatch.Draw(_natural, EmotionPos, Color.White);
+                //spriteBatch.Draw(_natural, EmotionPos, Color.White);
+                spriteBatch.Draw(spriteEmoIcon, EmotionPos, new Rectangle(0, 104, 264, 104), Color.White);
                 weight = 0.75f;
             }
             else
             {
-                spriteBatch.Draw(_angry, EmotionPos, Color.White);
+                //spriteBatch.Draw(_angry, EmotionPos, Color.White);
+                spriteBatch.Draw(spriteEmoIcon, EmotionPos, new Rectangle(0, 208, 264, 104), Color.White);
                 weight = 0.25f;
             }
             //string patienceText = $"{_patienceMeter:0}%";
             //spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
         }
-
         private void YesButton_Click(Object sender, EventArgs e)
         {
             GameManager.countDia = -1;
