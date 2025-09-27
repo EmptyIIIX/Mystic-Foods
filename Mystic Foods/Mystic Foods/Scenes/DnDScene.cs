@@ -168,6 +168,7 @@ namespace Mystic_Foods
                     if (GameManager.HasFood && btnItemRect[0].Contains(mouse.Position))
                     {
                         ServeRequest = true;
+                        GamePlayScene.served = true;
                         _gameManager.ServeFood(); // รีเซ็ตอาหารและสถานะ
                     }
                 }
@@ -182,6 +183,7 @@ namespace Mystic_Foods
                 //Customer leave
                 if (GamePlayScene._patienceMeter <= 0)
                 {
+                    GameManager.countDia = 2;
                     BackToGame = true;
                 }
 
