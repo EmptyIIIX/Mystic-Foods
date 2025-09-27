@@ -9,7 +9,7 @@ using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
 
 namespace Mystic_Foods
-{
+{//                                      Bar steam
     public class DnDScene : IGameScene
     {
         public GraphicsDeviceManager _graphics;
@@ -35,6 +35,8 @@ namespace Mystic_Foods
 
         Texture2D table;
         Texture2D steam2;
+        Texture2D steamBar;
+        float currentSteam;
         public Button DnD_menuButton;
 
         private string[] btnItems = { "Serve", "Steam" };// it'll be change
@@ -64,6 +66,9 @@ namespace Mystic_Foods
             CookingBtn = content.Load<Texture2D>("Etc/CookBtn");
             _font = content.Load<SpriteFont>("MainFont");
             ArrowCam = content.Load<Texture2D>("Etc/PointArrow");
+            steamBar = content.Load<Texture2D>("Etc/steam_bar");
+
+            currentSteam = steamBar.Height - 4;
             //OkBtn = content.Load<Texture2D>("ServeBtn");
 
             _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(2490 - (CookingBtn.Width / 2), 900, 262, 109));
@@ -186,7 +191,16 @@ namespace Mystic_Foods
                 }
 
                 if (GameManager.readySteam) _cookingBtn.UpdateStaticBtn(cameraPos);
+                if (currentSteam > 0 && isClickCook)
+                {
+                    currentSteam -= 3.56f;
+                }
+                else if (currentSteam <= 0 && isClickCook)
+                {
+                    currentSteam = 0;
+                }
                 #endregion
+
             }
 
 
@@ -289,11 +303,14 @@ namespace Mystic_Foods
 
             if (GameManager.readySteam)
             {
-                if (GameManager.countSteam > 0 && isClickCook) 
+                if (GameManager.countSteam > 0 && isClickCook)
                 {
                     spriteBatch.Draw(steam2, new Vector2(2475 - steam2.Width / 2, 460 - steam2.Height / 2) - cameraPos, Color.White);
+                    spriteBatch.Draw(steamBar, new Vector2(2480 + (steam2.Width / 2), 200) - cameraPos, new Rectangle(0, 0, 120, 610), Color.White);
+                    spriteBatch.Draw(steamBar, new Rectangle(2480 - (int)cameraPos.X + (steam2.Width / 2), 204 - (int)cameraPos.Y, 120, (int)currentSteam), new Rectangle(120, 4, 120, 606), Color.White);
                 }
-                _cookingBtn.DrawCooking(spriteBatch, cameraPos);
+                else currentSteam = steamBar.Height - 4;
+                    _cookingBtn.DrawCooking(spriteBatch, cameraPos);
             }
 
             if (GamePlayScene.isPaused)
