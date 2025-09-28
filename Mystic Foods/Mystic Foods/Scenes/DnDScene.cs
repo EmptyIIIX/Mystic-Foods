@@ -143,6 +143,29 @@ namespace Mystic_Foods
                 if (GameManager.HasFood)
                 {
                     _serveBtn.UpdateStaticBtn(cameraPos);
+                    if (btnItemRect[0].Contains(mousePos))
+                    {
+                        _selectedIndex = 0;
+                    }
+                    else
+                    {
+                        _selectedIndex = 2;
+                    }
+                }
+                else
+                {
+                    _selectedIndex = 2;
+                }
+
+                // ตรวจสอบการคลิกปุ่ม Serve เฉพาะเมื่อมีอาหาร
+                if (mouse.LeftButton == ButtonState.Pressed && _oldMouseState.LeftButton == ButtonState.Released)
+                {
+                    if (GameManager.HasFood && btnItemRect[0].Contains(mouse.Position))
+                    {
+                        ServeRequest = true;
+                        GamePlayScene.served = true;
+                        _gameManager.ServeFood(); // รีเซ็ตอาหารและสถานะ
+                    }
                 }
 
                 //TimeStage every scene
@@ -155,6 +178,7 @@ namespace Mystic_Foods
                 //Customer leave
                 if (GamePlayScene._patienceMeter <= 0)
                 {
+                    GameManager.countDia = 2;
                     BackToGame = true;
                 }
 

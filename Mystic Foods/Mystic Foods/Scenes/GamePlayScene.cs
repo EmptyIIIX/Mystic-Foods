@@ -24,6 +24,9 @@ namespace Mystic_Foods
         private ContentManager _contentManager;
         private DnDScene _dnDScene;
 
+        public static bool served;
+        public Button _servedYesButton;
+
         //pause
         public static bool isPaused = false;
         public static Button _pauseButton;
@@ -96,6 +99,8 @@ namespace Mystic_Foods
             _yesButton.Click += YesButton_Click;
             _whatButton = new Button(whatButton, _font, " ", new Rectangle(1550, 500, 128, 63));
             _whatButton.Click += WhatButton_Click;
+            _servedYesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
+            _servedYesButton.Click += ServedYes_Click;
         }
 
         private void LoadCustomerTextures()
@@ -134,8 +139,15 @@ namespace Mystic_Foods
                     LoadCustomerTextures();
                     GameManager.countDia = 2;
                 }
-                _yesButton.Update();
                 _whatButton.Update();
+                
+                if(served == true)
+                {
+                    _servedYesButton.Update();
+                } else
+                {
+                    _yesButton.Update();
+                }
 
                 //TimeStage every scene
                 TimePSec = 1.0f / 60.0f;
@@ -213,6 +225,41 @@ namespace Mystic_Foods
                 
             }
 
+            #region Customer
+            Texture2D drawTexture = _textureNeutral;
+            float patiencePerc = _patienceMeter / _patienceMeterStart;
+            switch (GameManager.countDia)
+            {
+                case 0:
+                    drawTexture = _textureGrumpy;
+                    break;
+                case 1:
+                    if (patiencePerc >= 2f / 3f)
+                    {
+                        drawTexture = _textureHappy;
+                    }
+                    else if (patiencePerc >= 1f / 3f)
+                    {
+                        drawTexture = _textureNeutral;
+                    }
+                    else
+                    {
+                        drawTexture = _textureGrumpy;
+                    }
+                    break;
+                case 2:
+                    drawTexture = _textureNeutral;
+                    break;
+                case 3:
+                    drawTexture = _textureNeutral;
+                    break;
+                case -1:
+                    drawTexture = _textureNeutral;
+                    break;
+            }
+            spriteBatch.Draw(drawTexture, new Vector2(200, 0), null, Color.White, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
+            #endregion
+
             #region UI-info
 
             //profile
@@ -251,7 +298,13 @@ namespace Mystic_Foods
             spriteBatch.Draw(diaBox, new Vector2(900, 200), Color.White);
             Vector2 diaPos = new Vector2(900, 200);
 
-            _yesButton.Draw(spriteBatch);
+            if (served == true)
+            {
+                _servedYesButton.Draw(spriteBatch);
+            } else
+            {
+                _yesButton.Draw(spriteBatch);
+            }
 
             switch (GameManager.countDia)
             {
@@ -295,6 +348,7 @@ namespace Mystic_Foods
                 _menuButton.Draw(spriteBatch);
             }
             _pauseButton.Draw(spriteBatch);
+
             spriteBatch.End();
         }
         public static void DrawEmotionIcon(SpriteFont _font, SpriteBatch spriteBatch, Vector2 EmotionPos)
@@ -343,8 +397,17 @@ namespace Mystic_Foods
             LoadCustomerTextures();
             TimeStage = TimeDefault;
             isPaused = false;
+            GameManager.countDia = 2;
 
             BackToMenuRequested = true;
+        }
+        public void ServedYes_Click(Object sender, EventArgs e)
+        {
+            _currentCustomer = _customerManager.GetNextCustomer();
+            _patienceMeter = _patienceMeterStart;
+            LoadCustomerTextures();
+            GameManager.countDia = 2;
+            served = false;
         }
     }
 }
