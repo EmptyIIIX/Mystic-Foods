@@ -50,14 +50,13 @@ namespace Mystic_Foods
         public static bool isClickCook = false;
         public bool BackToGame = false;
 
-        public Texture2D boxfilling;
-        public Texture2D boxdough;
+        //public Texture2D boxfilling;
+        //public Texture2D boxdough;
 
         public DnDScene(GameManager gameManager)
         {
             _gameManager = gameManager;
         }
-
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _gamePlayScene = new GamePlayScene();
@@ -72,8 +71,8 @@ namespace Mystic_Foods
             ServeBtn = content.Load<Texture2D>("Etc/ServeBtn");
             _font = content.Load<SpriteFont>("MainFont");
 
-            boxdough = content.Load<Texture2D>("foods/hitbox_dough");
-            boxfilling= content.Load<Texture2D>("foods/hitbox_filling");
+            //boxdough = content.Load<Texture2D>("foods/hitbox_dough");
+            //boxfilling= content.Load<Texture2D>("foods/hitbox_filling");
 
             currentSteam = steamBar.Height - 4;
 
@@ -140,32 +139,10 @@ namespace Mystic_Foods
 
                 if (GameManager.readySteam) _cookingBtn.UpdateStaticBtn(cameraPos);
 
+                // ตรวจสอบการคลิกปุ่ม Serve เฉพาะเมื่อมีอาหาร
                 if (GameManager.HasFood)
                 {
                     _serveBtn.UpdateStaticBtn(cameraPos);
-                    if (btnItemRect[0].Contains(mousePos))
-                    {
-                        _selectedIndex = 0;
-                    }
-                    else
-                    {
-                        _selectedIndex = 2;
-                    }
-                }
-                else
-                {
-                    _selectedIndex = 2;
-                }
-
-                // ตรวจสอบการคลิกปุ่ม Serve เฉพาะเมื่อมีอาหาร
-                if (mouse.LeftButton == ButtonState.Pressed && _oldMouseState.LeftButton == ButtonState.Released)
-                {
-                    if (GameManager.HasFood && btnItemRect[0].Contains(mouse.Position))
-                    {
-                        ServeRequest = true;
-                        GamePlayScene.served = true;
-                        _gameManager.ServeFood(); // รีเซ็ตอาหารและสถานะ
-                    }
                 }
 
                 //TimeStage every scene
@@ -228,7 +205,6 @@ namespace Mystic_Foods
             _oldState = state;
             _oldMouseState = mouse;
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             MouseState _mousePosition = Mouse.GetState();
@@ -240,8 +216,8 @@ namespace Mystic_Foods
             // วาด table ตาม camera
             spriteBatch.Draw(table, new Vector2(304, 143) - cameraPos, Color.White);
             spriteBatch.Draw(table_2, new Vector2(3800 - table_2.Width, 143) - cameraPos, Color.White);
-            spriteBatch.Draw(boxdough, new Vector2(250, 250) - cameraPos, Color.White);
-            spriteBatch.Draw(boxfilling, new Vector2(500, 250) - cameraPos, Color.White);
+            //spriteBatch.Draw(boxdough, new Vector2(250, 250) - cameraPos, Color.White);s
+            //spriteBatch.Draw(boxfilling, new Vector2(500, 250) - cameraPos, Color.White);
             _gameManager.Draw(cameraPos);
             spriteBatch.End();
 
@@ -249,16 +225,16 @@ namespace Mystic_Foods
 
             spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
 
-                spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 680), Color.Blue);
                 /*
+                spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 680), Color.Blue);
                 spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
-                 */
                 spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
                 spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
                 spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
                 spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
+                 */
 
             if (GameManager.readySteam)
             {
@@ -336,6 +312,7 @@ namespace Mystic_Foods
             if (GameManager.HasFood)
             {
                 ServeRequest = true;
+                GamePlayScene.served = true;
                 _gameManager.ServeFood();
             }
         }

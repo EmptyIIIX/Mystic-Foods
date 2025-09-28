@@ -20,7 +20,6 @@ namespace Mystic_Foods
         private DnDScene _dndScene;
 
         private CustomerManager _customerManager;
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -39,7 +38,6 @@ namespace Mystic_Foods
             Window.IsBorderless = true;//better fullscreen
             _graphics.ApplyChanges();
         }
-
         protected override void Initialize()
         {
             _customerManager = new CustomerManager();
@@ -52,7 +50,6 @@ namespace Mystic_Foods
             Window.ClientSizeChanged += OnClientSizeChanged;
             base.Initialize();
         }
-
         private void OnClientSizeChanged(object sender, System.EventArgs e)
         {
             //อัปเดตขนาด back bufferเมื่อหน้าต่างเปลี่ยนขนาด
@@ -60,7 +57,6 @@ namespace Mystic_Foods
             _graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
             _graphics.ApplyChanges();
         }
-
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -77,7 +73,6 @@ namespace Mystic_Foods
             _dndScene.LoadContent(Content, _spriteBatch);
 
         }
-
         protected override void Update(GameTime gameTime)
         {
             //Scene Logic
@@ -137,7 +132,6 @@ namespace Mystic_Foods
 
             base.Update(gameTime);
         }
-
         protected override void Draw(GameTime gameTime)
         {
             //draw scene

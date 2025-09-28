@@ -23,13 +23,11 @@ namespace Mystic_Foods.Managers
         {
             _cameraPos = cameraPos;
         }
-
         public static void AddDraggable(IDraggable item)
         {
             if (!_draggables.Contains(item))
                 _draggables.Add(item);
         }
-
         public static void RemoveDraggable(IDraggable item)
         {
             _draggables.RemoveAll(d => d == item);
@@ -39,12 +37,10 @@ namespace Mystic_Foods.Managers
                 Mouse.SetCursor(MouseCursor.Arrow);
             }
         }
-
         public static void AddTarget(ITargetable item)
         {
             _targets.Add(item);
         }
-
         private static void CheckDragStart()
         {
             if (InputManager.MouseClicked)
@@ -60,7 +56,6 @@ namespace Mystic_Foods.Managers
                 }
             }
         }
-
         private static void CheckTarget()
         {
             if (_dragItem == null) return;
@@ -81,8 +76,6 @@ namespace Mystic_Foods.Managers
                 OnDragFailed?.Invoke(_dragItem);
             }
         }
-
-
         private static void CheckDragStop()
         {
             if (InputManager.MouseReleased)
@@ -92,7 +85,6 @@ namespace Mystic_Foods.Managers
                 Mouse.SetCursor(MouseCursor.Arrow);
             }
         }
-
         public static void Update()
         {
             CheckDragStart();

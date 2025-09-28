@@ -30,7 +30,6 @@ namespace Mystic_Foods.Systems
             _text = text;
             _rectangle = rectangle;
         }
-
         public void Update()
         {
             _previousMouse = _currentMouse;

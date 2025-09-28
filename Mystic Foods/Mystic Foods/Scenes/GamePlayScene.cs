@@ -60,9 +60,7 @@ namespace Mystic_Foods
             _currentCustomer = _customerManager.GetNextCustomer();
             _patienceMeter = _patienceMeterStart;
         }
-
         public GamePlayScene() {}
-
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _contentManager = content;
@@ -102,14 +100,12 @@ namespace Mystic_Foods
             _servedYesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
             _servedYesButton.Click += ServedYes_Click;
         }
-
         private void LoadCustomerTextures()
         {
             _textureHappy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathHappy);
             _textureNeutral = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathNeutral);
             _textureGrumpy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathGrumpy);
         }
-
         public void Update(GameTime gameTime)
         {
             var state = Keyboard.GetState();
@@ -193,7 +189,6 @@ namespace Mystic_Foods
 
                 _oldState = state;
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
