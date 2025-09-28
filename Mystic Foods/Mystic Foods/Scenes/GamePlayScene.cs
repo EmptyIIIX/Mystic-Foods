@@ -22,8 +22,7 @@ namespace Mystic_Foods
         private CustomerManager _customerManager;
         public static Customer _currentCustomer;
         private ContentManager _contentManager;
-
-        //public static bool _what = false; เอาออก เพราะจะติดตรงการพูด dialogue
+        private DnDScene _dnDScene;
 
         //pause
         public static bool isPaused = false;
@@ -326,6 +325,7 @@ namespace Mystic_Foods
         {
             GameManager.countDia = -1;
             DnDRequested = true;
+            DnDScene.cameraPos = Vector2.Zero;
         }
         private void WhatButton_Click(Object sender, EventArgs e)
         {

@@ -5,7 +5,7 @@ namespace Mystic_Foods.Systems
 {
     public class Sprite : IDraggable, ITargetable
     {
-        protected readonly Texture2D texture;
+        protected Texture2D texture;
         protected readonly Vector2 origin;
         public Vector2 Position { get; set; }
 

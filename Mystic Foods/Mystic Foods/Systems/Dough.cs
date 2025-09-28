@@ -16,10 +16,20 @@ namespace Mystic_Foods.Systems
         public DoughType DoughKind { get; private set; }
         public string Type => $"Dough_{DoughKind}";
 
-        public Dough(Texture2D tex, Vector2 pos, DoughType kind) : base(tex, pos)
+        private Texture2D _normalTexture;
+        private Texture2D _onPlateTexture;
+
+        public Dough(Texture2D tex, Texture2D onPlateTexture, Vector2 pos, DoughType kind) : base(tex, pos)
         {
+            _normalTexture = tex;
+            _onPlateTexture = onPlateTexture;
             DoughKind = kind;
             (this as IDraggable).RegisterDraggable();
+        }
+
+        public void SetOnPlate(bool onPlate)
+        {
+            texture = onPlate ? _onPlateTexture : _normalTexture;
         }
     }
 }

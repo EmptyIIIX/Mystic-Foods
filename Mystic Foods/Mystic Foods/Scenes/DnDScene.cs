@@ -9,7 +9,7 @@ using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
 
 namespace Mystic_Foods
-{//                                      Bar steam
+{
     public class DnDScene : IGameScene
     {
         public GraphicsDeviceManager _graphics;
@@ -26,22 +26,21 @@ namespace Mystic_Foods
 
         Texture2D bg, ArrowCam;
         private Vector2 scroll_factor = new Vector2(5.0f, 1);
-        public Vector2 cameraPos = Vector2.Zero;
+        public static Vector2 cameraPos = Vector2.Zero;
         private float CameraSpeed = 0f;
         private int CameraLeftBoundary2 = 5;
         private int CameraLeftBoundary1 = 100;
         private int CameraRightBoundary1 = 1805;
         private int CameraRightBoundary2 = 1900;
 
-        Texture2D table;
+        Texture2D table, table_2;
         Texture2D steam2;
         Texture2D steamBar;
         float currentSteam;
         public Button DnD_menuButton;
 
-        private string[] btnItems = { "Serve", "Steam" };// it'll be change
-        public static Button _cookingBtn, _OkBtn;
-        public static Texture2D CookingBtn;
+        public static Button _cookingBtn, _serveBtn;
+        public static Texture2D CookingBtn, ServeBtn;
         public static bool isCountDownSteam = false;
         public bool ServeRequest = false;
         private bool SteamRequest = false;
@@ -50,6 +49,9 @@ namespace Mystic_Foods
         public bool BackToMenuRequested = false;
         public static bool isClickCook = false;
         public bool BackToGame = false;
+
+        public Texture2D boxfilling;
+        public Texture2D boxdough;
 
         public DnDScene(GameManager gameManager)
         {
@@ -61,46 +63,31 @@ namespace Mystic_Foods
             _gamePlayScene = new GamePlayScene();
             if (_contentLoaded) return;
             bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
-            steam2 = content.Load<Texture2D>("Environments/tools/steamer2");
+            steam2 = content.Load<Texture2D>("Environments/tools/steamer2 - test");// test
             table = content.Load<Texture2D>("Environments/tools/Table");
-            CookingBtn = content.Load<Texture2D>("Etc/CookBtn");
-            _font = content.Load<SpriteFont>("MainFont");
+            table_2 = content.Load<Texture2D>("Environments/tools/Table_2");
             ArrowCam = content.Load<Texture2D>("Etc/PointArrow");
+            CookingBtn = content.Load<Texture2D>("Etc/CookBtn");
             steamBar = content.Load<Texture2D>("Etc/steam_bar");
+            ServeBtn = content.Load<Texture2D>("Etc/ServeBtn");
+            _font = content.Load<SpriteFont>("MainFont");
+
+            boxdough = content.Load<Texture2D>("foods/hitbox_dough");
+            boxfilling= content.Load<Texture2D>("foods/hitbox_filling");
 
             currentSteam = steamBar.Height - 4;
-            //OkBtn = content.Load<Texture2D>("ServeBtn");
 
-            _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(2490 - (CookingBtn.Width / 2), 900, 262, 109));
+            _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(1800 + (818 / 2) - (CookingBtn.Width / 2), 900, 262, 109));
             _cookingBtn.Click += CookingBtn_Click;
 
-            _contentLoaded = true;
-            Globals.SpriteBatch = spriteBatch;
-
-            btnItemRect.Clear();
-            //Rectangle for "Serve" button
-            Vector2 size0 = _font.MeasureString(btnItems[0]);
-            Rectangle rect0 = new Rectangle(
-                //(int)((1920 / 2) - btnItems[0].Length),
-                1700,
-                900,
-                (int)size0.X,
-                (int)size0.Y
-            );
-            btnItemRect.Add(rect0);
-
-            //Rectangle for "Steam" button
-            Vector2 size1 = _font.MeasureString(btnItems[1]);
-            Rectangle rect1 = new Rectangle(
-                0,
-                0,
-                (int)size1.X,
-                (int)size1.Y
-            );
-            btnItemRect.Add(rect1);
+            _serveBtn = new Button(ServeBtn, _font, " ", new Rectangle(3856, 262, 262, 109));
+            _serveBtn.Click += ServeBtn_Click;
 
             DnD_menuButton = new Button(table, _font, " ", new Rectangle(900, 500, 128, 63));
             DnD_menuButton.Click += DnDMenuButton_Click;
+
+            Globals.SpriteBatch = spriteBatch;
+            _contentLoaded = true;
         }
         public void Update(GameTime gameTime)
         {
@@ -151,30 +138,11 @@ namespace Mystic_Foods
                     GamePlayScene.TimeStage = GamePlayScene.TimeDefault;
                 }
 
+                if (GameManager.readySteam) _cookingBtn.UpdateStaticBtn(cameraPos);
+
                 if (GameManager.HasFood)
                 {
-                    if (btnItemRect[0].Contains(mousePos))
-                    {
-                        _selectedIndex = 0;
-                    }
-                    else
-                    {
-                        _selectedIndex = 2;
-                    }
-                }
-                else
-                {
-                    _selectedIndex = 2;
-                }
-
-                // ตรวจสอบการคลิกปุ่ม Serve เฉพาะเมื่อมีอาหาร
-                if (mouse.LeftButton == ButtonState.Pressed && _oldMouseState.LeftButton == ButtonState.Released)
-                {
-                    if (GameManager.HasFood && btnItemRect[0].Contains(mouse.Position))
-                    {
-                        ServeRequest = true;
-                        _gameManager.ServeFood(); // รีเซ็ตอาหารและสถานะ
-                    }
+                    _serveBtn.UpdateStaticBtn(cameraPos);
                 }
 
                 //TimeStage every scene
@@ -190,7 +158,6 @@ namespace Mystic_Foods
                     BackToGame = true;
                 }
 
-                if (GameManager.readySteam) _cookingBtn.UpdateStaticBtn(cameraPos);
                 if (currentSteam > 0 && isClickCook)
                 {
                     currentSteam -= 3.56f;
@@ -248,29 +215,45 @@ namespace Mystic_Foods
 
             // วาด table ตาม camera
             spriteBatch.Draw(table, new Vector2(304, 143) - cameraPos, Color.White);
+            spriteBatch.Draw(table_2, new Vector2(3800 - table_2.Width, 143) - cameraPos, Color.White);
+            spriteBatch.Draw(boxdough, new Vector2(250, 250) - cameraPos, Color.White);
+            spriteBatch.Draw(boxfilling, new Vector2(500, 250) - cameraPos, Color.White);
             _gameManager.Draw(cameraPos);
             spriteBatch.End();
 
             spriteBatch.Begin();
 
-            // Draw button serve, steam
-            if (GameManager.HasFood)
-            {
-                Color color = (_selectedIndex == 0) ? Color.Yellow : Color.White;
-                spriteBatch.DrawString(_font, btnItems[0], new Vector2(1700, 900), color);
-            }
             spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
 
+                spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 680), Color.Blue);
                 /*
-                spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 60), Color.White);
                 spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
                  */
                 spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
                 spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
-                spriteBatch.DrawString(_font, $"ready to cook steam : {isClickCook}", new Vector2(500, 620), Color.Blue);
+                spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
                 spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
+
+            if (GameManager.readySteam)
+            {
+                if (GameManager.countSteam > 0 && isClickCook)
+                {
+                    spriteBatch.Draw(steam2, new Vector2(1805, 85) - cameraPos, Color.White);
+                    spriteBatch.Draw(steamBar, new Vector2(2280 + (steam2.Width / 2), 200) - cameraPos, new Rectangle(0, 0, 120, 610), Color.White);
+                    spriteBatch.Draw(steamBar, new Rectangle(2280 - (int)cameraPos.X + (steam2.Width / 2), 204 - (int)cameraPos.Y, 120, (int)currentSteam), new Rectangle(120, 4, 120, 606), Color.White);
+                }
+                else currentSteam = steamBar.Height - 4;
+
+                _cookingBtn.DrawCooking(spriteBatch, cameraPos);
+            }
+
+            // Draw button serve, steam
+            if (GameManager.HasFood)
+            {
+                _serveBtn.DrawCooking(spriteBatch, cameraPos);
+            }
 
             #region UI info
 
@@ -301,18 +284,6 @@ namespace Mystic_Foods
 
             #endregion
 
-            if (GameManager.readySteam)
-            {
-                if (GameManager.countSteam > 0 && isClickCook)
-                {
-                    spriteBatch.Draw(steam2, new Vector2(2475 - steam2.Width / 2, 460 - steam2.Height / 2) - cameraPos, Color.White);
-                    spriteBatch.Draw(steamBar, new Vector2(2480 + (steam2.Width / 2), 200) - cameraPos, new Rectangle(0, 0, 120, 610), Color.White);
-                    spriteBatch.Draw(steamBar, new Rectangle(2480 - (int)cameraPos.X + (steam2.Width / 2), 204 - (int)cameraPos.Y, 120, (int)currentSteam), new Rectangle(120, 4, 120, 606), Color.White);
-                }
-                else currentSteam = steamBar.Height - 4;
-                    _cookingBtn.DrawCooking(spriteBatch, cameraPos);
-            }
-
             if (GamePlayScene.isPaused)
             {
                 spriteBatch.Draw(GamePlayScene._rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
@@ -335,6 +306,14 @@ namespace Mystic_Foods
             //GameManager.readySteam = true;
             isCountDownSteam = true;
             isClickCook = true;
+        }
+        public void ServeBtn_Click(object sender, EventArgs e)
+        {
+            if (GameManager.HasFood)
+            {
+                ServeRequest = true;
+                _gameManager.ServeFood();
+            }
         }
         public void DnDMenuButton_Click(object sender, EventArgs e)
         {

@@ -517,6 +517,18 @@
 /processorParam:TextureFormat=Color
 /build:Environments/tools/steamer1.png
 
+#begin Environments/tools/steamer2 - test.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Environments/tools/steamer2 - test.png
+
 #begin Environments/tools/steamer2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -528,6 +540,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Environments/tools/steamer2.png
+
+#begin Environments/tools/Table_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Environments/tools/Table_2.png
 
 #begin Environments/tools/Table.png
 /importer:TextureImporter
@@ -888,6 +912,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:foods/Golden Moon.png
+
+#begin foods/hitbox_dough.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:foods/hitbox_dough.png
+
+#begin foods/hitbox_filling.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:foods/hitbox_filling.png
 
 #begin foods/Jasmine Moon.png
 /importer:TextureImporter
