@@ -12,6 +12,7 @@ namespace Mystic_Foods.Managers
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
         private CustomerManager _customerManager;
+        private Sprite _sprite;
 
         public List<Food> _food = new();
         private readonly List<Filling> _fillings = new();
@@ -20,15 +21,15 @@ namespace Mystic_Foods.Managers
         private readonly Dictionary<Filling, Vector2> _fillingOriginalPositions = new();
         private readonly Dictionary<Dough, Vector2> _doughOriginalPositions = new();
         private readonly Dictionary<Wrapper, Vector2> _wrapperOriginalPositions = new();
-        private Socket _plate, _steam1;
+        private Socket _plate, _plate2, _steam1;
         private TrashBin _trashBin, _trashBin2;
         private Filling _placedFilling;
         private Dough _placedDough;
-        private readonly Vector2 _originSai = new Vector2(804, 243);
-        private readonly Vector2 _originPang = new Vector2(504, 243);
+        public Vector2 _originSai = new Vector2(759 + 283 / 2, 218 + 154 / 2);
+        public Vector2 _originPang = new Vector2(371 + 280 / 2, 215 + 183 / 2);
         private readonly Vector2 _originWrapper = new Vector2(1566, 635);
-        private readonly float _fillingSpacing = 350;
-        private readonly float _doughSpacing = 250;
+        private readonly float _fillingSpacing = 299;
+        private readonly float _doughSpacing = 203;
 
         public static int IdFood;
         public static int IdFilling;
@@ -96,6 +97,7 @@ namespace Mystic_Foods.Managers
             #endregion
 
             _plate = new Socket(plateTexture, new(1068, 639));
+            _plate2 = new Socket(plateTexture, new(4200 - 958, 644));
             _steam1 = new Socket(steam1Texture, new(1800 + (steam1Texture.Width / 2), 460));
             _trashBin = new TrashBin(trashBinTexture, new Vector2(160, 800));
             _trashBin2 = new TrashBin(trashBinTexture, new Vector2(4000, 800));
@@ -163,6 +165,13 @@ namespace Mystic_Foods.Managers
                     isChangeFood = false;
                 }
             }
+            #endregion
+
+            #region Plate_2//สำหรับของตกแต่ง
+            //if (target == _plate2)
+            //{
+
+            //}
             #endregion
 
             #region steamer
@@ -328,6 +337,7 @@ namespace Mystic_Foods.Managers
         public void Draw(Vector2 cameraPos)
         {
             _plate.Draw(cameraPos);
+            _plate2.Draw(cameraPos);
             _trashBin.Draw(cameraPos);
             _trashBin2.Draw(cameraPos);
             _steam1.Draw(cameraPos);

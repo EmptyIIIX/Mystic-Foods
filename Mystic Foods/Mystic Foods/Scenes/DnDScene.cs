@@ -50,8 +50,11 @@ namespace Mystic_Foods
         public static bool isClickCook = false;
         public bool BackToGame = false;
 
-        //public Texture2D boxfilling;
-        //public Texture2D boxdough;
+        public static Texture2D boxfilling;
+        public static Texture2D boxdough;
+
+        private List<Rectangle> _boxfilling = new List<Rectangle>();
+        private List<Rectangle> _boxdough = new List<Rectangle>();
 
         public DnDScene(GameManager gameManager)
         {
@@ -71,8 +74,18 @@ namespace Mystic_Foods
             ServeBtn = content.Load<Texture2D>("Etc/ServeBtn");
             _font = content.Load<SpriteFont>("MainFont");
 
-            //boxdough = content.Load<Texture2D>("foods/hitbox_dough");
-            //boxfilling= content.Load<Texture2D>("foods/hitbox_filling");
+            boxdough = content.Load<Texture2D>("foods/hitbox_dough");
+            boxfilling = content.Load<Texture2D>("foods/hitbox_filling");
+
+            _boxfilling.Add(new Rectangle(759, 218, 283, 154));
+            _boxfilling.Add(new Rectangle(759 + boxfilling.Width + 16, 218, 283, 154));
+            _boxfilling.Add(new Rectangle(759 + 2 * (boxfilling.Width + 16), 218, 283, 154));
+            foreach (var rect in _boxfilling) DragDropManager.AddHitbox(rect);
+
+            _boxdough.Add(new Rectangle(371, 215, 280, 183));
+            _boxdough.Add(new Rectangle(371, 215 + boxdough.Height + 12, 280, 183));
+            _boxdough.Add(new Rectangle(371, 215 + 2 * (boxdough.Height + 12), 280, 183));
+            foreach(var rect in _boxdough) DragDropManager.AddHitbox(rect);
 
             currentSteam = steamBar.Height - 4;
 
@@ -171,7 +184,6 @@ namespace Mystic_Foods
 
             }
 
-
             #region scroll camera
             // เลื่อนกล้องเมื่อเมาส์อยู่ใกล้ขอบซ้ายหรือขวา
             Scroll = false;
@@ -216,8 +228,30 @@ namespace Mystic_Foods
             // วาด table ตาม camera
             spriteBatch.Draw(table, new Vector2(304, 143) - cameraPos, Color.White);
             spriteBatch.Draw(table_2, new Vector2(3800 - table_2.Width, 143) - cameraPos, Color.White);
-            //spriteBatch.Draw(boxdough, new Vector2(250, 250) - cameraPos, Color.White);s
-            //spriteBatch.Draw(boxfilling, new Vector2(500, 250) - cameraPos, Color.White);
+            // วาด filling hitboxes → worldPos - cameraPos
+            foreach (var rect in _boxfilling)
+            {
+                var drawRect = new Rectangle(
+                    rect.X - (int)cameraPos.X,
+                    rect.Y - (int)cameraPos.Y,
+                    rect.Width,
+                    rect.Height
+                );
+                spriteBatch.Draw(boxfilling, drawRect, Color.Transparent);
+            }
+
+            // วาด dough hitboxes → worldPos - cameraPos
+            foreach (var rect in _boxdough)
+            {
+                var drawRect = new Rectangle(
+                    rect.X - (int)cameraPos.X,
+                    rect.Y - (int)cameraPos.Y,
+                    rect.Width,
+                    rect.Height
+                );
+                spriteBatch.Draw(boxdough, drawRect, Color.Transparent);
+            }
+
             _gameManager.Draw(cameraPos);
             spriteBatch.End();
 
@@ -225,8 +259,8 @@ namespace Mystic_Foods
 
             spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
 
-                /*
                 spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 680), Color.Blue);
+                /*
                 spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
                 spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);

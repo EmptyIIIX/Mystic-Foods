@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
@@ -9,7 +10,11 @@ namespace Mystic_Foods.Managers
 {
     public static class DragDropManager
     {
+        private static GameManager _gameManager;
+        private static Sprite _sprite;
+
         private static readonly List<IDraggable> _draggables = new();
+        private static readonly List<Rectangle> _hitboxes = new();
         private static readonly List<ITargetable> _targets = new();
         private static IDraggable _dragItem;
 
@@ -28,6 +33,10 @@ namespace Mystic_Foods.Managers
             if (!_draggables.Contains(item))
                 _draggables.Add(item);
         }
+        public static void AddHitbox(Rectangle rect)
+        {
+            _hitboxes.Add(rect);
+        }
         public static void RemoveDraggable(IDraggable item)
         {
             _draggables.RemoveAll(d => d == item);
@@ -43,15 +52,53 @@ namespace Mystic_Foods.Managers
         }
         private static void CheckDragStart()
         {
+            //if (InputManager.MouseClicked)
+            //{
+            //    foreach (var item in _draggables)
+            //    {
+            //        if (item.GetRectangle(_cameraPos).Contains(InputManager.MousePosition))
+            //        {
+            //            _dragItem = item;
+            //            Mouse.SetCursor(MouseCursor.Hand);
+            //            break;
+            //        }
+            //    }
+            //}
+            if (!InputManager.MouseClicked) return;
+
             if (InputManager.MouseClicked)
             {
-                foreach (var item in _draggables)
+                foreach (var hitbox in _hitboxes)
                 {
-                    if (item.GetRectangle(_cameraPos).Contains(InputManager.MousePosition))
+                    Rectangle adjustedHitbox = new Rectangle(
+                        hitbox.X - (int)_cameraPos.X,
+                        hitbox.Y - (int)_cameraPos.Y,
+                        hitbox.Width,
+                        hitbox.Height
+                    );
+
+                    if (adjustedHitbox.Contains(InputManager.MousePosition))
                     {
-                        _dragItem = item;
-                        Mouse.SetCursor(MouseCursor.Hand);
-                        break;
+                        Vector2 hitCenter = new Vector2(adjustedHitbox.Center.X, adjustedHitbox.Center.Y);
+
+                        _dragItem = _draggables.OrderBy(d => Vector2.Distance(d.Position, hitCenter)).FirstOrDefault();
+
+                        if (_dragItem != null)
+                        {
+                            Mouse.SetCursor(MouseCursor.Hand);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        _dragItem = _draggables.FirstOrDefault(
+                            d => new Rectangle(
+                                (int)(d.Position.X - d.Size.X / 2),
+                                (int)(d.Position.Y - d.Size.Y / 2),
+                                (int)d.Size.X,
+                                (int)d.Size.Y
+                            ).Contains(InputManager.MousePosition + _cameraPos)
+                        );
                     }
                 }
             }
@@ -78,7 +125,7 @@ namespace Mystic_Foods.Managers
         }
         private static void CheckDragStop()
         {
-            if (InputManager.MouseReleased)
+            if (InputManager.MouseReleased && _dragItem != null)
             {
                 CheckTarget();
                 _dragItem = null;
@@ -91,8 +138,19 @@ namespace Mystic_Foods.Managers
 
             if (_dragItem is not null)
             {
-                // MousePosition เป็น screen → แปลงเป็น world ก่อนอัปเดต
                 _dragItem.Position = InputManager.MousePosition + _cameraPos;
+
+                if (_gameManager != null)
+                {
+                    Vector2 originPos = _dragItem switch
+                    {
+                        Filling => _gameManager._originSai,
+                        Dough => _gameManager._originPang,
+                        _ => _dragItem.Position
+                    };
+
+                    _sprite.Visible = Vector2.Distance(_dragItem.Position, originPos) > 1f;
+                }
                 CheckDragStop();
             }
         }
