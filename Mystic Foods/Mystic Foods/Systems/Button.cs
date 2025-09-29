@@ -90,6 +90,21 @@ namespace Mystic_Foods.Systems
                 spriteBatch.DrawString(_font, _text, textPosition, Color.Black);
             }
         }
+        public void DrawHomeBtn(SpriteBatch spriteBatch)
+        {
+            var color = _isHovering ? Color.Yellow : Color.White;
+            spriteBatch.Draw(_texture, _rectangle, color);
+
+            if (!string.IsNullOrEmpty(_text))
+            {
+                var textSize = _font.MeasureString(_text);
+                var textPosition = new Vector2(
+                    _rectangle.X + (_rectangle.Width / 2) - (textSize.X / 2),
+                    _rectangle.Y + (_rectangle.Height / 2) - (textSize.Y / 2));
+
+                spriteBatch.DrawString(_font, _text, textPosition, Color.Black);
+            }
+        }
         public void DrawCooking(SpriteBatch spriteBatch, Vector2 cameraPos)
         {
             var color = _isHovering ? Color.Gray: Color.White;

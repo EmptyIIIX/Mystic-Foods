@@ -42,7 +42,8 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, pauseBtn;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
+        public static Texture2D homeBtn, pauseBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D whatButton, yesButton, diaBox;
         public static Texture2D _happy, _natural, _angry;
@@ -84,6 +85,7 @@ namespace Mystic_Foods
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
             profile = content.Load<Texture2D>("Etc/Cat1");
             pauseBtn = content.Load<Texture2D>("Etc/PauseBtn");
+            homeBtn = content.Load<Texture2D>("Etc/HomeBtn");
 
             whatButton = content.Load<Texture2D>("DialogueUI/WhatButton");
             yesButton = content.Load<Texture2D>("DialogueUI/YesButton");
@@ -91,7 +93,7 @@ namespace Mystic_Foods
 
             _pauseButton = new Button(menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
             _pauseButton.Click += PauseButton_Click;
-            _menuButton = new Button(whatButton, _font, " ", new Rectangle(900, 500, 128, 63));
+            _menuButton = new Button(homeBtn, _font, " ", new Rectangle(900, 500, 100, 106));//real size (50, 53) 
             _menuButton.Click += MenuButton_Click;
             _yesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
             _yesButton.Click += YesButton_Click;

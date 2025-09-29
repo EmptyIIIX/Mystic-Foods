@@ -95,7 +95,7 @@ namespace Mystic_Foods
             _serveBtn = new Button(ServeBtn, _font, " ", new Rectangle(3856, 262, 262, 109));
             _serveBtn.Click += ServeBtn_Click;
 
-            DnD_menuButton = new Button(table, _font, " ", new Rectangle(900, 500, 128, 63));
+            DnD_menuButton = new Button(GamePlayScene.homeBtn, _font, " ", new Rectangle(900, 500, 100, 106));
             DnD_menuButton.Click += DnDMenuButton_Click;
 
             Globals.SpriteBatch = spriteBatch;
