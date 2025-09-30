@@ -43,10 +43,10 @@ namespace Mystic_Foods
             SettingBtn = content.Load<Texture2D>("Etc/option_setting");
             ExitBtn = content.Load<Texture2D>("Etc/option_exit");
 
-            _playBtn = new Button(PlayBtn, _font, "", new Rectangle(114, 400, 512, 100));
+            _playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
             _playBtn.Click += PlayBtn_Click;
 
-            _settingBtn = new Button(SettingBtn, _font, "", new Rectangle(114, 400 + PlayBtn.Height + 20, 512, 100));
+            _settingBtn = new Button(SettingBtn, _font, "", new Rectangle(225, 400 + PlayBtn.Height + 20, 512, 100));
             _settingBtn.Click += SettingBtn_Click;
 
             _exitBtn = new Button(ExitBtn, _font, "", new Rectangle(1920 - ExitBtn.Width - 20, 1080 - ExitBtn.Height - 20, 80, 100));
