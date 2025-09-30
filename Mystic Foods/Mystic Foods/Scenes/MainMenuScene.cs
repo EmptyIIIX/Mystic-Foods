@@ -1,98 +1,65 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Mystic_Foods.Systems; // เรียกใช้ Button
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mystic_Foods
 {
     public class MainMenuScene : IGameScene
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteFont _font; //font use to draw string
-        private int _selectedIndex = 0;
-        private string[] _menuItems = { "Start Game", "Drag&Drop", "Exit" }; //selectable text
-        public bool StartGameRequested = false; //check if start game
+        private SpriteFont _font;
+        private Texture2D _buttonTexture;
+        private Texture2D _title;
+        private Texture2D _menuBg;
+
+        // ปุ่ม
+        private List<Button> _buttons = new List<Button>();
+
+        // flags
+        public bool StartGameRequested = false;
         public bool DnDRequested = false;
-        public bool ExitRequested = false; //check if exit game
-
-        private KeyboardState _oldState; //make it only pressable (can't hold)
-        private MouseState _oldMouseState;
-
-        // เก็บ bounding box ของแต่ละเมนู (เพื่อคลิกได้)
-        private List<Rectangle> _menuItemRects = new List<Rectangle>();
-
-        Texture2D Menu_bg;
+        public bool ExitRequested = false;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _font = content.Load<SpriteFont>("MainFont");
-            Menu_bg = content.Load<Texture2D>("Environments/BG/MenuBG");
+            _menuBg = content.Load<Texture2D>("Environments/BG/MenuBG");
+            _title = content.Load<Texture2D>("UI/title");
 
-            // สร้าง rectangle ของแต่ละเมนูสำหรับตรวจ mouse
-            _menuItemRects.Clear();
-            for (int i = 0; i < _menuItems.Length; i++)
-            {
-                Vector2 size = _font.MeasureString(_menuItems[i]);
-                Rectangle rect = new Rectangle(
-                    (int)((800 - size.X) / 2),
-                    200 + i * 60,
-                    (int)size.X,
-                    (int)size.Y
-                );
-                _menuItemRects.Add(rect);
-            }
+            // โหลด texture สำหรับปุ่ม (ใส่สี่เหลี่ยมธรรมดาหรือ UI ปุ่มจริงก็ได้)
+            _buttonTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            _buttonTexture.SetData(new[] { Color.White }); // ปุ่มพื้นสีขาว
+
+            // สร้างปุ่ม
+            #region button
+            _buttons.Clear();
+
+            var startBtn = new Button(_buttonTexture, _font, "Start Game",
+                new Rectangle(300, 200, 200, 50));
+            startBtn.Click += (s, e) => StartGameRequested = true;
+
+            var dndBtn = new Button(_buttonTexture, _font, "Drag&Drop",
+                new Rectangle(300, 260, 200, 50));
+            dndBtn.Click += (s, e) => DnDRequested = true;
+
+            var exitBtn = new Button(_buttonTexture, _font, "Exit",
+                new Rectangle(300, 320, 200, 50));
+            exitBtn.Click += (s, e) => ExitRequested = true;
+
+            _buttons.Add(startBtn);
+            _buttons.Add(dndBtn);
+            _buttons.Add(exitBtn);
+            #endregion
         }
 
         public void Update(GameTime gameTime)
         {
-            var state = Keyboard.GetState();
-            var mouse = Mouse.GetState();
-
-            if (state.IsKeyDown(Keys.Down) && _oldState.IsKeyUp(Keys.Down))
-                _selectedIndex = (_selectedIndex + 1) % _menuItems.Length;
-
-            if (state.IsKeyDown(Keys.Up) && _oldState.IsKeyUp(Keys.Up))
-                _selectedIndex = (_selectedIndex - 1 + _menuItems.Length) % _menuItems.Length;
-
-            //game scene selection logic
-            if (state.IsKeyDown(Keys.Enter) && _oldState.IsKeyUp(Keys.Enter))
-            {
-                if (_selectedIndex == 0) StartGameRequested = true;
-                if (_selectedIndex == 1) DnDRequested = true;
-                if (_selectedIndex == 2) ExitRequested = true;
-            }
-
-            // เมาส์อยู่ตำแหน่งไหนให้ไฮไลท์เมนูนั้น (hover)
-            Point mousePos = mouse.Position;
-            for (int i = 0; i < _menuItemRects.Count; i++)
-            {
-                if (_menuItemRects[i].Contains(mousePos))
-                {
-                    _selectedIndex = i;
-                }
-            }
-            // เช็คคลิกซ้าย (Mouse.LeftButton เพิ่งกดจาก unpress)
-            if (mouse.LeftButton == ButtonState.Pressed && _oldMouseState.LeftButton == ButtonState.Released)
-            {
-                for (int i = 0; i < _menuItemRects.Count; i++)
-                {
-                    if (_menuItemRects[i].Contains(mouse.Position))
-                    {
-                        // ขอ scene ตามปุ่มคลิก
-                        if (i == 0) StartGameRequested = true;
-                        if (i == 1) DnDRequested = true;
-                        if (i == 2) ExitRequested = true;
-                    }
-                }
-            }
-
-            _oldState = state; //update keyboard status
-            _oldMouseState = mouse;
+            foreach (var btn in _buttons)
+                btn.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -100,25 +67,12 @@ namespace Mystic_Foods
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(Menu_bg, new Vector2(0, 0), Color.White);
-            string title = "Main Menu";
-            Vector2 titleSize = _font.MeasureString(title);
-            spriteBatch.DrawString(
-                _font,
-                title,
-                new Vector2((800 - titleSize.X) / 2, 80),
-                Color.White);
 
-            for (int i = 0; i < _menuItems.Length; i++)
-            {
-                Color color = (i == _selectedIndex) ? Color.Yellow : Color.White;
-                Vector2 size = _font.MeasureString(_menuItems[i]);
-                spriteBatch.DrawString(
-                    _font,
-                    _menuItems[i],
-                    new Vector2((800 - size.X) / 2, 200 + i * 60),
-                    color);
-            }
+            spriteBatch.Draw(_menuBg, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(_title, new Vector2(0, 0), Color.White);
+
+            foreach (var btn in _buttons)
+                btn.Draw(spriteBatch);
 
             spriteBatch.End();
         }

@@ -6,6 +6,7 @@ using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
 using Mystic_Foods.Time;
 using System;
+using System.Diagnostics.Metrics;
 
 namespace Mystic_Foods
 {
@@ -14,6 +15,10 @@ namespace Mystic_Foods
         public static float TimeDefault = 360f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
+
+        public enum DayPhase { Dawn, Dusk, Night }
+        public static DayPhase CurrentPhase = DayPhase.Dawn;
+        Texture2D texDawn, texDusk, texNight;
 
         private SpriteFont _font;
         public bool BackToMenuRequested = false;
@@ -41,10 +46,11 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, pauseBtn;
+        public static Texture2D bg, bgBox, dayBox, moneyBox, menuBox, profile, pauseBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D whatButton, yesButton, diaBox;
         public static Texture2D _happy, _natural, _angry;
+        public static Texture2D counterDawn, counterDusk, counterNight;
 
         public static Texture2D _rectTexture;
 
@@ -71,8 +77,14 @@ namespace Mystic_Foods
             _rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             _rectTexture.SetData(new[] { Color.White });
 
-            bg = content.Load<Texture2D>("Environments/BG/orderBG_morning");
-            counter = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
+            texDawn = content.Load<Texture2D>("Environments/BG/orderBG_morning");
+            texDusk = content.Load<Texture2D>("Environments/BG/orderBG_sunset");
+            texNight = content.Load<Texture2D>("Environments/BG/orderBG_midnight");
+
+            counterDawn = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
+            counterDusk = content.Load<Texture2D>("Environments/Counter/orderCounter_sunset");
+            counterNight = content.Load<Texture2D>("Environments/Counter/orderCounter_midnight");
+
             bgBox = content.Load<Texture2D>("Etc/OutLine");
             dayBox = content.Load<Texture2D>("Etc/Day");
             moneyBox = content.Load<Texture2D>("Etc/Money");
@@ -138,8 +150,15 @@ namespace Mystic_Foods
                     LoadCustomerTextures();
                     GameManager.countDia = 2;
                 }
-                _whatButton.Update();
-                
+                if (served == true)
+                {
+
+                }
+                else
+                {
+                    _whatButton.Update();
+                }
+
                 if(served == true)
                 {
                     _servedYesButton.Update();
@@ -177,9 +196,8 @@ namespace Mystic_Foods
             //    BackToMenuRequested = true;
             //    TimeStage = 721f;
             //}
-
-
-            //P
+            UpdatePhase();
+            #region pause
             if (state.IsKeyDown(Keys.P) && _oldState.IsKeyUp(Keys.P))
             {
                 isPaused = !isPaused;
@@ -189,16 +207,37 @@ namespace Mystic_Foods
                 _oldState = state;
                 return;
             }
+            #endregion
 
-                _oldState = state;
+            _oldState = state;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
             spriteBatch.Begin();
-            spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
+
+            #region Background
+            //spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
+            //spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
+
+            Texture2D background = texDawn;
+
+            switch (CurrentPhase)
+            {
+                case DayPhase.Dawn:
+                    background = texDawn;
+                    break;
+                case DayPhase.Dusk:
+                    background = texDusk;
+                    break;
+                case DayPhase.Night:
+                    background = texNight;
+                    break;
+            }
+
+            spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+            #endregion
 
             /*
             string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
@@ -287,9 +326,25 @@ namespace Mystic_Foods
             string patienceText = $"{_patienceMeter:0}%";
             spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Yellow);
             DrawEmotionIcon(_font, spriteBatch, EmotionPos);
+            #endregion
 
-            //table pos
-            spriteBatch.Draw(counter, new Vector2(0, 1080 - counter.Height), Color.White);
+            #region Counter
+            //Counter
+            Texture2D Counter = counterDawn;
+
+            switch (CurrentPhase)
+            {
+                case DayPhase.Dawn:
+                    Counter = counterDawn;
+                    break;
+                case DayPhase.Dusk:
+                    Counter = counterDusk;
+                    break;
+                case DayPhase.Night:
+                    Counter = counterNight;
+                    break;
+            }
+            spriteBatch.Draw(Counter, new Vector2(0, 1080 - 152), Color.White);
             #endregion
 
             #region Dialouge
@@ -309,14 +364,27 @@ namespace Mystic_Foods
             {
                 case 0:
                     spriteBatch.DrawString(_font, _currentCustomer.DiaWrong, new Vector2(1000, 300), Color.Black);
-                    _whatButton.Draw(spriteBatch);
+                    if(served == true)
+                    {
+
+                    } else
+                    {
+                        _whatButton.Draw(spriteBatch);
+                    }
                     break;
                 case 1:
                     spriteBatch.DrawString(_font, _currentCustomer.DiaCurrect, new Vector2(1000, 300), Color.Black);
                     break;
                 case 2:
                     spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, 300), Color.Black);
-                    _whatButton.Draw(spriteBatch);
+                    if (served == true)
+                    {
+
+                    }
+                    else
+                    {
+                        _whatButton.Draw(spriteBatch);
+                    }
                     break;
                 case 3:
                     spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 300), Color.Black);
@@ -406,6 +474,18 @@ namespace Mystic_Foods
             LoadCustomerTextures();
             GameManager.countDia = 2;
             served = false;
+        }
+
+        public static void UpdatePhase()
+        {
+            float oneThird = TimeDefault / 3f;
+
+            if (TimeStage > 2 * oneThird)
+                CurrentPhase = DayPhase.Dawn;
+            else if (TimeStage > oneThird)
+                CurrentPhase = DayPhase.Dusk;
+            else
+                CurrentPhase = DayPhase.Night;
         }
     }
 }
