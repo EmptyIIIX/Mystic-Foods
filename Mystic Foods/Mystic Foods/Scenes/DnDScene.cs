@@ -39,6 +39,10 @@ namespace Mystic_Foods
         float currentSteam;
         public Button DnD_menuButton;
 
+        Texture2D LogOrder, LogInfo, Oklog;
+        public Button _logOrderBtn, _okLogBtn;
+        public bool isLog = false;
+
         public static Button _cookingBtn, _serveBtn;
         public static Texture2D CookingBtn, ServeBtn;
         public static bool isCountDownSteam = false;
@@ -77,6 +81,10 @@ namespace Mystic_Foods
             boxdough = content.Load<Texture2D>("foods/hitbox_dough");
             boxfilling = content.Load<Texture2D>("foods/hitbox_filling");
 
+            LogOrder = content.Load<Texture2D>("DialogueUI/LogButton");
+            LogInfo = content.Load<Texture2D>("DialogueUI/LogInformation");
+            Oklog = content.Load<Texture2D>("DialogueUI/okLog");
+
             _boxfilling.Add(new Rectangle(759, 218, 283, 154));
             _boxfilling.Add(new Rectangle(759 + boxfilling.Width + 16, 218, 283, 154));
             _boxfilling.Add(new Rectangle(759 + 2 * (boxfilling.Width + 16), 218, 283, 154));
@@ -94,6 +102,12 @@ namespace Mystic_Foods
 
             _serveBtn = new Button(ServeBtn, _font, " ", new Rectangle(3856, 262, 262, 109));
             _serveBtn.Click += ServeBtn_Click;
+
+            _logOrderBtn = new Button(LogOrder, _font, "", new Rectangle(1200, 0, 94, 134));
+            _logOrderBtn.Click += LogBtn_Click;
+
+            _okLogBtn = new Button(Oklog, _font, "", new Rectangle(1450, 880, 300, 150));
+            _okLogBtn.Click += okLogBtn_Click;
 
             DnD_menuButton = new Button(GamePlayScene.homeBtn, _font, " ", new Rectangle(900, 500, 100, 106));
             DnD_menuButton.Click += DnDMenuButton_Click;
@@ -214,6 +228,9 @@ namespace Mystic_Foods
                 BackToMenuRequested = true;
             }
 
+            _logOrderBtn.Update();
+            _okLogBtn.Update();
+
             _oldState = state;
             _oldMouseState = mouse;
         }
@@ -318,6 +335,13 @@ namespace Mystic_Foods
 
             #endregion
 
+            _logOrderBtn.Draw(spriteBatch);
+            if (isLog)
+            {
+                spriteBatch.Draw(LogInfo, new Vector2(130, 160), Color.White);
+                _okLogBtn.Draw(spriteBatch);
+            }
+
             if (GamePlayScene.isPaused)
             {
                 spriteBatch.Draw(GamePlayScene._rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
@@ -349,6 +373,14 @@ namespace Mystic_Foods
                 GamePlayScene.served = true;
                 _gameManager.ServeFood();
             }
+        }
+        public void LogBtn_Click(object sender, EventArgs e)
+        {
+            isLog = true;
+        }
+        public void okLogBtn_Click(object sender, EventArgs e)
+        {
+            isLog = false;
         }
         public void DnDMenuButton_Click(object sender, EventArgs e)
         {
