@@ -1,65 +1,64 @@
-﻿using Mystic_Foods.Systems; // เรียกใช้ Button
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Mystic_Foods.Systems;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Mystic_Foods
 {
     public class MainMenuScene : IGameScene
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteFont _font;
-        private Texture2D _buttonTexture;
-        private Texture2D _title;
-        private Texture2D _menuBg;
-
-        // ปุ่ม
-        private List<Button> _buttons = new List<Button>();
-
-        // flags
-        public bool StartGameRequested = false;
+        private SpriteFont _font; //font use to draw string
+        public bool StartGameRequested = false; //check if start game
         public bool DnDRequested = false;
-        public bool ExitRequested = false;
+        public bool ExitRequested = false; //check if exit game
+
+        public Texture2D NameTitle;
+        public Texture2D PlayBtn, SettingBtn, ExitBtn;
+        public Button _playBtn, _settingBtn, _exitBtn;
+
+        private KeyboardState _oldState; //make it only pressable (can't hold)
+        private MouseState _oldMouseState;
+
+        Texture2D Menu_bg;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _font = content.Load<SpriteFont>("MainFont");
-            _menuBg = content.Load<Texture2D>("Environments/BG/MenuBG");
-            _title = content.Load<Texture2D>("UI/title");
+            Menu_bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
-            // โหลด texture สำหรับปุ่ม (ใส่สี่เหลี่ยมธรรมดาหรือ UI ปุ่มจริงก็ได้)
-            _buttonTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-            _buttonTexture.SetData(new[] { Color.White }); // ปุ่มพื้นสีขาว
+            NameTitle = content.Load<Texture2D>("Etc/NameTitle");
+            PlayBtn = content.Load<Texture2D>("Etc/option_start game");
+            SettingBtn = content.Load<Texture2D>("Etc/option_setting");
+            ExitBtn = content.Load<Texture2D>("Etc/option_exit");
 
-            // สร้างปุ่ม
-            #region button
-            _buttons.Clear();
+            _playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
+            _playBtn.Click += PlayBtn_Click;
 
-            var startBtn = new Button(_buttonTexture, _font, "Start Game",
-                new Rectangle(300, 200, 200, 50));
-            startBtn.Click += (s, e) => StartGameRequested = true;
+            _settingBtn = new Button(SettingBtn, _font, "", new Rectangle(225, 400 + PlayBtn.Height + 20, 512, 100));
+            _settingBtn.Click += SettingBtn_Click;
 
-            var dndBtn = new Button(_buttonTexture, _font, "Drag&Drop",
-                new Rectangle(300, 260, 200, 50));
-            dndBtn.Click += (s, e) => DnDRequested = true;
-
-            var exitBtn = new Button(_buttonTexture, _font, "Exit",
-                new Rectangle(300, 320, 200, 50));
-            exitBtn.Click += (s, e) => ExitRequested = true;
-
-            _buttons.Add(startBtn);
-            _buttons.Add(dndBtn);
-            _buttons.Add(exitBtn);
-            #endregion
+            _exitBtn = new Button(ExitBtn, _font, "", new Rectangle(1920 - ExitBtn.Width - 20, 1080 - ExitBtn.Height - 20, 80, 100));
+            _exitBtn.Click += ExitBtn_Click;
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach (var btn in _buttons)
-                btn.Update();
+            var state = Keyboard.GetState();
+            var mouse = Mouse.GetState();
+
+                _playBtn.Update();
+            _settingBtn.Update();
+            _exitBtn.Update();
+
+            _oldState = state; //update keyboard status
+            _oldMouseState = mouse;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -67,14 +66,27 @@ namespace Mystic_Foods
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateBlue);
 
             spriteBatch.Begin();
+            spriteBatch.Draw(Menu_bg, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(NameTitle, new Vector2(100, 120), Color.White);
 
-            spriteBatch.Draw(_menuBg, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(_title, new Vector2(0, 0), Color.White);
-
-            foreach (var btn in _buttons)
-                btn.Draw(spriteBatch);
+            _playBtn.DrawHomeBtn(spriteBatch);
+            _settingBtn.DrawHomeBtn(spriteBatch);
+            _exitBtn.DrawHomeBtn(spriteBatch);
 
             spriteBatch.End();
+        }
+
+        public void PlayBtn_Click(object sender, EventArgs e)
+        {
+            StartGameRequested = true;
+        }
+        public void SettingBtn_Click(Object sender, EventArgs e)
+        {
+
+        }
+        public void ExitBtn_Click(Object sender, EventArgs e)
+        {
+            ExitRequested = true;
         }
     }
 }

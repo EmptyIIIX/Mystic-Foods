@@ -229,6 +229,42 @@
 /processorParam:TextureFormat=Color
 /build:Customers/UnHuman/NPC3/npc3UnhumanNormal.png;Customers/UnHuman/NPC3/npc3UnhumanNormal
 
+#begin DialogueUI/Day1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DialogueUI/Day1.png
+
+#begin DialogueUI/Day2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DialogueUI/Day2.png
+
+#begin DialogueUI/Day3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DialogueUI/Day3.png
+
 #begin DialogueUI/DialogueBox.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -240,6 +276,54 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:DialogueUI/DialogueBox.png
+
+#begin DialogueUI/LogButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DialogueUI/LogButton.png
+
+#begin DialogueUI/LogInformation.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DialogueUI/LogInformation.png
+
+#begin DialogueUI/okLog.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DialogueUI/okLog.png
+
+#begin DialogueUI/Revenue.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DialogueUI/Revenue.png
 
 #begin DialogueUI/WhatButton.png
 /importer:TextureImporter
@@ -517,6 +601,18 @@
 /processorParam:TextureFormat=Color
 /build:Environments/tools/steamer1.png
 
+#begin Environments/tools/steamer2 - test.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Environments/tools/steamer2 - test.png
+
 #begin Environments/tools/steamer2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -528,6 +624,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Environments/tools/steamer2.png
+
+#begin Environments/tools/Table_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Environments/tools/Table_2.png
 
 #begin Environments/tools/Table.png
 /importer:TextureImporter
@@ -624,6 +732,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Etc/Day.png
+
+#begin Etc/HomeBtn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/HomeBtn.png
 
 #begin Etc/Money.png
 /importer:TextureImporter
@@ -757,6 +877,18 @@
 /processorParam:TextureFormat=Color
 /build:Etc/ServeBtn.png
 
+#begin Etc/steam_bar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/steam_bar.png
+
 #begin Etc/SteamBtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -876,6 +1008,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:foods/Golden Moon.png
+
+#begin foods/hitbox_dough.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:foods/hitbox_dough.png
+
+#begin foods/hitbox_filling.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:foods/hitbox_filling.png
 
 #begin foods/Jasmine Moon.png
 /importer:TextureImporter

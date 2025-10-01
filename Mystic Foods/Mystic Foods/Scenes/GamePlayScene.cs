@@ -6,7 +6,6 @@ using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
 using Mystic_Foods.Time;
 using System;
-using System.Diagnostics.Metrics;
 
 namespace Mystic_Foods
 {
@@ -16,10 +15,6 @@ namespace Mystic_Foods
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
 
-        public enum DayPhase { Dawn, Dusk, Night }
-        public static DayPhase CurrentPhase = DayPhase.Dawn;
-        Texture2D texDawn, texDusk, texNight;
-
         private SpriteFont _font;
         public bool BackToMenuRequested = false;
         public bool DnDRequested = false;
@@ -27,6 +22,7 @@ namespace Mystic_Foods
         private CustomerManager _customerManager;
         public static Customer _currentCustomer;
         private ContentManager _contentManager;
+        private DnDScene _dnDScene;
 
         public static bool served;
         public Button _servedYesButton;
@@ -46,11 +42,11 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, bgBox, dayBox, moneyBox, menuBox, profile, pauseBtn;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
+        public static Texture2D homeBtn, pauseBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D whatButton, yesButton, diaBox;
         public static Texture2D _happy, _natural, _angry;
-        public static Texture2D counterDawn, counterDusk, counterNight;
 
         public static Texture2D _rectTexture;
 
@@ -65,9 +61,7 @@ namespace Mystic_Foods
             _currentCustomer = _customerManager.GetNextCustomer();
             _patienceMeter = _patienceMeterStart;
         }
-
         public GamePlayScene() {}
-
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _contentManager = content;
@@ -77,14 +71,8 @@ namespace Mystic_Foods
             _rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             _rectTexture.SetData(new[] { Color.White });
 
-            texDawn = content.Load<Texture2D>("Environments/BG/orderBG_morning");
-            texDusk = content.Load<Texture2D>("Environments/BG/orderBG_sunset");
-            texNight = content.Load<Texture2D>("Environments/BG/orderBG_midnight");
-
-            counterDawn = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
-            counterDusk = content.Load<Texture2D>("Environments/Counter/orderCounter_sunset");
-            counterNight = content.Load<Texture2D>("Environments/Counter/orderCounter_midnight");
-
+            bg = content.Load<Texture2D>("Environments/BG/orderBG_morning");
+            counter = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
             bgBox = content.Load<Texture2D>("Etc/OutLine");
             dayBox = content.Load<Texture2D>("Etc/Day");
             moneyBox = content.Load<Texture2D>("Etc/Money");
@@ -97,6 +85,7 @@ namespace Mystic_Foods
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
             profile = content.Load<Texture2D>("Etc/Cat1");
             pauseBtn = content.Load<Texture2D>("Etc/PauseBtn");
+            homeBtn = content.Load<Texture2D>("Etc/HomeBtn");
 
             whatButton = content.Load<Texture2D>("DialogueUI/WhatButton");
             yesButton = content.Load<Texture2D>("DialogueUI/YesButton");
@@ -104,7 +93,7 @@ namespace Mystic_Foods
 
             _pauseButton = new Button(menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
             _pauseButton.Click += PauseButton_Click;
-            _menuButton = new Button(whatButton, _font, " ", new Rectangle(900, 500, 128, 63));
+            _menuButton = new Button(homeBtn, _font, " ", new Rectangle(900, 500, 100, 106));//real size (50, 53) 
             _menuButton.Click += MenuButton_Click;
             _yesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
             _yesButton.Click += YesButton_Click;
@@ -113,14 +102,12 @@ namespace Mystic_Foods
             _servedYesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
             _servedYesButton.Click += ServedYes_Click;
         }
-
         private void LoadCustomerTextures()
         {
             _textureHappy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathHappy);
             _textureNeutral = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathNeutral);
             _textureGrumpy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathGrumpy);
         }
-
         public void Update(GameTime gameTime)
         {
             var state = Keyboard.GetState();
@@ -150,15 +137,8 @@ namespace Mystic_Foods
                     LoadCustomerTextures();
                     GameManager.countDia = 2;
                 }
-                if (served == true)
-                {
-
-                }
-                else
-                {
-                    _whatButton.Update();
-                }
-
+                _whatButton.Update();
+                
                 if(served == true)
                 {
                     _servedYesButton.Update();
@@ -196,8 +176,9 @@ namespace Mystic_Foods
             //    BackToMenuRequested = true;
             //    TimeStage = 721f;
             //}
-            UpdatePhase();
-            #region pause
+
+
+            //P
             if (state.IsKeyDown(Keys.P) && _oldState.IsKeyUp(Keys.P))
             {
                 isPaused = !isPaused;
@@ -207,37 +188,15 @@ namespace Mystic_Foods
                 _oldState = state;
                 return;
             }
-            #endregion
 
-            _oldState = state;
+                _oldState = state;
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
             spriteBatch.Begin();
-
-            #region Background
-            //spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
-            //spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
-
-            Texture2D background = texDawn;
-
-            switch (CurrentPhase)
-            {
-                case DayPhase.Dawn:
-                    background = texDawn;
-                    break;
-                case DayPhase.Dusk:
-                    background = texDusk;
-                    break;
-                case DayPhase.Night:
-                    background = texNight;
-                    break;
-            }
-
-            spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-            #endregion
+            spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
 
             /*
             string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
@@ -326,25 +285,9 @@ namespace Mystic_Foods
             string patienceText = $"{_patienceMeter:0}%";
             spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Yellow);
             DrawEmotionIcon(_font, spriteBatch, EmotionPos);
-            #endregion
 
-            #region Counter
-            //Counter
-            Texture2D Counter = counterDawn;
-
-            switch (CurrentPhase)
-            {
-                case DayPhase.Dawn:
-                    Counter = counterDawn;
-                    break;
-                case DayPhase.Dusk:
-                    Counter = counterDusk;
-                    break;
-                case DayPhase.Night:
-                    Counter = counterNight;
-                    break;
-            }
-            spriteBatch.Draw(Counter, new Vector2(0, 1080 - 152), Color.White);
+            //table pos
+            spriteBatch.Draw(counter, new Vector2(0, 1080 - counter.Height), Color.White);
             #endregion
 
             #region Dialouge
@@ -364,27 +307,14 @@ namespace Mystic_Foods
             {
                 case 0:
                     spriteBatch.DrawString(_font, _currentCustomer.DiaWrong, new Vector2(1000, 300), Color.Black);
-                    if(served == true)
-                    {
-
-                    } else
-                    {
-                        _whatButton.Draw(spriteBatch);
-                    }
+                    _whatButton.Draw(spriteBatch);
                     break;
                 case 1:
                     spriteBatch.DrawString(_font, _currentCustomer.DiaCurrect, new Vector2(1000, 300), Color.Black);
                     break;
                 case 2:
                     spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, 300), Color.Black);
-                    if (served == true)
-                    {
-
-                    }
-                    else
-                    {
-                        _whatButton.Draw(spriteBatch);
-                    }
+                    _whatButton.Draw(spriteBatch);
                     break;
                 case 3:
                     spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 300), Color.Black);
@@ -446,6 +376,7 @@ namespace Mystic_Foods
         {
             GameManager.countDia = -1;
             DnDRequested = true;
+            DnDScene.cameraPos = Vector2.Zero;
         }
         private void WhatButton_Click(Object sender, EventArgs e)
         {
@@ -474,18 +405,6 @@ namespace Mystic_Foods
             LoadCustomerTextures();
             GameManager.countDia = 2;
             served = false;
-        }
-
-        public static void UpdatePhase()
-        {
-            float oneThird = TimeDefault / 3f;
-
-            if (TimeStage > 2 * oneThird)
-                CurrentPhase = DayPhase.Dawn;
-            else if (TimeStage > oneThird)
-                CurrentPhase = DayPhase.Dusk;
-            else
-                CurrentPhase = DayPhase.Night;
         }
     }
 }
