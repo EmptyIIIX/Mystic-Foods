@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using static Mystic_Foods.GamePlayScene;
 
 namespace Mystic_Foods
 {
@@ -56,6 +57,7 @@ namespace Mystic_Foods
 
         public static Texture2D boxfilling;
         public static Texture2D boxdough;
+        Texture2D bgDawn, bgDusk, bgNight;
 
         private List<Rectangle> _boxfilling = new List<Rectangle>();
         private List<Rectangle> _boxdough = new List<Rectangle>();
@@ -68,6 +70,7 @@ namespace Mystic_Foods
         {
             _gamePlayScene = new GamePlayScene();
             if (_contentLoaded) return;
+
             bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
             steam2 = content.Load<Texture2D>("Environments/tools/steamer2 - test");// test
             table = content.Load<Texture2D>("Environments/tools/Table");
@@ -111,6 +114,10 @@ namespace Mystic_Foods
 
             DnD_menuButton = new Button(GamePlayScene.homeBtn, _font, " ", new Rectangle(900, 500, 100, 106));
             DnD_menuButton.Click += DnDMenuButton_Click;
+
+            bgDawn = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
+            bgDusk = content.Load<Texture2D>("Environments/Cooking/CookingSunsetBG");
+            bgNight = content.Load<Texture2D>("Environments/Cooking/CookingMidnightBG");
 
             Globals.SpriteBatch = spriteBatch;
             _contentLoaded = true;
@@ -194,6 +201,8 @@ namespace Mystic_Foods
                 {
                     currentSteam = 0;
                 }
+
+                GamePlayScene.UpdatePhase();
                 #endregion
 
             }
@@ -240,7 +249,26 @@ namespace Mystic_Foods
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateGray);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(bg, -cameraPos, Color.White);
+
+            #region Background
+
+            Texture2D background = bgDawn;
+
+            switch (CurrentPhase)
+            {
+                case DayPhase.Dawn:
+                    background = bgDawn;
+                    break;
+                case DayPhase.Dusk:
+                    background = bgDusk;
+                    break;
+                case DayPhase.Night:
+                    background = bgNight;
+                    break;
+            }
+            //spriteBatch.Draw(bgDawn, -cameraPos, Color.White);
+            spriteBatch.Draw(background, -cameraPos, Color.White);
+            #endregion
 
             // วาด table ตาม camera
             spriteBatch.Draw(table, new Vector2(304, 143) - cameraPos, Color.White);
