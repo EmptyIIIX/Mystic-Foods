@@ -68,7 +68,6 @@ namespace Mystic_Foods.Managers
 
             if (InputManager.MouseClicked)
             {
-                Mouse.SetCursor(MouseCursor.Hand);
                 foreach (var hitbox in _hitboxes)
                 {
                     Rectangle adjustedHitbox = new Rectangle(
@@ -83,7 +82,6 @@ namespace Mystic_Foods.Managers
                         Vector2 hitCenter = new Vector2(adjustedHitbox.Center.X, adjustedHitbox.Center.Y);
 
                         _dragItem = _draggables.OrderBy(d => Vector2.Distance(d.Position, hitCenter)).FirstOrDefault();
-
                         if (_dragItem != null)
                         {
                             break;

@@ -35,7 +35,7 @@ namespace Mystic_Foods
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.IsFullScreen = false;
             Window.AllowUserResizing = true;
-            Window.IsBorderless = true;//better fullscreen
+            Window.IsBorderless = false;//better fullscreen
             _graphics.ApplyChanges();
         }
         protected override void Initialize()
@@ -90,10 +90,6 @@ namespace Mystic_Foods
                     _mainMenuScene.DnDRequested = false;
                     _currentScene = _dndScene;
                 }
-                if (_mainMenuScene.ExitRequested)
-                {
-                    Exit();
-                }
             }
             else if (_currentScene == _gamePlayScene)
             {
@@ -112,9 +108,9 @@ namespace Mystic_Foods
             else if (_currentScene == _dndScene)
             {
                 _dndScene.Update(gameTime);
-                if (_dndScene.BackToMenuRequested)
+                if (_gamePlayScene.BackToMenuRequested)
                 {
-                    _dndScene.BackToMenuRequested = false;
+                    _gamePlayScene.BackToMenuRequested = false;
                     _currentScene = _mainMenuScene;
                 }
                 if (_dndScene.ServeRequest)
@@ -128,6 +124,8 @@ namespace Mystic_Foods
                     _currentScene = _gamePlayScene;
                 }
             }
+            //Check exit game
+            if (_mainMenuScene.ExitRequested || _gamePlayScene.ExitRequest) Exit();
             #endregion
 
             base.Update(gameTime);

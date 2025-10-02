@@ -11,13 +11,14 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 360f;
+        public static float TimeDefault = 10f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
 
         private SpriteFont _font;
         public bool BackToMenuRequested = false;
         public bool DnDRequested = false;
+        public bool ExitRequest = false;
         private KeyboardState _oldState;
         private CustomerManager _customerManager;
         public static Customer _currentCustomer;
@@ -25,14 +26,15 @@ namespace Mystic_Foods
         private DnDScene _dnDScene;
 
         public static bool served;
+        public static bool isEndLv = false;
         public Button _servedYesButton;
 
         //pause
         public static bool isPaused = false;
-        public static Button _pauseButton;
-        public Button _menuButton;
+        public static Button _menuButton, _resumeButton, _homeButton, _exitButton;
         public Button _yesButton;
         public Button _whatButton;
+        public static Button _OkButton;
 
         // ระบบ Patience Meter
         public static float _patienceMeter;        // current patience
@@ -43,8 +45,9 @@ namespace Mystic_Foods
         public static Texture2D _textureGrumpy;
 
         public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
-        public static Texture2D homeBtn, pauseBtn;
+        public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn;
         public static Texture2D spriteEmoIcon;
+        public static Texture2D revenueBox;
         public static Texture2D whatButton, yesButton, diaBox;
         public static Texture2D _happy, _natural, _angry;
 
@@ -73,35 +76,47 @@ namespace Mystic_Foods
 
             bg = content.Load<Texture2D>("Environments/BG/orderBG_morning");
             counter = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
+
+            spriteEmoIcon = content.Load<Texture2D>("Emote/sprite_emotion_icon");
+
+            revenueBox = content.Load<Texture2D>("DialogueUI/Revenue");
+            okBtn = content.Load<Texture2D>("DialogueUI/okLog");
+
             bgBox = content.Load<Texture2D>("Etc/OutLine");
             dayBox = content.Load<Texture2D>("Etc/Day");
             moneyBox = content.Load<Texture2D>("Etc/Money");
-
-            spriteEmoIcon = content.Load<Texture2D>("Emote/sprite_emotion_icon");
-            //_happy = content.Load<Texture2D>("Emote/EmoteHappy");
-            //_natural = content.Load<Texture2D>("Emote/EmoteNatural");
-            //_angry = content.Load<Texture2D>("Emote/EmoteAngry");
-
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
+
             profile = content.Load<Texture2D>("Etc/Cat1");
-            pauseBtn = content.Load<Texture2D>("Etc/PauseBtn");
             homeBtn = content.Load<Texture2D>("Etc/HomeBtn");
+            exitBtn = content.Load<Texture2D>("Etc/ExitBtn");
+            resumeBtn = content.Load<Texture2D>("Etc/PauseBtn");
 
             whatButton = content.Load<Texture2D>("DialogueUI/WhatButton");
             yesButton = content.Load<Texture2D>("DialogueUI/YesButton");
             diaBox = content.Load<Texture2D>("DialogueUI/DialogueBox");
 
-            _pauseButton = new Button(menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
-            _pauseButton.Click += PauseButton_Click;
-            _menuButton = new Button(homeBtn, _font, " ", new Rectangle(900, 500, 100, 106));//real size (50, 53) 
+            _menuButton = new Button(menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
             _menuButton.Click += MenuButton_Click;
+            _homeButton = new Button(homeBtn, _font, " ", new Rectangle(1970 - menuBox.Width, menuBox.Height + 20, 100, 106));//real size (50, 53) 
+            _homeButton.Click += HomeButton_Click;
             _yesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
             _yesButton.Click += YesButton_Click;
             _whatButton = new Button(whatButton, _font, " ", new Rectangle(1550, 500, 128, 63));
             _whatButton.Click += WhatButton_Click;
             _servedYesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
             _servedYesButton.Click += ServedYes_Click;
+            _exitButton = new Button(exitBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + 80, 100, 106));// 61, 67
+            _exitButton.Click += ExitButton_Click;
+            _resumeButton = new Button(resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height, 180, 165));
+            _resumeButton.Click += ResumeButton_Click;
+
+            _OkButton = new Button(okBtn, _font, "", new Rectangle(1450, 840, 300, 150));
+            _OkButton.Click += OkEndButton_Click;
+            /*
+             */
         }
+
         private void LoadCustomerTextures()
         {
             _textureHappy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathHappy);
@@ -114,18 +129,19 @@ namespace Mystic_Foods
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //Button
-            _pauseButton.Update();
             _menuButton.Update();
 
             if (isPaused)
             {
-                #region Stop the game
+                #region Stopping the game
 
-
+                _exitButton.Update();
+                _homeButton.Update();
+                _resumeButton.Update();
 
                 #endregion
             }
-            else
+            else if (isEndLv == false) 
             {
                 #region Playing the game
 
@@ -163,10 +179,16 @@ namespace Mystic_Foods
                 //Check time out to back to mainmenu scene
                 if (TimeStage <= 0)
                 {
-                    BackToMenuRequested = true;
+                    //BackToMenuRequested = true;
+                    isEndLv = true;
                     TimeStage = TimeDefault;
                 }
                 #endregion
+            }
+            else if (isEndLv)
+            {
+                //DnDScene._okLogBtn.Update();
+                _OkButton.Update();
             }
 
 
@@ -319,9 +341,7 @@ namespace Mystic_Foods
                 case 3:
                     spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 300), Color.Black);
                     break;
-                case -1:
-                    spriteBatch.DrawString(_font, "", new Vector2(1000, 300), Color.Black);
-                    break;
+
             }
 
             #endregion
@@ -339,12 +359,20 @@ namespace Mystic_Foods
             if (isPaused)
             {
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
-
+                _resumeButton.Draw(spriteBatch);
                 //DrawString(SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
                 spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                _menuButton.Draw(spriteBatch);
+                _homeButton.Draw(spriteBatch);
+                _exitButton.Draw(spriteBatch);
             }
-            _pauseButton.Draw(spriteBatch);
+            else if (isEndLv)
+            {
+                spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
+                spriteBatch.Draw(revenueBox, new Vector2(100, 100), Color.White);
+                //DnDScene._okLogBtn.Draw(spriteBatch);
+                _OkButton.Draw(spriteBatch);
+            }
+                _menuButton.Draw(spriteBatch);
 
             spriteBatch.End();
         }
@@ -382,11 +410,11 @@ namespace Mystic_Foods
         {
             GameManager.countDia = 3;
         }
-        public void PauseButton_Click(object sender, EventArgs e)
+        public void MenuButton_Click(object sender, EventArgs e)
         {
             isPaused = !isPaused;
         }
-        public void MenuButton_Click(Object sender, EventArgs e)
+        public void HomeButton_Click(Object sender, EventArgs e)
         {
             //reset Scene
             _currentCustomer = _customerManager.GetNextCustomer();
@@ -394,6 +422,7 @@ namespace Mystic_Foods
             LoadCustomerTextures();
             TimeStage = TimeDefault;
             isPaused = false;
+            isEndLv = false;
             GameManager.countDia = 2;
 
             BackToMenuRequested = true;
@@ -406,5 +435,19 @@ namespace Mystic_Foods
             GameManager.countDia = 2;
             served = false;
         }
+        public void ResumeButton_Click(object sender, EventArgs e)
+        {
+            isPaused = false;
+        }
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            ExitRequest = true;
+        }
+        private void OkEndButton_Click(object sender, EventArgs e)
+        {
+            isEndLv = false;
+            BackToMenuRequested = true;
+        }
+
     }
 }

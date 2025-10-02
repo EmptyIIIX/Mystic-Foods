@@ -37,10 +37,10 @@ namespace Mystic_Foods
         Texture2D steam2;
         Texture2D steamBar;
         float currentSteam;
-        public Button DnD_menuButton;
 
         Texture2D LogOrder, LogInfo, Oklog;
-        public Button _logOrderBtn, _okLogBtn;
+        public Button _logOrderBtn;
+        public static Button _okLogBtn;
         public bool isLog = false;
 
         public static Button _cookingBtn, _serveBtn;
@@ -50,7 +50,6 @@ namespace Mystic_Foods
         private bool SteamRequest = false;
         private List<Rectangle> btnItemRect = new List<Rectangle>();
 
-        public bool BackToMenuRequested = false;
         public static bool isClickCook = false;
         public bool BackToGame = false;
 
@@ -106,15 +105,13 @@ namespace Mystic_Foods
             _logOrderBtn = new Button(LogOrder, _font, "", new Rectangle(1200, 0, 94, 134));
             _logOrderBtn.Click += LogBtn_Click;
 
-            _okLogBtn = new Button(Oklog, _font, "", new Rectangle(1450, 880, 300, 150));
+            _okLogBtn = new Button(Oklog, _font, "", new Rectangle(1450, 840, 300, 150));
             _okLogBtn.Click += okLogBtn_Click;
-
-            DnD_menuButton = new Button(GamePlayScene.homeBtn, _font, " ", new Rectangle(900, 500, 100, 106));
-            DnD_menuButton.Click += DnDMenuButton_Click;
 
             Globals.SpriteBatch = spriteBatch;
             _contentLoaded = true;
         }
+
         public void Update(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -125,20 +122,33 @@ namespace Mystic_Foods
             Point mousePos = mouse.Position;
 
             DragDropManager.SetCamera(cameraPos);
-            GamePlayScene._pauseButton.Update();
+            GamePlayScene._menuButton.Update();
             Globals.Update(gameTime);
+
+            if (GamePlayScene.TimeStage <= 0)
+            {
+                //_gamePlayScene.BackToMenuRequested = true;
+                GamePlayScene.TimeStage = GamePlayScene.TimeDefault;
+                GamePlayScene.isEndLv = true;
+            }
 
             if (GamePlayScene.isPaused)
             {
-                #region Stop the game
+                #region Stopping the game
 
-                DnD_menuButton.Update();
+                GamePlayScene._homeButton.Update();
+                GamePlayScene._exitButton.Update();
+                GamePlayScene._resumeButton.Update();
 
                 #endregion
             }
-            else
+            else if (GamePlayScene.isEndLv == false) 
             {
                 #region Playing the game
+
+                //TimeStage every scene
+                GamePlayScene.TimePSec = 1.0f / 60.0f;
+                GamePlayScene.TimeStage -= GamePlayScene.TimePSec;
 
                 _gameManager.Update();
 
@@ -158,12 +168,6 @@ namespace Mystic_Foods
                 
                 }
 
-                if (GamePlayScene.TimeStage <= 0)
-                {
-                    BackToMenuRequested = true;
-                    GamePlayScene.TimeStage = GamePlayScene.TimeDefault;
-                }
-
                 if (GameManager.readySteam) _cookingBtn.UpdateStaticBtn(cameraPos);
 
                 // ตรวจสอบการคลิกปุ่ม Serve เฉพาะเมื่อมีอาหาร
@@ -171,10 +175,6 @@ namespace Mystic_Foods
                 {
                     _serveBtn.UpdateStaticBtn(cameraPos);
                 }
-
-                //TimeStage every scene
-                GamePlayScene.TimePSec = 1.0f / 60.0f;
-                GamePlayScene.TimeStage -= GamePlayScene.TimePSec;
 
                 // Patience reduce logic
                 GamePlayScene._patienceMeter -= GamePlayScene._patienceDecreaseRate * deltaTime;
@@ -197,10 +197,18 @@ namespace Mystic_Foods
                 #endregion
 
             }
+            else if (GamePlayScene.isEndLv)
+            {
+                GamePlayScene._OkButton.Update();
+            }
+                //else if (GamePlayScene.isEndLv)
+                //{
+                //    GamePlayScene._OkButton.Update();
+                //}
 
-            #region scroll camera
-            // เลื่อนกล้องเมื่อเมาส์อยู่ใกล้ขอบซ้ายหรือขวา
-            Scroll = false;
+                #region scroll camera
+                // เลื่อนกล้องเมื่อเมาส์อยู่ใกล้ขอบซ้ายหรือขวา
+                Scroll = false;
             if (mouse.X <= CameraLeftBoundary2) CameraSpeed = 30f;
             else if (mouse.X <= CameraLeftBoundary1 && mouse.X > CameraLeftBoundary2) CameraSpeed = 10f;
 
@@ -225,7 +233,7 @@ namespace Mystic_Foods
             // กด ESC เพื่อกลับเมนู
             if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
             {
-                BackToMenuRequested = true;
+                _gamePlayScene.BackToMenuRequested = true;
             }
 
             _logOrderBtn.Update();
@@ -349,11 +357,18 @@ namespace Mystic_Foods
                 //DrawString(SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
                 spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-
                 // should create separate menu button
-                DnD_menuButton.Draw(spriteBatch);
+                GamePlayScene._resumeButton.Draw(spriteBatch);
+                GamePlayScene._homeButton.Draw(spriteBatch);
+                GamePlayScene._exitButton.Draw(spriteBatch);
             }
-            GamePlayScene._pauseButton.Draw(spriteBatch);
+            else if (GamePlayScene.isEndLv)
+            {
+                spriteBatch.Draw(GamePlayScene._rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
+                spriteBatch.Draw(GamePlayScene.revenueBox, new Vector2(100, 100), Color.White);
+                GamePlayScene._OkButton.Draw(spriteBatch);
+            }
+            GamePlayScene._menuButton.Draw(spriteBatch);
 
             if (cameraPos.X < 4200 - 1920) spriteBatch.Draw(ArrowCam, new Vector2(1920 - ArrowCam.Width, 540), null, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0f);//ทางขวาของจอ
             if (cameraPos.X > 0) spriteBatch.Draw(ArrowCam, new Vector2(0, 540), Color.White);//ทางซ้ายของจอ
@@ -376,20 +391,13 @@ namespace Mystic_Foods
         }
         public void LogBtn_Click(object sender, EventArgs e)
         {
-            isLog = true;
+            isLog = !isLog;
         }
         public void okLogBtn_Click(object sender, EventArgs e)
         {
             isLog = false;
+            //GamePlayScene.isEndLv = false;     for test
         }
-        public void DnDMenuButton_Click(object sender, EventArgs e)
-        {
-            //reset Scene
-            GamePlayScene._patienceMeter = GamePlayScene._patienceMeterStart;
-            GamePlayScene.TimeStage = GamePlayScene.TimeDefault;
-            GamePlayScene.isPaused = false;
 
-            BackToMenuRequested = true;
-        }
     }
 }
