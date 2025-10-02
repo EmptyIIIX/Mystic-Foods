@@ -80,7 +80,7 @@ namespace Mystic_Foods
             _creditBtn.DrawHomeBtn(spriteBatch);
             _exitBtn.DrawHomeBtn(spriteBatch);
 
-            if (CreditRequested) spriteBatch.DrawString(_font, "Hello", new Vector2(900 , 500), Color.White);
+            if (CreditRequested) spriteBatch.DrawString(_font, "Hello World!", new Vector2(960 , 540), Color.White);
 
             spriteBatch.End();
         }

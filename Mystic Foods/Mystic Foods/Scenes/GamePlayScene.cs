@@ -44,7 +44,7 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, Cat;
         public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D revenueBox;
@@ -76,6 +76,7 @@ namespace Mystic_Foods
 
             bg = content.Load<Texture2D>("Environments/BG/orderBG_morning");
             counter = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
+            Cat = content.Load<Texture2D>("Etc/Cat");
 
             spriteEmoIcon = content.Load<Texture2D>("Emote/sprite_emotion_icon");
 
@@ -218,7 +219,7 @@ namespace Mystic_Foods
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
             spriteBatch.Begin();
             spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
+            
 
             /*
             string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
@@ -280,6 +281,10 @@ namespace Mystic_Foods
             }
             spriteBatch.Draw(drawTexture, new Vector2(200, 0), null, Color.White, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
             #endregion
+            //table pos
+            spriteBatch.Draw(counter, new Vector2(0, 1080 - counter.Height), Color.White);
+            spriteBatch.Draw(Cat, new Vector2(1000, 600), Color.White);
+            spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
 
             #region UI-info
 
@@ -310,8 +315,6 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Black);
             DrawEmotionIcon(_font, spriteBatch, EmotionPos);
 
-            //table pos
-            spriteBatch.Draw(counter, new Vector2(0, 1080 - counter.Height), Color.White);
             #endregion
 
             #region Dialouge

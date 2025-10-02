@@ -74,7 +74,7 @@ namespace Mystic_Foods.Managers
             var Lotus_Texture = content.Load<Texture2D>("foods/Lotus");
 
             var plateTexture = content.Load<Texture2D>("foods/Plate");
-            var trashBinTexture = content.Load<Texture2D>("Etc/TrashBin");
+            var trashBinTexture = content.Load<Texture2D>("Etc/White_Tako");
             var wrappTexture = content.Load<Texture2D>("foods/1");
             var foodTexture = content.Load<Texture2D>("foods/3");
 
@@ -120,7 +120,7 @@ namespace Mystic_Foods.Managers
 
             _plate = new Socket(plateTexture, new(1068, 639));
             _plate2 = new Socket(plateTexture, new(4200 - 958, 644));
-            _steam1 = new Socket(steam1Texture, new(1800 + (steam1Texture.Width / 2), 460));
+            _steam1 = new Socket(steam1Texture, new(1800 + (steam1Texture.Width / 2), 520));
             _trashBin = new TrashBin(trashBinTexture, new Vector2(160, 800));
             _trashBin2 = new TrashBin(trashBinTexture, new Vector2(4000, 800));
         }
@@ -390,9 +390,9 @@ namespace Mystic_Foods.Managers
                 var changeFood = new Food(foodTexture, _steam1.Position);
                 DragDropManager.AddDraggable(changeFood);
                 _food.Add(changeFood);
+                IdFood += 10;
             }
 
-            IdFood += 10;
             isChangeFood = true;
             isDecorate = false;
             HasFood = true;

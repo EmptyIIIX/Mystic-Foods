@@ -287,22 +287,22 @@ namespace Mystic_Foods
 
                 spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 680), Color.Blue);
                 spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
+                spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
+                spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
+                spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
-                spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
-                spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
-                spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
-                spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 560), Color.Blue);
+                spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 590), Color.Blue);
                  */
 
             if (GameManager.readySteam)
             {
                 if (GameManager.countSteam > 0 && isClickCook)
                 {
-                    spriteBatch.Draw(steam2, new Vector2(1805, 85) - cameraPos, Color.White);
-                    spriteBatch.Draw(steamBar, new Vector2(2280 + (steam2.Width / 2), 200) - cameraPos, new Rectangle(0, 0, 120, 610), Color.White);
-                    spriteBatch.Draw(steamBar, new Rectangle(2280 - (int)cameraPos.X + (steam2.Width / 2), 204 - (int)cameraPos.Y, 120, (int)currentSteam), new Rectangle(120, 4, 120, 606), Color.White);
+                    spriteBatch.Draw(steam2, new Vector2(1805, 145) - cameraPos, Color.White);
+                    spriteBatch.Draw(steamBar, new Vector2(2200 + (steam2.Width / 2), 200) - cameraPos, new Rectangle(0, 0, 120, 610), Color.White);
+                    spriteBatch.Draw(steamBar, new Rectangle(2200 - (int)cameraPos.X + (steam2.Width / 2), 204 - (int)cameraPos.Y, 120, (int)currentSteam), new Rectangle(120, 4, 120, 606), Color.White);
                 }
                 else currentSteam = steamBar.Height - 4;
 
@@ -347,7 +347,7 @@ namespace Mystic_Foods
             _logOrderBtn.Draw(spriteBatch);
             if (isLog)
             {
-                spriteBatch.Draw(LogInfo, new Rectangle(160, 160, 1500, 600), Color.White); //test
+                spriteBatch.Draw(LogInfo, new Vector2(130, 160), Color.White); //test
                 _okLogBtn.Draw(spriteBatch);
             }
 
