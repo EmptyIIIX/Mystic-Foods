@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Managers;
+using Mystic_Foods.Scenes;
 using Mystic_Foods.Systems;
 
 namespace Mystic_Foods
@@ -18,6 +19,7 @@ namespace Mystic_Foods
         private MainMenuScene _mainMenuScene;
         private GamePlayScene _gamePlayScene;
         private DnDScene _dndScene;
+        private LevelSelectScene _levelSelectScene;
 
         private CustomerManager _customerManager;
         public Game1()
@@ -43,6 +45,7 @@ namespace Mystic_Foods
             _customerManager = new CustomerManager();
             _mainMenuScene = new MainMenuScene();
             _gamePlayScene = new GamePlayScene(_customerManager);
+            _levelSelectScene = new LevelSelectScene();
 
             //make it start at main menu
             _currentScene = _mainMenuScene;
@@ -71,6 +74,7 @@ namespace Mystic_Foods
             _mainMenuScene.LoadContent(Content, _spriteBatch);
             _gamePlayScene.LoadContent(Content, _spriteBatch);
             _dndScene.LoadContent(Content, _spriteBatch);
+            _levelSelectScene.LoadContent(Content, _spriteBatch);
 
         }
         protected override void Update(GameTime gameTime)
@@ -83,13 +87,23 @@ namespace Mystic_Foods
                 if (_mainMenuScene.StartGameRequested)
                 {
                     _mainMenuScene.StartGameRequested = false;
-                    _currentScene = _gamePlayScene;
+                    _currentScene = _levelSelectScene;
                 }
                 if (_mainMenuScene.DnDRequested)
                 {
                     _mainMenuScene.DnDRequested = false;
                     _currentScene = _dndScene;
                 }
+            }
+            else if (_currentScene == _levelSelectScene)
+            {
+                _levelSelectScene.Update(gameTime);
+                if (_levelSelectScene.gameplayRequest)
+                {
+                    _levelSelectScene.gameplayRequest = false;
+                    _currentScene = _gamePlayScene;
+                }
+
             }
             else if (_currentScene == _gamePlayScene)
             {
