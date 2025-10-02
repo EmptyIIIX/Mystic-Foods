@@ -961,6 +961,18 @@
 /processorParam:TextureFormat=Color
 /build:Etc/TrashBin.png
 
+#begin Etc/UIBox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/UIBox.png
+
 #begin foods/1.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -10,6 +10,9 @@ namespace Mystic_Foods.Managers
         public List<Customer> Customers2 { get; private set; }
         private int _currentIndex2 = 0;
 
+        public List<Customer> Customers3 { get; private set; }
+        private int _currentIndex3 = 0;
+
         private Random _rng = new Random();
 
         public CustomerManager()
@@ -64,6 +67,100 @@ namespace Mystic_Foods.Managers
             };
 
             Customers2 = new List<Customer>
+            {
+                new Customer {
+                    Id = 1,
+                    Name = "Banana fine shyt",
+                    IdOrder = 100,
+                    SpritePathHappy = "Customers/UnHuman/NPC1/npc1UnhumanHappy",
+                    SpritePathNeutral = "Customers/UnHuman/NPC1/npc1UnhumanNormal",
+                    SpritePathGrumpy = "Customers/UnHuman/NPC1/npc1UnhumanAngry",
+                    Dia1 = "Test the 2nd List",
+                    Dia2 = "Rice Dough with Cheese Fillings",
+                    DiaCurrect = "P2 Order correct",
+                    DiaWrong = "P2 Order wrong",
+                    DiaHappy = "Pink happy",
+                    DiaNormal = "Pink Normal",
+                    DiaAngry = "Pink Angry"
+                },
+                new Customer {
+                    Id = 2,
+                    Name = "Tall dude",
+                    IdOrder = 900,
+                    SpritePathHappy = "Customers/UnHuman/NPC2/npc2UnhumanHappy",
+                    SpritePathNeutral = "Customers/UnHuman/NPC2/npc2UnhumanNormal",
+                    SpritePathGrumpy = "Customers/UnHuman/NPC2/npc2UnhumanAngry",
+                    Dia1 = "Test 2nd List",
+                    Dia2 = "Wheat Dough with Meat Fillings",
+                    DiaCurrect = "G2 Order correct",
+                    DiaWrong = "G2 Order wrong",
+                    DiaHappy = "Granny happy",
+                    DiaNormal = "Granny Normal",
+                    DiaAngry = "Granny Angry"
+                },
+                new Customer {
+                    Id = 3,
+                    Name = "Kid",
+                    IdOrder = 900,
+                    SpritePathHappy = "Customers/UnHuman/NPC3/npc3UnhumanHappy",
+                    SpritePathNeutral = "Customers/UnHuman/NPC3/npc3UnhumanNormal",
+                    SpritePathGrumpy = "Customers/UnHuman/NPC3/npc3UnhumanAngry",
+                    Dia1 = "Test 2nd List",
+                    Dia2 = "Wheat Dough with Meat Fillings",
+                    DiaCurrect = "G2 Order correct",
+                    DiaWrong = "G2 Order wrong",
+                    DiaHappy = "Granny happy",
+                    DiaNormal = "Granny Normal",
+                    DiaAngry = "Granny Angry"
+                },
+                new Customer {
+                    Id = 4,
+                    Name = "Pink",
+                    IdOrder = 110,
+                    SpritePathHappy = "Customers/Human/NPC1/npc1HumanHappy",
+                    SpritePathNeutral = "Customers/Human/NPC1/npc1HumanNormal",
+                    SpritePathGrumpy = "Customers/Human/NPC1/npc1HumanAngry",
+                    Dia1 = "Cheese Rice",
+                    Dia2 = "Rice Dough with Cheese Fillings",
+                    DiaCurrect = "P Order correct",
+                    DiaWrong = "P Order wrong",
+                    DiaHappy = "Pink happy",
+                    DiaNormal = "Pink Normal",
+                    DiaAngry = "Pink Angry"
+                },
+                new Customer {
+                    Id = 5,
+                    Name = "Man",
+                    IdOrder = 410,
+                    SpritePathHappy = "Customers/Human/NPC2/npc2HumanHappyVer2",
+                    SpritePathNeutral = "Customers/Human/NPC2/npc2HumanNormalVer2",
+                    SpritePathGrumpy = "Customers/Human/NPC2/npc2HumanAngryVer2",
+                    Dia1 = "Meat & Corn is good",
+                    Dia2 = "Corn Dough with Meat Fillings",
+                    DiaCurrect = "M Order correct",
+                    DiaWrong = "M Order wrong",
+                    DiaHappy = "Man happy",
+                    DiaNormal = "Man Normal",
+                    DiaAngry = "Man Angry"
+                },
+                new Customer {
+                    Id = 6,
+                    Name = "Granny",
+                    IdOrder = 910,
+                    SpritePathHappy = "Customers/Human/NPC3/npc3HumanHappy",
+                    SpritePathNeutral = "Customers/Human/NPC3/npc3HumanNormal",
+                    SpritePathGrumpy = "Customers/Human/NPC3/npc3HumanAngry",
+                    Dia1 = "Wheat Meat is good",
+                    Dia2 = "Wheat Dough with Meat Fillings",
+                    DiaCurrect = "G Order correct",
+                    DiaWrong = "G Order wrong",
+                    DiaHappy = "Granny happy",
+                    DiaNormal = "Granny Normal",
+                    DiaAngry = "Granny Angry"
+                }
+            };
+
+            Customers3 = new List<Customer>
             {
                 new Customer {
                     Id = 1,
@@ -175,6 +272,12 @@ namespace Mystic_Foods.Managers
         public Customer GetNextCustomer2()
         {
             return GetNextFromList(Customers2, ref _currentIndex2);
+            //return GetRandomFromList(Customers2);
+        }
+
+        public Customer GetNextCustomer3()
+        {
+            return GetNextFromList(Customers3, ref _currentIndex3);
             //return GetRandomFromList(Customers2);
         }
 

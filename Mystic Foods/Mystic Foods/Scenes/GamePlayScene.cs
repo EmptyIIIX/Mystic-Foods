@@ -48,7 +48,7 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox;
         public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D revenueBox;
@@ -66,7 +66,7 @@ namespace Mystic_Foods
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
-            _currentCustomer = _customerManager.GetNextCustomer();
+            GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
         }
         public GamePlayScene() {}
@@ -96,6 +96,7 @@ namespace Mystic_Foods
             dayBox = content.Load<Texture2D>("Etc/Day");
             moneyBox = content.Load<Texture2D>("Etc/Money");
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
+            uiBox = content.Load<Texture2D>("UI/UIBOX");
 
             profile = content.Load<Texture2D>("Etc/Cat1");
             homeBtn = content.Load<Texture2D>("Etc/HomeBtn");
@@ -158,7 +159,7 @@ namespace Mystic_Foods
                 // random, reset Patience
                 if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
                 {
-                    _currentCustomer = _customerManager.GetNextCustomer();
+                    GetCustomerByPhase();
                     _patienceMeter = _patienceMeterStart;
                     LoadCustomerTextures();
                     GameManager.countDia = 2;
@@ -182,7 +183,7 @@ namespace Mystic_Foods
                 //Customer leave
                 if (_patienceMeter <= 0)
                 {
-                    _currentCustomer = _customerManager.GetNextCustomer();
+                    GetCustomerByPhase();
                     _patienceMeter = _patienceMeterStart;
                     LoadCustomerTextures();
                 }
@@ -230,7 +231,6 @@ namespace Mystic_Foods
 
             #region Background
             //spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
-            //spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
 
             Texture2D background = texDawn;
 
@@ -248,6 +248,13 @@ namespace Mystic_Foods
             }
 
             spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
+            #endregion
+
+            #region detailing
+            spriteBatch.Draw(uiBox, new Vector2(244, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(508, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(772, 32), Color.White);
             #endregion
 
             /*
@@ -464,7 +471,7 @@ namespace Mystic_Foods
         public void HomeButton_Click(Object sender, EventArgs e)
         {
             //reset Scene
-            _currentCustomer = _customerManager.GetNextCustomer();
+            GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
             LoadCustomerTextures();
             TimeStage = TimeDefault;
@@ -476,7 +483,7 @@ namespace Mystic_Foods
         }
         public void ServedYes_Click(Object sender, EventArgs e)
         {
-            _currentCustomer = _customerManager.GetNextCustomer();
+            GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
             LoadCustomerTextures();
             GameManager.countDia = 2;
@@ -495,6 +502,20 @@ namespace Mystic_Foods
             isEndLv = false;
             BackToMenuRequested = true;
         }
-
+        public void GetCustomerByPhase()
+        {
+            switch (CurrentPhase)
+            {
+                case DayPhase.Dawn:
+                    _currentCustomer = _customerManager.GetNextCustomer();
+                    break;
+                case DayPhase.Dusk:
+                    _currentCustomer = _customerManager.GetNextCustomer2();
+                    break;
+                case DayPhase.Night:
+                    _currentCustomer = _customerManager.GetNextCustomer3();
+                    break;
+            }
+        }
     }
 }
