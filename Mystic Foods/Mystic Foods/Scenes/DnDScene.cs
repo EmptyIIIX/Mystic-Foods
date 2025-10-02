@@ -282,10 +282,10 @@ namespace Mystic_Foods
 
             spriteBatch.Begin();
 
+                /*
             spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
 
                 spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 680), Color.Blue);
-                /*
                 spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
                 spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
                 spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
@@ -293,6 +293,7 @@ namespace Mystic_Foods
                 spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
                 spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
                 spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
+                spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 560), Color.Blue);
                  */
 
             if (GameManager.readySteam)
@@ -324,7 +325,7 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(GamePlayScene.profile.Width + 135, (GamePlayScene.menuBox.Height / 5) + 20), Color.Black);
             //time
             string Time = $"{(int)GamePlayScene.TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 145, (GamePlayScene.menuBox.Height / 5) + 55), Color.Blue);
+            spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 145, (GamePlayScene.menuBox.Height / 5) + 55), Color.Black);
 
             /* สำรองไว้ก่อน
             spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
@@ -332,13 +333,13 @@ namespace Mystic_Foods
             */
 
             spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + (GamePlayScene.moneyBox.Width / 2) + 35, (GamePlayScene.menuBox.Height / 5) + 36), Color.Yellow);
+            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + (GamePlayScene.moneyBox.Width / 2) + 35, (GamePlayScene.menuBox.Height / 5) + 36), Color.Black);
 
             Vector2 EmotionPos = new Vector2(GamePlayScene.moneyBox.Width + GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5);
             Vector2 percentPantiencePos = new Vector2(EmotionPos.X + 145, GamePlayScene.menuBox.Height / 5 + 36);
 
             string patienceText = $"{GamePlayScene._patienceMeter:0}%";
-            spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Yellow);
+            spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Black);
             GamePlayScene.DrawEmotionIcon(_font, spriteBatch, EmotionPos);
 
             #endregion
@@ -346,7 +347,7 @@ namespace Mystic_Foods
             _logOrderBtn.Draw(spriteBatch);
             if (isLog)
             {
-                spriteBatch.Draw(LogInfo, new Vector2(130, 160), Color.White);
+                spriteBatch.Draw(LogInfo, new Rectangle(160, 160, 1500, 600), Color.White); //test
                 _okLogBtn.Draw(spriteBatch);
             }
 

@@ -11,7 +11,7 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 10f;
+        public static float TimeDefault = 120f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
 
@@ -234,14 +234,16 @@ namespace Mystic_Foods
             {
 
                 //Customer stats
-                //string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
+                /*
+                string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
                 string cust = $"Name: {_currentCustomer.Name}";
                 Vector2 custPos = new Vector2(100, 180);
                 spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
+                use rectangle to adjust scale
+                0.9(855, 972) 0.8(760, 864)
+                 */
 
-                //use rectangle to adjust scale
-                //0.9(855, 972) 0.8(760, 864)
-                
+
             }
 
             #region Customer
@@ -289,7 +291,7 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 135, (menuBox.Height / 5) + 20), Color.Black);
             //time
             string Time = $"{(int)TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 145, (menuBox.Height / 5) + 55), Color.Blue);
+            spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 145, (menuBox.Height / 5) + 55), Color.Black);
 
             /* สำรองไว้ก่อน
             spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
@@ -297,7 +299,7 @@ namespace Mystic_Foods
             */
 
             spriteBatch.Draw(moneyBox, new Vector2(profile.Width + dayBox.Width + 10, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(profile.Width + dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 36), Color.Yellow);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(profile.Width + dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 36), Color.Black);
 
             //Draw Emotion
             // แสดงค่า Patience Meter
@@ -305,7 +307,7 @@ namespace Mystic_Foods
             Vector2 percentPantiencePos = new Vector2(EmotionPos.X + 145, menuBox.Height / 5 + 36);
 
             string patienceText = $"{_patienceMeter:0}%";
-            spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Yellow);
+            spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Black);
             DrawEmotionIcon(_font, spriteBatch, EmotionPos);
 
             //table pos
@@ -346,14 +348,14 @@ namespace Mystic_Foods
 
             #endregion
 
-            spriteBatch.DrawString(_font, $" IdOrder : {_currentCustomer.IdOrder}", new Vector2(1000, 400), Color.Black);
             /*
+            spriteBatch.DrawString(_font, $" IdOrder : {_currentCustomer.IdOrder}", new Vector2(1000, 400), Color.Black);
             spriteBatch.DrawString(_font, $" CurrectOrder : {GameManager.IsCurrectOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 200), Color.Black);
 
             string TimeS = $"\nTimePerSec: {TimePSec}";
-            */
             spriteBatch.DrawString(_font, $"Count Dialogue : {GameManager.countDia}", new Vector2(100, 300), Color.Blue);
-            //spriteBatch.DrawString(_font, $"_what : {_what}", new Vector2(100, 400), Color.Blue);
+            spriteBatch.DrawString(_font, $"_what : {_what}", new Vector2(100, 400), Color.Blue);
+            */
 
 
             if (isPaused)
@@ -361,7 +363,7 @@ namespace Mystic_Foods
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
                 _resumeButton.Draw(spriteBatch);
                 //DrawString(SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
-                spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                //spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 _homeButton.Draw(spriteBatch);
                 _exitButton.Draw(spriteBatch);
             }
