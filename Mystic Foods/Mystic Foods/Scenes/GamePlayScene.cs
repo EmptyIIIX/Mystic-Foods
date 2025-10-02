@@ -59,9 +59,12 @@ namespace Mystic_Foods
         public static Texture2D _rectTexture;
 
         public static float TotalMoney = 100.0f;
+        public static float Revenue = 0.0f;
+        public static float Cost = 0.0f;
         public static float pay;
-        public static float price = 120.0f;
+        public static float price = 40.0f;
         public static float weight = 0.0f;
+        public static float Profit = 0.0f;
 
         public GamePlayScene(CustomerManager cm)
         {
@@ -256,11 +259,7 @@ namespace Mystic_Foods
             spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
             #endregion
 
-            #region detailing
-            spriteBatch.Draw(uiBox, new Vector2(244, 32), Color.White);
-            spriteBatch.Draw(uiBox, new Vector2(508, 32), Color.White);
-            spriteBatch.Draw(uiBox, new Vector2(772, 32), Color.White);
-            #endregion
+
 
             /*
             string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
@@ -319,7 +318,7 @@ namespace Mystic_Foods
             }
             spriteBatch.Draw(drawTexture, new Vector2(200, 0), null, Color.White, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
             #endregion
-            
+
             #region Counter
             //Counter
             Texture2D Counter = counterDawn;
@@ -337,12 +336,18 @@ namespace Mystic_Foods
                     break;
             }
             spriteBatch.Draw(Counter, new Vector2(0, 1080 - 152), Color.White);
-            #endregion
             //table pos
             spriteBatch.Draw(Cat, new Vector2(1000, 600), Color.White);
             spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
+            #endregion
 
-            #region UI-info
+            #region UI
+
+            #region detailing
+            spriteBatch.Draw(uiBox, new Vector2(244, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(508, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(772, 32), Color.White);
+            #endregion
 
             //profile
             spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
@@ -427,8 +432,12 @@ namespace Mystic_Foods
             }
             else if (isEndLv)
             {
+                Profit = Revenue - Cost;
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
                 spriteBatch.Draw(revenueBox, new Vector2(100, 100), Color.White);
+                spriteBatch.DrawString(_font, $"{Revenue}", new Vector2(1250, 350), Color.Green);
+                spriteBatch.DrawString(_font, $"{Cost}", new Vector2(1250, 460), Color.Red);
+                spriteBatch.DrawString(_font, $"{Profit}", new Vector2(1250, 720), Color.Black);
                 //DnDScene._okLogBtn.Draw(spriteBatch);
                 _OkButton.Draw(spriteBatch);
             }

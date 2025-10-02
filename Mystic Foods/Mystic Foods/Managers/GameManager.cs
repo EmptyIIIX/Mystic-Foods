@@ -343,7 +343,8 @@ namespace Mystic_Foods.Managers
             // รีเซ็ต IdFilling, IdDough, และ IdFood หลังสร้างอาหาร
             IdFilling = 0;
             IdDough = 0;
-            GamePlayScene.TotalMoney -= 10;
+            GamePlayScene.Cost += 20;
+            GamePlayScene.TotalMoney -= 20;
             dough.SetOnPlate(false);
         }
         public void ChangeFood(Food food)
@@ -406,6 +407,7 @@ namespace Mystic_Foods.Managers
             {
                 countDia = 1;
                 GamePlayScene.pay = GamePlayScene.price * GamePlayScene.weight;
+                GamePlayScene.Revenue += GamePlayScene.pay;
                 GamePlayScene.TotalMoney += GamePlayScene.pay;
             }
             else

@@ -365,8 +365,12 @@ namespace Mystic_Foods
             }
             else if (GamePlayScene.isEndLv)
             {
+                GamePlayScene.Profit = GamePlayScene.Revenue - GamePlayScene.Cost;
                 spriteBatch.Draw(GamePlayScene._rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
                 spriteBatch.Draw(GamePlayScene.revenueBox, new Vector2(100, 100), Color.White);
+                spriteBatch.DrawString(_font, $"{GamePlayScene.Revenue}", new Vector2(1250, 350), Color.Green);
+                spriteBatch.DrawString(_font, $"{GamePlayScene.Cost}", new Vector2(1250, 460), Color.Red);
+                spriteBatch.DrawString(_font, $"{GamePlayScene.Profit}", new Vector2(1250, 720), Color.Black);
                 GamePlayScene._OkButton.Draw(spriteBatch);
             }
             GamePlayScene._menuButton.Draw(spriteBatch);
