@@ -48,8 +48,7 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, Cat;
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox, Cat;
         public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D revenueBox;
@@ -273,21 +272,18 @@ namespace Mystic_Foods
                 Color.Black);
              */
             // Show Customer data
+                /*
             if (_currentCustomer != null)
             {
-
                 //Customer stats
-                /*
                 string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
                 string cust = $"Name: {_currentCustomer.Name}";
                 Vector2 custPos = new Vector2(100, 180);
                 spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
                 use rectangle to adjust scale
                 0.9(855, 972) 0.8(760, 864)
-                 */
-
-
             }
+                 */
 
             #region Customer
             Texture2D drawTexture = _textureNeutral;
@@ -323,8 +319,26 @@ namespace Mystic_Foods
             }
             spriteBatch.Draw(drawTexture, new Vector2(200, 0), null, Color.White, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
             #endregion
+            
+            #region Counter
+            //Counter
+            Texture2D Counter = counterDawn;
+
+            switch (CurrentPhase)
+            {
+                case DayPhase.Dawn:
+                    Counter = counterDawn;
+                    break;
+                case DayPhase.Dusk:
+                    Counter = counterDusk;
+                    break;
+                case DayPhase.Night:
+                    Counter = counterNight;
+                    break;
+            }
+            spriteBatch.Draw(Counter, new Vector2(0, 1080 - 152), Color.White);
+            #endregion
             //table pos
-            spriteBatch.Draw(counter, new Vector2(0, 1080 - counter.Height), Color.White);
             spriteBatch.Draw(Cat, new Vector2(1000, 600), Color.White);
             spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
 
@@ -356,25 +370,6 @@ namespace Mystic_Foods
             string patienceText = $"{_patienceMeter:0}%";
             spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Black);
             DrawEmotionIcon(_font, spriteBatch, EmotionPos);
-            #endregion
-
-            #region Counter
-            //Counter
-            Texture2D Counter = counterDawn;
-
-            switch (CurrentPhase)
-            {
-                case DayPhase.Dawn:
-                    Counter = counterDawn;
-                    break;
-                case DayPhase.Dusk:
-                    Counter = counterDusk;
-                    break;
-                case DayPhase.Night:
-                    Counter = counterNight;
-                    break;
-            }
-            spriteBatch.Draw(Counter, new Vector2(0, 1080 - 152), Color.White);
             #endregion
 
             #region Dialouge
