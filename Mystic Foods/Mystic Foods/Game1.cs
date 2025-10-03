@@ -103,7 +103,11 @@ namespace Mystic_Foods
                     _levelSelectScene.gameplayRequest = false;
                     _currentScene = _gamePlayScene;
                 }
-
+                if (_levelSelectScene.MenuRequest)
+                {
+                    _levelSelectScene.MenuRequest = false;
+                    _currentScene = _mainMenuScene;
+                }
             }
             else if (_currentScene == _gamePlayScene)
             {

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Mystic_Foods.Scenes
 {
@@ -16,13 +17,13 @@ namespace Mystic_Foods.Scenes
     {
         private GraphicsDeviceManager _graphics;
         private SpriteFont _font;
-        private Texture2D _buttonTexture;
+        private Texture2D dayBtn, duskBtn, nightBtn, homeBtn;
 
         public bool MenuRequest = false;
         public bool gameplayRequest = false;
 
         Texture2D bg;
-        Button dayButton, duskButton, nightButton;
+        Button dayButton, duskButton, nightButton, homeButton;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
@@ -30,14 +31,19 @@ namespace Mystic_Foods.Scenes
 
             bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
-            _buttonTexture = content.Load<Texture2D>("Etc/HomeBtn");
+            homeBtn = content.Load<Texture2D>("Etc/option_exit");
+            dayBtn = content.Load<Texture2D>("Etc/dayBtn");
+            duskBtn = content.Load<Texture2D>("Etc/duskBtn");
+            nightBtn = content.Load<Texture2D>("Etc/nightBtn");
 
-            dayButton = new Button(_buttonTexture, _font, "Day", new Rectangle(100, 200, 200, 60));
+            dayButton = new Button(dayBtn, _font, "", new Rectangle(240, 375, 360, 640));
             dayButton.Click += DayButton_Click;
-            duskButton = new Button(_buttonTexture, _font, "Dusk", new Rectangle(100, 280, 200, 60));
+            duskButton = new Button(duskBtn, _font, "", new Rectangle(780, 375, 360, 640));
             duskButton.Click += DuskButton_Click;
-            nightButton = new Button(_buttonTexture, _font, "Night", new Rectangle(100, 360, 200, 60));
+            nightButton = new Button(nightBtn, _font, "", new Rectangle(1320, 375, 360, 640));
             nightButton.Click += NightButton_Click;
+            homeButton = new Button(homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
+            homeButton.Click += HomeButton_Click;
         }
 
         public void Update(GameTime gameTime)
@@ -48,8 +54,8 @@ namespace Mystic_Foods.Scenes
             dayButton.Update();
             duskButton.Update();
             nightButton.Update();
+            homeButton.Update();
 
-            // กด Esc เพื่อกลับเมนู
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 MenuRequest = true;
@@ -58,17 +64,35 @@ namespace Mystic_Foods.Scenes
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            // ใช้ GraphicsDevice จาก spriteBatch เพื่อ clear หน้าจอ
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateBlue);
 
-            spriteBatch.Begin();
+            string text = "Choose the opening hours";
+            float scale = 3.0f;
 
+            // วัดขนาดข้อความหลัง scale
+            Vector2 textSize = _font.MeasureString(text) * scale;
+
+            // ใช้ GraphicsDevice จาก spriteBatch
+            int screenWidth = spriteBatch.GraphicsDevice.Viewport.Width;
+            int screenHeight = spriteBatch.GraphicsDevice.Viewport.Height;
+
+            // คำนวณตำแหน่งให้อยู่กลางจอ
+            Vector2 position = new Vector2((screenWidth - textSize.X) / 2f,100);
+
+            spriteBatch.Begin();
             spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
+
+            spriteBatch.DrawString(_font, text, position, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
             dayButton.Draw(spriteBatch);
             duskButton.Draw(spriteBatch);
             nightButton.Draw(spriteBatch);
+            homeButton.Draw(spriteBatch);
 
             spriteBatch.End();
         }
+
         private void DayButton_Click(object sender, EventArgs e)
         {
             gameplayRequest = true;
@@ -85,6 +109,10 @@ namespace Mystic_Foods.Scenes
         {
             gameplayRequest = true;
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Night;
+        }
+        public void HomeButton_Click(object sender, EventArgs e)
+        {
+            MenuRequest = true;
         }
     }
 }

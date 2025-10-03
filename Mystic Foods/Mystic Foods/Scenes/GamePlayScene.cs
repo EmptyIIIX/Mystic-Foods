@@ -256,7 +256,7 @@ namespace Mystic_Foods
             }
 
             spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
+            //spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
             #endregion
 
 
@@ -338,7 +338,7 @@ namespace Mystic_Foods
             spriteBatch.Draw(Counter, new Vector2(0, 1080 - 152), Color.White);
             //table pos
             spriteBatch.Draw(Cat, new Vector2(1000, 600), Color.White);
-            spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
             #endregion
 
             #region UI
