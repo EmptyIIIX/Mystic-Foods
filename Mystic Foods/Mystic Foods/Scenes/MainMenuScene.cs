@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,7 @@ namespace Mystic_Foods
         public bool DnDRequested = false;
         public bool ExitRequested = false; //check if exit game
         public bool CreditRequested = false;
+        public bool SettingRequested = false;
 
         public Texture2D NameTitle;
         public Texture2D PlayBtn, SettingBtn, CreditBtn, ExitBtn;
@@ -42,15 +45,15 @@ namespace Mystic_Foods
 
             _playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
             _playBtn.Click += PlayBtn_Click;
-
             _settingBtn = new Button(SettingBtn, _font, "", new Rectangle(225, 400 + PlayBtn.Height + 20, 512, 100));
             _settingBtn.Click += SettingBtn_Click;
-
             _creditBtn = new Button(CreditBtn, _font, "", new Rectangle(225, 400 + (PlayBtn.Height * 2) + 40, 512, 100));
             _creditBtn.Click += CreditBtn_Click;
-
             _exitBtn = new Button(ExitBtn, _font, "", new Rectangle(1920 - ExitBtn.Width - 20, 1080 - ExitBtn.Height - 20, 80, 100));
             _exitBtn.Click += ExitBtn_Click;
+
+            MediaPlayer.IsRepeating = true;
+            SoundManager.PlaySong("mainmenu");
         }
 
         public void Update(GameTime gameTime)
@@ -85,20 +88,28 @@ namespace Mystic_Foods
             spriteBatch.End();
         }
 
-        public void PlayBtn_Click(object sender, EventArgs e)
+        public async void PlayBtn_Click(object sender, EventArgs e)
         {
+            SoundManager.PlaySfx("Click");
+            await Task.Delay(100);
             StartGameRequested = true;
         }
-        public void SettingBtn_Click(object sender, EventArgs e)
+        public async void SettingBtn_Click(object sender, EventArgs e)
         {
-
+            SoundManager.PlaySfx("Click");
+            await Task.Delay(100);
+            SettingRequested = true;
         }
-        public void CreditBtn_Click(object sender, EventArgs e)
+        public async void CreditBtn_Click(object sender, EventArgs e)
         {
+            SoundManager.PlaySfx("Click");
+            await Task.Delay(100);
             CreditRequested = !CreditRequested;
         }
-        public void ExitBtn_Click(object sender, EventArgs e)
+        public async void ExitBtn_Click(object sender, EventArgs e)
         {
+            SoundManager.PlaySfx("Click");
+            await Task.Delay(200);
             ExitRequested = true;
         }
     }

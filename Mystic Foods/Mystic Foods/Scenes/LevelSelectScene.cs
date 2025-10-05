@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
 using System;
 using System.Collections.Generic;
@@ -32,15 +35,15 @@ namespace Mystic_Foods.Scenes
             bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
             homeBtn = content.Load<Texture2D>("Etc/option_exit");
-            dayBtn = content.Load<Texture2D>("Etc/dayBtn");
-            duskBtn = content.Load<Texture2D>("Etc/duskBtn");
-            nightBtn = content.Load<Texture2D>("Etc/nightBtn");
+            dayBtn = content.Load<Texture2D>("LevelUI/Morning");
+            duskBtn = content.Load<Texture2D>("LevelUI/Evening");
+            nightBtn = content.Load<Texture2D>("LevelUI/Night");
 
-            dayButton = new Button(dayBtn, _font, "", new Rectangle(240, 375, 360, 640));
+            dayButton = new Button(dayBtn, _font, "", new Rectangle(134, 275, 446, 756));
             dayButton.Click += DayButton_Click;
-            duskButton = new Button(duskBtn, _font, "", new Rectangle(780, 375, 360, 640));
+            duskButton = new Button(duskBtn, _font, "", new Rectangle(737, 275, 446, 756));
             duskButton.Click += DuskButton_Click;
-            nightButton = new Button(nightBtn, _font, "", new Rectangle(1320, 375, 360, 640));
+            nightButton = new Button(nightBtn, _font, "", new Rectangle(1340, 275, 446, 756));
             nightButton.Click += NightButton_Click;
             homeButton = new Button(homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
             homeButton.Click += HomeButton_Click;
@@ -93,25 +96,33 @@ namespace Mystic_Foods.Scenes
             spriteBatch.End();
         }
 
-        private void DayButton_Click(object sender, EventArgs e)
+        private async void DayButton_Click(object sender, EventArgs e)
         {
-            gameplayRequest = true;
+            SoundManager.PlaySfx("Button");
+            await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dawn;
+            gameplayRequest = true;
         }
 
-        private void DuskButton_Click(object sender, EventArgs e)
+        private async void DuskButton_Click(object sender, EventArgs e)
         {
-            gameplayRequest = true;
+            SoundManager.PlaySfx("Button");
+            await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dusk;
+            gameplayRequest = true;
         }
 
-        private void NightButton_Click(object sender, EventArgs e)
+        private async void NightButton_Click(object sender, EventArgs e)
         {
-            gameplayRequest = true;
+            SoundManager.PlaySfx("Button");
+            await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Night;
+            gameplayRequest = true;
         }
-        public void HomeButton_Click(object sender, EventArgs e)
+        public async void HomeButton_Click(object sender, EventArgs e)
         {
+            SoundManager.PlaySfx("Click");
+            await Task.Delay(100);
             MenuRequest = true;
         }
     }
