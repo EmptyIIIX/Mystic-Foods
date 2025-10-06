@@ -11,7 +11,7 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 4f;
+        public static float TimeDefault = 121f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
 
@@ -48,7 +48,7 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox, Cat;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox;
         public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D revenueBox;
@@ -85,7 +85,7 @@ namespace Mystic_Foods
 
             bg = content.Load<Texture2D>("Environments/BG/orderBG_morning");
             counter = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
-            Cat = content.Load<Texture2D>("Etc/Cat");
+            //Cat = content.Load<Texture2D>("Etc/Cat");
             texDawn = content.Load<Texture2D>("Environments/BG/orderBG_morning");
             texDusk = content.Load<Texture2D>("Environments/BG/orderBG_sunset");
             texNight = content.Load<Texture2D>("Environments/BG/orderBG_midnight");
@@ -348,9 +348,9 @@ namespace Mystic_Foods
                     Counter = counterNight;
                     break;
             }
-            spriteBatch.Draw(Counter, new Vector2(0, 1080 - 152), Color.White);
+            spriteBatch.Draw(Counter, new Vector2(0, 1080 - Counter.Height), Color.White);
             //table pos
-            spriteBatch.Draw(Cat, new Vector2(1000, 600), Color.White);
+            //spriteBatch.Draw(Cat, new Vector2(1000, 600), Color.White);
             spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
             #endregion
 
