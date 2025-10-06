@@ -36,11 +36,11 @@ namespace Mystic_Foods.Scenes
             duskBtn = content.Load<Texture2D>("Etc/duskBtn");
             nightBtn = content.Load<Texture2D>("Etc/nightBtn");
 
-            dayButton = new Button(dayBtn, _font, "", new Rectangle(240, 375, 360, 640));
+            dayButton = new Button(dayBtn, _font, "", new Rectangle(240, 300, 360, 640));
             dayButton.Click += DayButton_Click;
-            duskButton = new Button(duskBtn, _font, "", new Rectangle(780, 375, 360, 640));
+            duskButton = new Button(duskBtn, _font, "", new Rectangle(780, 300, 360, 640));
             duskButton.Click += DuskButton_Click;
-            nightButton = new Button(nightBtn, _font, "", new Rectangle(1320, 375, 360, 640));
+            nightButton = new Button(nightBtn, _font, "", new Rectangle(1320, 300, 360, 640));
             nightButton.Click += NightButton_Click;
             homeButton = new Button(homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
             homeButton.Click += HomeButton_Click;

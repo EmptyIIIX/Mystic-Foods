@@ -40,6 +40,8 @@ namespace Mystic_Foods
             CreditBtn = content.Load<Texture2D>("Etc/option_credit");
             ExitBtn = content.Load<Texture2D>("Etc/option_exit");
 
+            //_playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
+            //_playBtn.Click += PlayBtn_Click;
             _playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
             _playBtn.Click += PlayBtn_Click;
 

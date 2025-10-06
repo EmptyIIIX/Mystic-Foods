@@ -66,7 +66,9 @@ namespace Mystic_Foods
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _gamePlayScene = new GamePlayScene();
+
             if (_contentLoaded) return;
+
             bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
             steam2 = content.Load<Texture2D>("Environments/tools/steamer2 - test");// test
             table = content.Load<Texture2D>("Environments/tools/Table");
@@ -139,6 +141,11 @@ namespace Mystic_Foods
                 GamePlayScene._homeButton.Update();
                 GamePlayScene._exitButton.Update();
                 GamePlayScene._resumeButton.Update();
+                if (GamePlayScene.isClickExit)
+                {
+                    GamePlayScene._yesExit.Update();
+                    GamePlayScene._noExit.Update();
+                }
 
                 #endregion
             }
@@ -282,19 +289,20 @@ namespace Mystic_Foods
 
             spriteBatch.Begin();
 
-                /*
-            spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
+            /*
+        spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
 
-                spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 680), Color.Blue);
-                spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
-                spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
-                spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
-                spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
-                spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
-                spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
-                spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
-                spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 590), Color.Blue);
-                 */
+            spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 680), Color.Blue);
+            spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
+            spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
+            spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
+            spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
+            spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
+            spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
+            spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
+            spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 590), Color.Blue);
+            spriteBatch.DrawString(_font, $"CounDia : {GameManager.countDia}", new Vector2(500, 590), Color.Blue);
+             */
 
             if (GameManager.readySteam)
             {
@@ -348,8 +356,18 @@ namespace Mystic_Foods
             if (isLog)
             {
                 spriteBatch.Draw(LogInfo, new Vector2(130, 160), Color.White); //test
+                if (GameManager.countDia == 3)
+                {
+                    spriteBatch.DrawString(_font, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
+                    spriteBatch.DrawString(_font, "2. " + GamePlayScene._currentCustomer.Dia2, new Vector2(400, 400), Color.Black);
+
+                }
+                else spriteBatch.DrawString(_font, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
                 _okLogBtn.Draw(spriteBatch);
             }
+
+            if (cameraPos.X < 4200 - 1920) spriteBatch.Draw(ArrowCam, new Vector2(1920 - ArrowCam.Width, 540), null, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0f);//ทางขวาของจอ
+            if (cameraPos.X > 0) spriteBatch.Draw(ArrowCam, new Vector2(0, 540), Color.White);//ทางซ้ายของจอ
 
             if (GamePlayScene.isPaused)
             {
@@ -362,6 +380,12 @@ namespace Mystic_Foods
                 GamePlayScene._resumeButton.Draw(spriteBatch);
                 GamePlayScene._homeButton.Draw(spriteBatch);
                 GamePlayScene._exitButton.Draw(spriteBatch);
+                if (GamePlayScene.isClickExit)
+                {
+                    spriteBatch.Draw(GamePlayScene.logExit, new Rectangle(448, 263, 1024, 534), Color.White);
+                    GamePlayScene._yesExit.Draw(spriteBatch);
+                    GamePlayScene._noExit.Draw(spriteBatch);
+                }
             }
             else if (GamePlayScene.isEndLv)
             {
@@ -375,8 +399,6 @@ namespace Mystic_Foods
             }
             GamePlayScene._menuButton.Draw(spriteBatch);
 
-            if (cameraPos.X < 4200 - 1920) spriteBatch.Draw(ArrowCam, new Vector2(1920 - ArrowCam.Width, 540), null, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0f);//ทางขวาของจอ
-            if (cameraPos.X > 0) spriteBatch.Draw(ArrowCam, new Vector2(0, 540), Color.White);//ทางซ้ายของจอ
             spriteBatch.End();
         }
         public void CookingBtn_Click(object sender, EventArgs e)

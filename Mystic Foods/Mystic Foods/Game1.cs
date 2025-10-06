@@ -20,8 +20,11 @@ namespace Mystic_Foods
         private GamePlayScene _gamePlayScene;
         private DnDScene _dndScene;
         private LevelSelectScene _levelSelectScene;
+        private TutorialScene _tutorialScene;
 
         private CustomerManager _customerManager;
+
+        public static bool wasTutorial = false;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -46,6 +49,7 @@ namespace Mystic_Foods
             _mainMenuScene = new MainMenuScene();
             _gamePlayScene = new GamePlayScene(_customerManager);
             _levelSelectScene = new LevelSelectScene();
+            _tutorialScene = new TutorialScene();
 
             //make it start at main menu
             _currentScene = _mainMenuScene;
@@ -75,6 +79,7 @@ namespace Mystic_Foods
             _gamePlayScene.LoadContent(Content, _spriteBatch);
             _dndScene.LoadContent(Content, _spriteBatch);
             _levelSelectScene.LoadContent(Content, _spriteBatch);
+            _tutorialScene.LoadContent(Content, _spriteBatch);
 
         }
         protected override void Update(GameTime gameTime)
@@ -84,15 +89,31 @@ namespace Mystic_Foods
             if (_currentScene == _mainMenuScene)
             {
                 _mainMenuScene.Update(gameTime);
-                if (_mainMenuScene.StartGameRequested)
+                if (_mainMenuScene.StartGameRequested && wasTutorial == false)
+                {
+                    _mainMenuScene.StartGameRequested = false;
+                    //_currentScene = _levelSelectScene;
+                    _currentScene = _tutorialScene;
+                }
+                else if (_mainMenuScene.StartGameRequested && wasTutorial)
                 {
                     _mainMenuScene.StartGameRequested = false;
                     _currentScene = _levelSelectScene;
                 }
+
                 if (_mainMenuScene.DnDRequested)
                 {
                     _mainMenuScene.DnDRequested = false;
                     _currentScene = _dndScene;
+                }
+            }
+            else if(_currentScene == _tutorialScene)
+            {
+                _tutorialScene.Update(gameTime);
+                if (TutorialScene.isExitPage)
+                {
+                    _currentScene = _levelSelectScene;
+                    TutorialScene.isExitPage = false;
                 }
             }
             else if (_currentScene == _levelSelectScene)

@@ -41,13 +41,13 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Customers/Human/NPC2/npc2HumanHappyVer2",
                     SpritePathNeutral = "Customers/Human/NPC2/npc2HumanNormalVer2",
                     SpritePathGrumpy = "Customers/Human/NPC2/npc2HumanAngryVer2",
-                    Dia1 = "I’d like the soft white one that smells like flowers with coconut.",
-                    Dia2 = "Jasmine Moon Dough with Coconut Amber filling",
+                    Dia1 = "I’d like the soft white one that smells like \nflowers with coconut.",
+                    Dia2 = "Jasmine Moon Dough with Coconut Amber \nfilling",
                     DiaCurrect = "Nice.",
                     DiaWrong = "Wrong. Completely wrong.",
                     DiaHappy = "Nice.",
                     DiaNormal = "Hmph. Fine.",
-                    DiaAngry = "Seriously? I could’ve made it myself faster."
+                    DiaAngry = "Seriously? I could’ve made it myself \nfaster."
                 },
                 new Customer {
                     Id = 3,
@@ -57,12 +57,12 @@ namespace Mystic_Foods.Managers
                     SpritePathNeutral = "Customers/Human/NPC3/npc3HumanNormal",
                     SpritePathGrumpy = "Customers/Human/NPC3/npc3HumanAngry",
                     Dia1 = "The jasmine dough, paired with lotus root.",
-                    Dia2 = "Yes, Jasmine Moon Dough with Lotus Root Spirit Filling.",
+                    Dia2 = "Yes, Jasmine Moon Dough with Lotus Root \nSpirit Filling.",
                     DiaCurrect = "Well, that’s… acceptable, I suppose.",
                     DiaWrong = "G Order wrong",
-                    DiaHappy = "Tch… quick hands. Don’t think that makes you better than me.",
+                    DiaHappy = "Tch… quick hands. Don’t think that \nmakes you better than me.",
                     DiaNormal = "Well, that’s… acceptable, I suppose.",
-                    DiaAngry = "Even a turtle could cook faster than you."
+                    DiaAngry = "Even a turtle could cook faster \nthan you."
                 }
             };
 
@@ -75,13 +75,13 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Customers/Human/NPC1/npc1HumanHappy",
                     SpritePathNeutral = "Customers/Human/NPC1/npc1HumanNormal",
                     SpritePathGrumpy = "Customers/Human/NPC1/npc1HumanAngry",
-                    Dia1 = "I’ll take the pink one… the one with the fragrant green cream.",
+                    Dia1 = "I’ll take the pink one… the one with the \nfragrant green cream.",
                     Dia2 = "Yes, Lotus Blossom with Pandan Taro cream.",
                     DiaCurrect = "Thank you so much, it smells wonderful.",
                     DiaWrong = "Hmm… thank you, but I think something is \nmissing.",
                     DiaHappy = "Thank you so much, it smells wonderful.",
                     DiaNormal = "Thank you, it looks nice.",
-                    DiaAngry = "I waited a little while… but it does look delicious."
+                    DiaAngry = "I waited a little while… but it does \nlook delicious."
                 },
                 new Customer {
                     Id = 2,
@@ -91,12 +91,12 @@ namespace Mystic_Foods.Managers
                     SpritePathNeutral = "Customers/Human/NPC2/npc2HumanNormalVer2",
                     SpritePathGrumpy = "Customers/Human/NPC2/npc2HumanAngryVer2",
                     Dia1 = "The golden one, with lotus root.",
-                    Dia2 = "Golden Moon Dough with Lotus Root Spirit Filling.",
+                    Dia2 = "Golden Moon Dough with Lotus Root Spirit \nFilling.",
                     DiaCurrect = "Nice.",
                     DiaWrong = "Wrong. Completely wrong.",
                     DiaHappy = "Nice.",
                     DiaNormal = "Hmph. Fine.",
-                    DiaAngry = "Seriously? I could’ve made it myself faster."
+                    DiaAngry = "Seriously? I could’ve made it myself \nfaster."
                 },
                 new Customer {
                     Id = 3,
@@ -105,13 +105,13 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Customers/UnHuman/NPC1/npc1UnhumanHappy",
                     SpritePathNeutral = "Customers/UnHuman/NPC1/npc1UnhumanNormal",
                     SpritePathGrumpy = "Customers/UnHuman/NPC1/npc1UnhumanAngry",
-                    Dia1 = "the pink pastry… the one made from lotus petals with original taste.",
+                    Dia1 = "the pink pastry… the one made from lotus \npetals with original taste.",
                     Dia2 = "Lotus Blossom with Coconut Amber filling.",
-                    DiaCurrect = "Swift and sharp… just the way I like it.",
+                    DiaCurrect = "Swift and sharp… just the way I \nlike it.",
                     DiaWrong = "Wrong. Utterly wrong. How disappointing.",
-                    DiaHappy = "Swift and sharp… just the way I like it.",
+                    DiaHappy = "Swift and sharp… just the way I \nlike it.",
                     DiaNormal = "Adequate. Not too slow, not too fast",
-                    DiaAngry = "Took you ages… even the trees grow faster."
+                    DiaAngry = "Took you ages… even the trees grow \nfaster."
                 },
                 new Customer {
                     Id = 4,
@@ -120,11 +120,11 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Customers/UnHuman/NPC3/npc3UnhumanHappy",
                     SpritePathNeutral = "Customers/UnHuman/NPC3/npc3UnhumanNormal",
                     SpritePathGrumpy = "Customers/UnHuman/NPC3/npc3UnhumanAngry",
-                    Dia1 = "mmm… the white one again with that lotus filling.",
-                    Dia2 = "Yes, Jasmine Moon Dough with Lotus Root Spirit Filling.",
-                    DiaCurrect = "Well, well… you actually nailed it this time!",
-                    DiaWrong = "That’s not what I asked for… but I’ll take it.",
-                    DiaHappy = "Well, well… you actually nailed it this time!",
+                    Dia1 = "mmm… the white one again with that \nlotus filling.",
+                    Dia2 = "Yes, Jasmine Moon Dough with Lotus \nRoot Spirit Filling.",
+                    DiaCurrect = "Well, well… you actually nailed \nit this time!",
+                    DiaWrong = "That’s not what I asked for… but \nI’ll take it.",
+                    DiaHappy = "Well, well… you actually nailed \nit this time!",
                     DiaNormal = "Alright, that’ll do.",
                     DiaAngry = "You’re slower than I expected…"
                 }
@@ -139,13 +139,13 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Customers/UnHuman/NPC1/npc1UnhumanHappy",
                     SpritePathNeutral = "Customers/UnHuman/NPC1/npc1UnhumanNormal",
                     SpritePathGrumpy = "Customers/UnHuman/NPC1/npc1UnhumanAngry",
-                    Dia1 = "Let me have the golden pastry… with that green cream.",
-                    Dia2 = "Golden Moon Dough with Pandan Taro Cream.",
-                    DiaCurrect = "Swift and sharp… just the way I like it.",
+                    Dia1 = "Let me have the golden pastry… with \nthat green cream.",
+                    Dia2 = "Golden Moon Dough with Pandan Taro \nCream.",
+                    DiaCurrect = "Swift and sharp… just the way I \nlike it.",
                     DiaWrong = "Wrong. Utterly wrong. How disappointing.",
-                    DiaHappy = "Swift and sharp… just the way I like it.",
-                    DiaNormal = "Adequate. Not too slow, not too fast",
-                    DiaAngry = "Took you ages… even the trees grow faster."
+                    DiaHappy = "Swift and sharp… just the way \nI like it.",
+                    DiaNormal = "Adequate. Not too slow, not too \nfast",
+                    DiaAngry = "Took you ages… even the trees grow \nfaster."
                 },
                 new Customer {
                     Id = 2,
@@ -154,11 +154,11 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Customers/UnHuman/NPC2/npc2UnhumanHappy",
                     SpritePathNeutral = "Customers/UnHuman/NPC2/npc2UnhumanNormal",
                     SpritePathGrumpy = "Customers/UnHuman/NPC2/npc2UnhumanAngry",
-                    Dia1 = "Could I try the pink pastry, with that mystical lotus root inside?",
-                    Dia2 = "Lotus Blossom with Lotus Root Spirit filling.",
-                    DiaCurrect = "Ah, finally! Just what I wanted. Perfect!",
-                    DiaWrong = "Wait, seriously? That’s not even close!",
-                    DiaHappy = "Ah, finally! Just what I wanted. Perfect!",
+                    Dia1 = "Could I try the pink pastry, with that \nmystical lotus root inside?",
+                    Dia2 = "Lotus Blossom with Lotus Root Spirit \nfilling.",
+                    DiaCurrect = "Ah, finally! Just what I wanted.\n Perfect!",
+                    DiaWrong = "Wait, seriously? That’s not even \nclose!",
+                    DiaHappy = "Ah, finally! Just what I wanted. \nPerfect!",
                     DiaNormal = "Hmm… alright, not bad.",
                     DiaAngry = "Hey, I’m not getting any younger here!"
                 },
@@ -169,11 +169,11 @@ namespace Mystic_Foods.Managers
                     SpritePathHappy = "Customers/UnHuman/NPC3/npc3UnhumanHappy",
                     SpritePathNeutral = "Customers/UnHuman/NPC3/npc3UnhumanNormal",
                     SpritePathGrumpy = "Customers/UnHuman/NPC3/npc3UnhumanAngry",
-                    Dia1 = "the pink pastry… the one made from lotus petals with original taste.",
+                    Dia1 = "the pink pastry… the one made from lotus \npetals with original taste.",
                     Dia2 = "Lotus Blossom with Coconut Amber filling.",
-                    DiaCurrect = "Well, well… you actually nailed it this time!",
-                    DiaWrong = "That’s not what I asked for… but I’ll take it.",
-                    DiaHappy = "Well, well… you actually nailed it this time!",
+                    DiaCurrect = "Well, well… you actually nailed it \nthis time!",
+                    DiaWrong = "That’s not what I asked for… but \nI’ll take it.",
+                    DiaHappy = "Well, well… you actually nailed it \nthis time!",
                     DiaNormal = "Alright, that’ll do.",
                     DiaAngry = "You’re slower than I expected…"
                 }
