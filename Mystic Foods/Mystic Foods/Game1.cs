@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Mystic_Foods.Managers;
 using Mystic_Foods.Scenes;
 using Mystic_Foods.Systems;
@@ -21,6 +23,7 @@ namespace Mystic_Foods
         private DnDScene _dndScene;
         private LevelSelectScene _levelSelectScene;
         private TutorialScene _tutorialScene;
+        private SettingScene _settingScene;
 
         private CustomerManager _customerManager;
 
@@ -45,11 +48,14 @@ namespace Mystic_Foods
         }
         protected override void Initialize()
         {
+            SoundManager.LoadSettings();
+
             _customerManager = new CustomerManager();
             _mainMenuScene = new MainMenuScene();
             _gamePlayScene = new GamePlayScene(_customerManager);
             _levelSelectScene = new LevelSelectScene();
             _tutorialScene = new TutorialScene();
+            _settingScene = new SettingScene();
 
             //make it start at main menu
             _currentScene = _mainMenuScene;
@@ -68,6 +74,19 @@ namespace Mystic_Foods
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            SoundManager.MusicVolume = 0.5f;
+            #region BGM
+            SoundManager.AddSong("mainmenu", Content.Load<Song>("Music/BGM/bgm02"));
+            SoundManager.AddSong("nightbgm", Content.Load<Song>("Music/BGM/bgm01"));
+            #endregion
+
+            SoundManager.SfxVolume = 0.5f;
+            #region SFX
+            SoundManager.AddSound("Button", Content.Load<SoundEffect>("Music/SFX/Button Press"));
+            SoundManager.AddSound("Click", Content.Load<SoundEffect>("Music/SFX/Click2"));
+            SoundManager.AddSound("Cooking", Content.Load<SoundEffect>("Music/SFX/Cooking"));
+            #endregion
+
             Globals.Content = Content;
             _gameManager = new GameManager();
             _gameManager.LoadContent(Content);
@@ -80,6 +99,7 @@ namespace Mystic_Foods
             _dndScene.LoadContent(Content, _spriteBatch);
             _levelSelectScene.LoadContent(Content, _spriteBatch);
             _tutorialScene.LoadContent(Content, _spriteBatch);
+            _settingScene.LoadContent(Content, _spriteBatch);
 
         }
         protected override void Update(GameTime gameTime)
@@ -106,6 +126,11 @@ namespace Mystic_Foods
                     _mainMenuScene.DnDRequested = false;
                     _currentScene = _dndScene;
                 }
+                if (_mainMenuScene.SettingRequested)
+                {
+                    _mainMenuScene.SettingRequested = false;
+                    _currentScene = _settingScene;
+                }
             }
             else if(_currentScene == _tutorialScene)
             {
@@ -127,6 +152,15 @@ namespace Mystic_Foods
                 if (_levelSelectScene.MenuRequest)
                 {
                     _levelSelectScene.MenuRequest = false;
+                    _currentScene = _mainMenuScene;
+                }
+            }
+            else if (_currentScene == _settingScene)
+            {
+                _settingScene.Update(gameTime);
+                if (_settingScene.MenuRequest)
+                {
+                    _settingScene.MenuRequest = false;
                     _currentScene = _mainMenuScene;
                 }
             }

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mystic_Foods
 {
@@ -401,11 +402,14 @@ namespace Mystic_Foods
 
             spriteBatch.End();
         }
-        public void CookingBtn_Click(object sender, EventArgs e)
+        public async void CookingBtn_Click(object sender, EventArgs e)
         {
             //GameManager.readySteam = true;
             isCountDownSteam = true;
             isClickCook = true;
+            SoundManager.PlaySfx("Cooking");
+            await Task.Delay(3000);
+            SoundManager.StopSfx("Cooking");
         }
         public void ServeBtn_Click(object sender, EventArgs e)
         {

@@ -16,7 +16,7 @@ namespace Mystic_Foods
         public static float TimePSec;
 
         public enum DayPhase { Dawn, Dusk, Night }
-        public static DayPhase CurrentPhase = DayPhase.Dawn;
+        public static DayPhase CurrentPhase;
         Texture2D texDawn, texDusk, texNight;
 
         private SpriteFont _font;
