@@ -48,6 +48,8 @@ namespace Mystic_Foods.Managers
         public static int countDia = 2;
         public static float countSteam = 3f;
 
+        Texture2D FoodTexture_nonDeco;
+
         public GameManager()
         {
             DragDropManager.OnDrop += HandleDrop;
@@ -74,7 +76,8 @@ namespace Mystic_Foods.Managers
             var Lotus_Texture = content.Load<Texture2D>("foods/Lotus");
 
             var plateTexture = content.Load<Texture2D>("foods/Plate");
-            var trashBinTexture = content.Load<Texture2D>("Etc/White_Tako");
+            var trashBinTexture = content.Load<Texture2D>("Etc/White_Tako_1");
+            var trashBinTexture_2 = content.Load<Texture2D>("Etc/White_Tako");
             var wrappTexture = content.Load<Texture2D>("foods/1");
             var foodTexture = content.Load<Texture2D>("foods/3");
 
@@ -212,12 +215,11 @@ namespace Mystic_Foods.Managers
                 var flowerOnPlate = _flowers.FirstOrDefault(fw => fw.Position == _plate2.Position);
                 var foodOnPlate = _food.FirstOrDefault(fd  => fd.Position == _plate2.Position);
 
-                if (foodOnPlate != null && flowerOnPlate != null)
+                if (foodOnPlate != null)
                 {
                     isDecorate = true;
                     var food = _food.Last();
                     ChangeFood(food);
-
                 }
             }
             #endregion
@@ -358,6 +360,12 @@ namespace Mystic_Foods.Managers
             {
                 switch (IdFlower)
                 {
+                    case 0:
+                        var foodTexture_NonDecorate = Globals.Content.Load<Texture2D>("foods/food_none");
+                        var changeFood_NonDecorate = new Food(foodTexture_NonDecorate, _plate2.Position);
+                        DragDropManager.AddDraggable(changeFood_NonDecorate);
+                        _food.Add(changeFood_NonDecorate);
+                        break;
                     case 10:
                         var foodTexture_Mali = Globals.Content.Load<Texture2D>("foods/food_mali");
                         var changeFood_Mali = new Food(foodTexture_Mali, _plate2.Position);
@@ -434,7 +442,6 @@ namespace Mystic_Foods.Managers
         {
             InputManager.Update();
             DragDropManager.Update();
-
         }
         public void Draw(Vector2 cameraPos)
         {

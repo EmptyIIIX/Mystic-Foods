@@ -102,19 +102,19 @@ namespace Mystic_Foods
 
             currentSteam = steamBar.Height - 4;
 
-            _cookingBtn = new Button(CookingBtn, _font, " ", new Rectangle(1800 + (818 / 2) - (CookingBtn.Width / 2), 900, 262, 109));
+            _cookingBtn = new Button(CookingBtn, CookingBtn, _font, " ", new Rectangle(1800 + (818 / 2) - (CookingBtn.Width / 2), 900, 262, 109));
             _cookingBtn.Click += CookingBtn_Click;
 
-            _serveBtn = new Button(ServeBtn, _font, " ", new Rectangle(3856, 262, 262, 109));
+            _serveBtn = new Button(ServeBtn, ServeBtn, _font, " ", new Rectangle(3856, 262, 262, 109));
             _serveBtn.Click += ServeBtn_Click;
 
-            _logOrderBtn = new Button(LogOrder, _font, "", new Rectangle(1200, 0, 94, 134));
+            _logOrderBtn = new Button(LogOrder, LogOrder, _font, "", new Rectangle(1200, 0, 94, 134));
             _logOrderBtn.Click += LogBtn_Click;
 
-            _okLogBtn = new Button(Oklog, _font, "", new Rectangle(1450, 840, 300, 150));
+            _okLogBtn = new Button(Oklog, Oklog, _font, "", new Rectangle(1450, 840, 300, 150));
             _okLogBtn.Click += okLogBtn_Click;
 
-            _prevBtn = new Button(prevTexture, _font, "", new Rectangle(0, GamePlayScene.menuBox.Height / 5, prevTexture.Width, prevTexture.Height));
+            _prevBtn = new Button(prevTexture, prevTexture, _font, "", new Rectangle(0, GamePlayScene.menuBox.Height / 5, prevTexture.Width, prevTexture.Height));
             _prevBtn.Click += previousButton_Click;
 
             Globals.SpriteBatch = spriteBatch;
@@ -301,18 +301,17 @@ namespace Mystic_Foods
             spriteBatch.Begin();
 
             /*
-        spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
-
+            spriteBatch.DrawString(_font, "Drag & Drop Mode (Press ESC to Main Menu)", new Vector2(100, 30), Color.White);
             spriteBatch.DrawString(_font, $"Position mouse : {_mousePosition}", new Vector2(100, 680), Color.Blue);
             spriteBatch.DrawString(_font, $"SelectIndex : {_selectedIndex}", new Vector2(100, 90), Color.White);
             spriteBatch.DrawString(_font, $"Time steam : {(int)GameManager.countSteam}", new Vector2(500, 590), Color.Blue);
             spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
+            spriteBatch.DrawString(_font, $"CounDia : {GameManager.countDia}", new Vector2(500, 590), Color.Blue);
             spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
             spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 590), Color.Blue);
-            spriteBatch.DrawString(_font, $"CounDia : {GameManager.countDia}", new Vector2(500, 590), Color.Blue);
              */
 
             if (GameManager.readySteam)
@@ -361,7 +360,7 @@ namespace Mystic_Foods
             _logOrderBtn.Draw(spriteBatch);
             if (isLog)
             {
-                spriteBatch.Draw(LogInfo, new Vector2(130, 160), Color.White); //test
+                spriteBatch.Draw(LogInfo, new Vector2(130, 160), Color.White);
                 if (GameManager.countDia == 3)
                 {
                     spriteBatch.DrawString(_font, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
@@ -389,8 +388,8 @@ namespace Mystic_Foods
                 if (GamePlayScene.isClickExit)
                 {
                     spriteBatch.Draw(GamePlayScene.logExit, new Rectangle(448, 263, 1024, 534), Color.White);
-                    GamePlayScene._yesExit.Draw(spriteBatch);
-                    GamePlayScene._noExit.Draw(spriteBatch);
+                    GamePlayScene._yesExit.DrawHover(spriteBatch);
+                    GamePlayScene._noExit.DrawHover(spriteBatch);
                 }
             }
             else if (GamePlayScene.isEndLv)

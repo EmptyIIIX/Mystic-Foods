@@ -1081,6 +1081,18 @@
 /processorParam:TextureFormat=Color
 /build:Etc/UIBox.png
 
+#begin Etc/White_Tako_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/White_Tako_1.png
+
 #begin Etc/White_Tako.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1200,6 +1212,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:foods/food_mali.png
+
+#begin foods/food_nonDeco.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:foods/food_nonDeco.png
 
 #begin foods/food_none.png
 /importer:TextureImporter

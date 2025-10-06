@@ -28,7 +28,7 @@ namespace Mystic_Foods.Scenes
 
             homeBtn = content.Load<Texture2D>("UI/previous");
 
-            homeButton = new Button(homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
+            homeButton = new Button(homeBtn, homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
             homeButton.Click += HomeButton_Click;
         }
 

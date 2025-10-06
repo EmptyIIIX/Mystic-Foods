@@ -24,7 +24,7 @@ namespace Mystic_Foods
         public bool SettingRequested = false;
 
         public Texture2D NameTitle;
-        public Texture2D PlayBtn, SettingBtn, CreditBtn, ExitBtn;
+        public Texture2D PlayBtn, SettingBtn, CreditBtn, ExitBtn, ExitBtn_hover;
         public Button _playBtn, _settingBtn, _creditBtn, _exitBtn;
 
         private KeyboardState _oldState; //make it only pressable (can't hold)
@@ -42,16 +42,17 @@ namespace Mystic_Foods
             SettingBtn = content.Load<Texture2D>("UI/setting");
             CreditBtn = content.Load<Texture2D>("UI/credit");
             ExitBtn = content.Load<Texture2D>("UI/exit");
+            //ExitBtn_hover = content.Load<Texture2D>("UI/exit");
 
             //_playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
             //_playBtn.Click += PlayBtn_Click;
-            _playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
+            _playBtn = new Button(PlayBtn, PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
             _playBtn.Click += PlayBtn_Click;
-            _settingBtn = new Button(SettingBtn, _font, "", new Rectangle(225, 400 + PlayBtn.Height + 20, 512, 100));
+            _settingBtn = new Button(SettingBtn, SettingBtn, _font, "", new Rectangle(225, 400 + PlayBtn.Height + 20, 512, 100));
             _settingBtn.Click += SettingBtn_Click;
-            _creditBtn = new Button(CreditBtn, _font, "", new Rectangle(225, 400 + (PlayBtn.Height * 2) + 40, 512, 100));
+            _creditBtn = new Button(CreditBtn, CreditBtn, _font, "", new Rectangle(225, 400 + (PlayBtn.Height * 2) + 40, 512, 100));
             _creditBtn.Click += CreditBtn_Click;
-            _exitBtn = new Button(ExitBtn, _font, "", new Rectangle(1920 - ExitBtn.Width - 20, 1080 - ExitBtn.Height - 20, 80, 100));
+            _exitBtn = new Button(ExitBtn, ExitBtn, _font, "", new Rectangle(1920 - ExitBtn.Width - 20, 1080 - ExitBtn.Height - 20, 80, 100));
             _exitBtn.Click += ExitBtn_Click;
 
             MediaPlayer.IsRepeating = true;

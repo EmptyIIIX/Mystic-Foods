@@ -40,13 +40,13 @@ namespace Mystic_Foods.Scenes
             topicPoint = content.Load<Texture2D>("Tutorial/topicPoint");
 
             //button manager
-            next = new Button(nextPage, _font, "", new Rectangle(1674, 838, 136, 134));
+            next = new Button(nextPage, nextPage, _font, "", new Rectangle(1674, 838, 136, 134));
             next.Click += NextButton_click;
 
-            back = new Button(backPage, _font, "", new Rectangle(110, 838, 136, 134));
+            back = new Button(backPage, backPage, _font, "", new Rectangle(110, 838, 136, 134));
             back.Click += BackButton_click;
 
-            exitpage = new Button(exitPage, _font, "", new Rectangle(1720, 106, 90, 79));
+            exitpage = new Button(exitPage, exitPage, _font, "", new Rectangle(1720, 106, 90, 79));
             exitpage.Click += ExitPageButton_click;
 
             //assign max page and set count page of the tutorial

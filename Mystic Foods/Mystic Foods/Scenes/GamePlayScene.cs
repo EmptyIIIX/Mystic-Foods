@@ -11,7 +11,7 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 120f;
+        public static float TimeDefault = 181f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
 
@@ -36,14 +36,14 @@ namespace Mystic_Foods
         public static bool isPaused = false;
         public static Button _menuButton, _resumeButton, _homeButton, _exitButton;
         public static Button _yesExit, _noExit;
-        public static Texture2D yesExit, noExit, logExit;
+        public static Texture2D yesExit, yesExit_hover, noExit, noExit_hover, logExit;
         public Button _yesButton;
         public Button _whatButton;
         public static Button _OkButton;
 
         public static float _patienceMeter;        // current patience
         public static float _patienceMeterStart = 100f;   // default / max patience
-        public static float _patienceDecreaseRate = 1.8f; // decrease rate
+        public static float _patienceDecreaseRate = 1.28f; // decrease rate
         public static Texture2D _textureHappy;
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
@@ -52,7 +52,7 @@ namespace Mystic_Foods
         public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D revenueBox;
-        public static Texture2D whatButton, yesButton, diaBox;
+        public static Texture2D whatButton, whatButton_hover, yesButton, yesButton_hover, diaBox;
         public static Texture2D _happy, _natural, _angry;
         public static Texture2D counterDawn, counterDusk, counterNight;
 
@@ -110,34 +110,38 @@ namespace Mystic_Foods
             exitBtn = content.Load<Texture2D>("Etc/ExitBtn");
             logExit = content.Load<Texture2D>("DialogueUI/ConfirmExit_UI");
             yesExit = content.Load<Texture2D>("DialogueUI/LeaveAnyway_BeforeClick");
+            yesExit_hover = content.Load<Texture2D>("DialogueUI/LeaveAnyway_AfterClick");
             noExit = content.Load<Texture2D>("DialogueUI/KeepPlaying_BeforeClick");
+            noExit_hover = content.Load<Texture2D>("DialogueUI/KeepPlaying_AfterClick");
             resumeBtn = content.Load<Texture2D>("Etc/PauseBtn");
 
             whatButton = content.Load<Texture2D>("DialogueUI/WhatButton");
             yesButton = content.Load<Texture2D>("DialogueUI/YesButton");
+            whatButton_hover = content.Load<Texture2D>("DialogueUI/WhatButtonHover");
+            yesButton_hover = content.Load<Texture2D>("DialogueUI/YesButtonHover");
             diaBox = content.Load<Texture2D>("DialogueUI/DialogueBox");
 
-            _menuButton = new Button(menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
+            _menuButton = new Button(menuBox, menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
             _menuButton.Click += MenuButton_Click;
-            _homeButton = new Button(homeBtn, _font, " ", new Rectangle(1970 - menuBox.Width, menuBox.Height + 20, 100, 106));//real size (50, 53) 
+            _homeButton = new Button(homeBtn, homeBtn, _font, " ", new Rectangle(1970 - menuBox.Width, menuBox.Height + 20, 100, 106));//real size (50, 53) 
             _homeButton.Click += HomeButton_Click;
-            _yesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
+            _yesButton = new Button(yesButton, yesButton_hover, _font, " ", new Rectangle(1400, 500, 128, 63));
             _yesButton.Click += YesButton_Click;
-            _whatButton = new Button(whatButton, _font, " ", new Rectangle(1550, 500, 128, 63));
+            _whatButton = new Button(whatButton, whatButton_hover, _font, " ", new Rectangle(1550, 500, 128, 63));
             _whatButton.Click += WhatButton_Click;
-            _servedYesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
+            _servedYesButton = new Button(yesButton, yesButton_hover, _font, " ", new Rectangle(1400, 500, 128, 63));
             _servedYesButton.Click += ServedYes_Click;
-            _exitButton = new Button(exitBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + 80, 100, 106));// 61, 67
+            _exitButton = new Button(exitBtn, exitBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + 80, 100, 106));// 61, 67
             _exitButton.Click += ExitButton_Click;
-            _resumeButton = new Button(resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height / 2, 180, 165));
+            _resumeButton = new Button(resumeBtn, resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height / 2, 180, 165));
             _resumeButton.Click += ResumeButton_Click;
 
-            _yesExit = new Button(yesExit, _font, "", new Rectangle(1138, 686, 375, 170));
+            _yesExit = new Button(yesExit, yesExit_hover, _font, "", new Rectangle(1138, 686, 375, 170));
             _yesExit.Click += yesExitButton_Click;
-            _noExit = new Button(noExit, _font, "", new Rectangle(426, 682, 384, 163));
+            _noExit = new Button(noExit, noExit_hover, _font, "", new Rectangle(426, 682, 384, 163));
             _noExit.Click += noExitButton_Click;
 
-            _OkButton = new Button(okBtn, _font, "", new Rectangle(1450, 840, 300, 150));
+            _OkButton = new Button(okBtn, okBtn, _font, "", new Rectangle(1450, 840, 300, 150));
             _OkButton.Click += OkEndButton_Click;
             /*
              */
@@ -271,31 +275,6 @@ namespace Mystic_Foods
             //spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
             #endregion
 
-
-
-            /*
-            string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
-            Vector2 size = _font.MeasureString(text);
-            spriteBatch.DrawString(
-                _font,
-                text,
-                new Vector2((800 - size.X) / 2, 60),
-                Color.Black);
-             */
-            // Show Customer data
-                /*
-            if (_currentCustomer != null)
-            {
-                //Customer stats
-                string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
-                string cust = $"Name: {_currentCustomer.Name}";
-                Vector2 custPos = new Vector2(100, 180);
-                spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
-                use rectangle to adjust scale
-                0.9(855, 972) 0.8(760, 864)
-            }
-                 */
-
             #region Customer
             Texture2D drawTexture = _textureNeutral;
             float patiencePerc = _patienceMeter / _patienceMeterStart;
@@ -391,24 +370,24 @@ namespace Mystic_Foods
 
             if (served == true)
             {
-                _servedYesButton.Draw(spriteBatch);
+                _servedYesButton.DrawHover(spriteBatch);
             } else
             {
-                _yesButton.Draw(spriteBatch);
+                _yesButton.DrawHover(spriteBatch);
             }
 
             switch (GameManager.countDia)
             {
                 case 0:
                     spriteBatch.DrawString(_font, _currentCustomer.DiaWrong, new Vector2(1000, 300), Color.Black);
-                    _whatButton.Draw(spriteBatch);
+                    _whatButton.DrawHover(spriteBatch);
                     break;
                 case 1:
                     spriteBatch.DrawString(_font, _currentCustomer.DiaCurrect, new Vector2(1000, 300), Color.Black);
                     break;
                 case 2:
                     spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, 300), Color.Black);
-                    _whatButton.Draw(spriteBatch);
+                    _whatButton.DrawHover(spriteBatch);
                     break;
                 case 3:
                     spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 300), Color.Black);
@@ -426,7 +405,6 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $"_what : {_what}", new Vector2(100, 400), Color.Blue);
             */
 
-
             if (isPaused)
             {
                 //DrawString(SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
@@ -438,8 +416,8 @@ namespace Mystic_Foods
                 if (isClickExit)
                 {
                     spriteBatch.Draw(logExit, new Rectangle(448, 263, 1024, 534), Color.White);
-                    _yesExit.Draw(spriteBatch);
-                    _noExit.Draw(spriteBatch);
+                    _yesExit.DrawHover(spriteBatch);
+                    _noExit.DrawHover(spriteBatch);
                 }
             }
             else if (isEndLv)
