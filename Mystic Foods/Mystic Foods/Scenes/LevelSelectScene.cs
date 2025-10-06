@@ -34,7 +34,7 @@ namespace Mystic_Foods.Scenes
 
             bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
-            homeBtn = content.Load<Texture2D>("Etc/option_exit");
+            homeBtn = content.Load<Texture2D>("UI/previous");
             dayBtn = content.Load<Texture2D>("LevelUI/Morning");
             duskBtn = content.Load<Texture2D>("LevelUI/Evening");
             nightBtn = content.Load<Texture2D>("LevelUI/Night");

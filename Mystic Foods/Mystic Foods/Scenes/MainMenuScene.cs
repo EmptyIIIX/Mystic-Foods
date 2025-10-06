@@ -17,7 +17,7 @@ namespace Mystic_Foods
     {
         private GraphicsDeviceManager _graphics;
         private SpriteFont _font; //font use to draw string
-        public bool StartGameRequested = false; //check if start game
+        public static bool StartGameRequested = false; //check if start game
         public bool DnDRequested = false;
         public bool ExitRequested = false; //check if exit game
         public bool CreditRequested = false;
@@ -37,11 +37,11 @@ namespace Mystic_Foods
             _font = content.Load<SpriteFont>("MainFont");
             Menu_bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
-            NameTitle = content.Load<Texture2D>("Etc/NameTitle");
-            PlayBtn = content.Load<Texture2D>("Etc/option_start game");
-            SettingBtn = content.Load<Texture2D>("Etc/option_setting");
-            CreditBtn = content.Load<Texture2D>("Etc/option_credit");
-            ExitBtn = content.Load<Texture2D>("Etc/option_exit");
+            NameTitle = content.Load<Texture2D>("UI/title");
+            PlayBtn = content.Load<Texture2D>("UI/play");
+            SettingBtn = content.Load<Texture2D>("UI/setting");
+            CreditBtn = content.Load<Texture2D>("UI/credit");
+            ExitBtn = content.Load<Texture2D>("UI/exit");
 
             //_playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
             //_playBtn.Click += PlayBtn_Click;

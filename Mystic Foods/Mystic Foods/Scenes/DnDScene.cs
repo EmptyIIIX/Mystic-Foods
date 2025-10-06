@@ -17,6 +17,8 @@ namespace Mystic_Foods
         private GameManager _gameManager;
         private GamePlayScene _gamePlayScene;
 
+        public bool backToCounter = false;
+
         private SpriteFont _font;
         private bool _contentLoaded = false;
         private KeyboardState _oldState;
@@ -39,9 +41,9 @@ namespace Mystic_Foods
         Texture2D steamBar;
         float currentSteam;
 
-        Texture2D LogOrder, LogInfo, Oklog;
+        Texture2D LogOrder, LogInfo, Oklog, prevTexture;
         public Button _logOrderBtn;
-        public static Button _okLogBtn;
+        public static Button _okLogBtn, _prevBtn;
         public bool isLog = false;
 
         public static Button _cookingBtn, _serveBtn;
@@ -82,6 +84,7 @@ namespace Mystic_Foods
 
             boxdough = content.Load<Texture2D>("foods/hitbox_dough");
             boxfilling = content.Load<Texture2D>("foods/hitbox_filling");
+            prevTexture = content.Load<Texture2D>("UI/previous2");
 
             LogOrder = content.Load<Texture2D>("DialogueUI/LogButton");
             LogInfo = content.Load<Texture2D>("DialogueUI/LogInformation");
@@ -110,6 +113,9 @@ namespace Mystic_Foods
 
             _okLogBtn = new Button(Oklog, _font, "", new Rectangle(1450, 840, 300, 150));
             _okLogBtn.Click += okLogBtn_Click;
+
+            _prevBtn = new Button(prevTexture, _font, "", new Rectangle(0, GamePlayScene.menuBox.Height / 5, prevTexture.Width, prevTexture.Height));
+            _prevBtn.Click += previousButton_Click;
 
             Globals.SpriteBatch = spriteBatch;
             _contentLoaded = true;
@@ -159,6 +165,7 @@ namespace Mystic_Foods
                 GamePlayScene.TimeStage -= GamePlayScene.TimePSec;
 
                 _gameManager.Update();
+                _prevBtn.Update();
 
                 if (isCountDownSteam)
                 {
@@ -209,14 +216,17 @@ namespace Mystic_Foods
             {
                 GamePlayScene._OkButton.Update();
             }
-                //else if (GamePlayScene.isEndLv)
-                //{
-                //    GamePlayScene._OkButton.Update();
-                //}
 
-                #region scroll camera
-                // เลื่อนกล้องเมื่อเมาส์อยู่ใกล้ขอบซ้ายหรือขวา
-                Scroll = false;
+            // ESC to pause
+            if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
+            {
+                GamePlayScene.isPaused = !GamePlayScene.isPaused;
+                GamePlayScene.isClickExit = false;
+            }
+
+            #region scroll camera
+            // เลื่อนกล้องเมื่อเมาส์อยู่ใกล้ขอบซ้ายหรือขวา
+            Scroll = false;
             if (mouse.X <= CameraLeftBoundary2) CameraSpeed = 30f;
             else if (mouse.X <= CameraLeftBoundary1 && mouse.X > CameraLeftBoundary2) CameraSpeed = 10f;
 
@@ -326,30 +336,25 @@ namespace Mystic_Foods
 
             #region UI info
 
-            //profile
-            spriteBatch.Draw(GamePlayScene.profile, new Vector2(0, 0), Color.White);
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
-            spriteBatch.Draw(GamePlayScene.dayBox, new Vector2(GamePlayScene.profile.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(GamePlayScene.profile.Width + 135, (GamePlayScene.menuBox.Height / 5) + 20), Color.Black);
+            spriteBatch.Draw(GamePlayScene.dayBox, new Vector2(GamePlayScene.profile.Width + 30, GamePlayScene.menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(GamePlayScene.profile.Width + 155, (GamePlayScene.menuBox.Height / 5) + 20), Color.Black);
             //time
             string Time = $"{(int)GamePlayScene.TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 145, (GamePlayScene.menuBox.Height / 5) + 55), Color.Black);
+            spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 165, (GamePlayScene.menuBox.Height / 5) + 55), Color.Black);
 
-            /* สำรองไว้ก่อน
-            spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(1920 - menuBox.Width - (moneyBox.Width / 2) - 25, (menuBox.Height / 5) + (moneyBox.Height / 4) + 10), Color.Yellow);
-            */
+            spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 30, GamePlayScene.menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + (GamePlayScene.moneyBox.Width / 2) + 55, (GamePlayScene.menuBox.Height / 5) + 36), Color.Black);
 
-            spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + (GamePlayScene.moneyBox.Width / 2) + 35, (GamePlayScene.menuBox.Height / 5) + 36), Color.Black);
-
-            Vector2 EmotionPos = new Vector2(GamePlayScene.moneyBox.Width + GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 10, GamePlayScene.menuBox.Height / 5);
-            Vector2 percentPantiencePos = new Vector2(EmotionPos.X + 145, GamePlayScene.menuBox.Height / 5 + 36);
+            Vector2 EmotionPos = new Vector2(GamePlayScene.moneyBox.Width + GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 30, GamePlayScene.menuBox.Height / 5);
+            Vector2 percentPantiencePos = new Vector2(EmotionPos.X + 165, GamePlayScene.menuBox.Height / 5 + 36);
 
             string patienceText = $"{GamePlayScene._patienceMeter:0}%";
             spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Black);
             GamePlayScene.DrawEmotionIcon(_font, spriteBatch, EmotionPos);
+
+            _prevBtn.Draw(spriteBatch);
 
             #endregion
 
@@ -375,7 +380,7 @@ namespace Mystic_Foods
                 spriteBatch.Draw(GamePlayScene._rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
 
                 //DrawString(SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
-                spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                //spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
                 // should create separate menu button
                 GamePlayScene._resumeButton.Draw(spriteBatch);
@@ -429,6 +434,9 @@ namespace Mystic_Foods
             isLog = false;
             //GamePlayScene.isEndLv = false;     for test
         }
-
+        public void previousButton_Click(object sender, EventArgs e)
+        {
+            backToCounter = true;
+        }
     }
 }

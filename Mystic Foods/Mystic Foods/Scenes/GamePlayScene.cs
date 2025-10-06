@@ -11,7 +11,7 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 121f;
+        public static float TimeDefault = 120f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
 
@@ -43,7 +43,7 @@ namespace Mystic_Foods
 
         public static float _patienceMeter;        // current patience
         public static float _patienceMeterStart = 100f;   // default / max patience
-        public static float _patienceDecreaseRate = 1.28f; // decrease rate
+        public static float _patienceDecreaseRate = 1.8f; // decrease rate
         public static Texture2D _textureHappy;
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
@@ -129,12 +129,12 @@ namespace Mystic_Foods
             _servedYesButton.Click += ServedYes_Click;
             _exitButton = new Button(exitBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + 80, 100, 106));// 61, 67
             _exitButton.Click += ExitButton_Click;
-            _resumeButton = new Button(resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height, 180, 165));
+            _resumeButton = new Button(resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height / 2, 180, 165));
             _resumeButton.Click += ResumeButton_Click;
 
-            _yesExit = new Button(yesExit, _font, "", new Rectangle(426, 682, 375, 170));
+            _yesExit = new Button(yesExit, _font, "", new Rectangle(1138, 686, 375, 170));
             _yesExit.Click += yesExitButton_Click;
-            _noExit = new Button(noExit, _font, "", new Rectangle(1138, 686, 384, 163));
+            _noExit = new Button(noExit, _font, "", new Rectangle(426, 682, 384, 163));
             _noExit.Click += noExitButton_Click;
 
             _OkButton = new Button(okBtn, _font, "", new Rectangle(1450, 840, 300, 150));
@@ -222,13 +222,12 @@ namespace Mystic_Foods
                 _OkButton.Update();
             }
 
-            // ESC
-            //if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
-            //{
-            //    BackToMenuRequested = true;
-            //    TimeStage = 721f;
-            //}
-
+            // ESC to pause
+            if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
+            {
+                isPaused = !isPaused;
+                isClickExit = false;
+            }
 
             //P
             if (state.IsKeyDown(Keys.P) && _oldState.IsKeyUp(Keys.P))
@@ -357,37 +356,32 @@ namespace Mystic_Foods
             #region UI
 
             #region detailing
-            spriteBatch.Draw(uiBox, new Vector2(244, 32), Color.White);
-            spriteBatch.Draw(uiBox, new Vector2(508, 32), Color.White);
-            spriteBatch.Draw(uiBox, new Vector2(772, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(10, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width + 10, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 2 + 10, 32), Color.White);
             #endregion
 
             //profile
-            spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
+            //spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
-            spriteBatch.Draw(dayBox, new Vector2(profile.Width + 10, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 135, (menuBox.Height / 5) + 20), Color.Black);
+            spriteBatch.Draw(dayBox, new Vector2(10, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(135, (menuBox.Height / 5) + 20), Color.Black);
             //time
             string Time = $"{(int)TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 145, (menuBox.Height / 5) + 55), Color.Black);
+            spriteBatch.DrawString(_font, Time, new Vector2(145, (menuBox.Height / 5) + 55), Color.Black);
 
-            /* สำรองไว้ก่อน
-            spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(1920 - menuBox.Width - (moneyBox.Width / 2) - 25, (menuBox.Height / 5) + (moneyBox.Height / 4) + 10), Color.Yellow);
-            */
-
-            spriteBatch.Draw(moneyBox, new Vector2(profile.Width + dayBox.Width + 10, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(profile.Width + dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 36), Color.Black);
+            spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 10, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 36), Color.Black);
 
             //Draw Emotion
             // แสดงค่า Patience Meter
-            Vector2 EmotionPos = new Vector2(moneyBox.Width + profile.Width + dayBox.Width + 10, menuBox.Height / 5);//สำหรับตำแหน่งของอีโมจิอารมณ์
+            Vector2 EmotionPos = new Vector2(moneyBox.Width + dayBox.Width + 10, menuBox.Height / 5);//สำหรับตำแหน่งของอีโมจิอารมณ์
             Vector2 percentPantiencePos = new Vector2(EmotionPos.X + 145, menuBox.Height / 5 + 36);
 
             string patienceText = $"{_patienceMeter:0}%";
-            spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Black);
             DrawEmotionIcon(_font, spriteBatch, EmotionPos);
+            spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Black);
             #endregion
 
             #region Dialouge
@@ -427,7 +421,6 @@ namespace Mystic_Foods
             /*
             spriteBatch.DrawString(_font, $" IdOrder : {_currentCustomer.IdOrder}", new Vector2(1000, 400), Color.Black);
             spriteBatch.DrawString(_font, $" CurrectOrder : {GameManager.IsCurrectOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 200), Color.Black);
-
             string TimeS = $"\nTimePerSec: {TimePSec}";
             spriteBatch.DrawString(_font, $"Count Dialogue : {GameManager.countDia}", new Vector2(100, 300), Color.Blue);
             spriteBatch.DrawString(_font, $"_what : {_what}", new Vector2(100, 400), Color.Blue);

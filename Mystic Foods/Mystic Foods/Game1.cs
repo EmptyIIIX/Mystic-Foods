@@ -109,15 +109,15 @@ namespace Mystic_Foods
             if (_currentScene == _mainMenuScene)
             {
                 _mainMenuScene.Update(gameTime);
-                if (_mainMenuScene.StartGameRequested && wasTutorial == false)
+                if (MainMenuScene.StartGameRequested && wasTutorial == false)
                 {
-                    _mainMenuScene.StartGameRequested = false;
+                    MainMenuScene.StartGameRequested = false;
                     //_currentScene = _levelSelectScene;
                     _currentScene = _tutorialScene;
                 }
-                else if (_mainMenuScene.StartGameRequested && wasTutorial)
+                else if (MainMenuScene.StartGameRequested && wasTutorial)
                 {
-                    _mainMenuScene.StartGameRequested = false;
+                    MainMenuScene.StartGameRequested = false;
                     _currentScene = _levelSelectScene;
                 }
 
@@ -195,6 +195,11 @@ namespace Mystic_Foods
                 {
                     _dndScene.BackToGame = false;
                     _currentScene = _gamePlayScene;
+                }
+                if (_dndScene.backToCounter)
+                {
+                    _currentScene = _gamePlayScene;
+                    _dndScene.backToCounter = false;
                 }
             }
             //Check exit game

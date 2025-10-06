@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
 
 
@@ -98,16 +100,19 @@ namespace Mystic_Foods.Scenes
 
         public void NextButton_click(object sender, EventArgs e)
         {
+            SoundManager.PlaySfx("Click");
             isNextPage = true;
             countPage++;
         }
         public void BackButton_click(object sender, EventArgs e)
         {
+            SoundManager.PlaySfx("Click");
             isBackPage = true;
             countPage--;
         }
         public void ExitPageButton_click(object sender, EventArgs e)
         {
+            SoundManager.PlaySfx("Click");
             isExitPage = true;
             Game1.wasTutorial = true;
         }

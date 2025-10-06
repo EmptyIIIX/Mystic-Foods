@@ -26,7 +26,7 @@ namespace Mystic_Foods.Scenes
         {
             _font = content.Load<SpriteFont>("MainFont");
 
-            homeBtn = content.Load<Texture2D>("Etc/option_exit");
+            homeBtn = content.Load<Texture2D>("UI/previous");
 
             homeButton = new Button(homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
             homeButton.Click += HomeButton_Click;

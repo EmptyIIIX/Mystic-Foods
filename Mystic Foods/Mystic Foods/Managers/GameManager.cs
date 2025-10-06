@@ -434,6 +434,7 @@ namespace Mystic_Foods.Managers
         {
             InputManager.Update();
             DragDropManager.Update();
+
         }
         public void Draw(Vector2 cameraPos)
         {
@@ -461,6 +462,16 @@ namespace Mystic_Foods.Managers
             foreach (var flowers in _flowers)
             {
                 flowers.Draw(cameraPos);
+            }
+
+
+            if (GamePlayScene.isEndLv)//remove food when end game
+            {
+                foreach (var food in _food.ToList())
+                {
+                    DragDropManager.RemoveDraggable(food);
+                    _food.Remove(food);
+                }
             }
         }
     }
