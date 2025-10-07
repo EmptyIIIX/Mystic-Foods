@@ -60,11 +60,10 @@ namespace Mystic_Foods.Scenes
             if (countPage == 0) countPage = 1; //this cannot be less than 1 page
             if (countPage > MaxPage) countPage = MaxPage; // this cannot be more max page
 
-
             if (Game1.wasTutorial == false)
             {
-                next.Update();
-                back.Update();
+                if (countPage != MaxPage) next.Update();
+                if (countPage > 1) back.Update();
 
                 if (countPage == MaxPage) exitpage.Update();
             }
