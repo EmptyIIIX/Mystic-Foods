@@ -24,15 +24,17 @@ namespace Mystic_Foods.Scenes
 
         //check action page
         public static bool isNextPage, isBackPage, isExitPage;
+        public static int CountTutorial = 0;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             //load scene
-            Page_1 = content.Load<Texture2D>("Tutorial/1เลือกเวลาเปิดร้าน");
-            Page_2 = content.Load<Texture2D>("Tutorial/2หน้ารับออเดอร์");
-            Page_3 = content.Load<Texture2D>("Tutorial/3ความต้องการลูกค้า");
-            Page_4 = content.Load<Texture2D>("Tutorial/4อารมณ์ลูกค้า");
-            Page_5 = content.Load<Texture2D>("Tutorial/5เมนูหยุดเกม");
+            //Page_1 = content.Load<Texture2D>("Tutorial/T1_page_1");
+            Page_1 = content.Load<Texture2D>("Tutorial/1หน้ารับออเดอร์");
+            Page_2 = content.Load<Texture2D>("Tutorial/2หนังสือเมนู");
+            Page_3 = content.Load<Texture2D>("Tutorial/3วันและเวลา");
+            Page_4 = content.Load<Texture2D>("Tutorial/4การสั่งซื้อของลูกค้า");
+            Page_5 = content.Load<Texture2D>("Tutorial/5ความประทับใจ");
 
             //load button UI
             nextPage = content.Load<Texture2D>("Tutorial/nextpage");
@@ -60,11 +62,10 @@ namespace Mystic_Foods.Scenes
             if (countPage == 0) countPage = 1; //this cannot be less than 1 page
             if (countPage > MaxPage) countPage = MaxPage; // this cannot be more max page
 
-
             if (Game1.wasTutorial == false)
             {
-                next.Update();
-                back.Update();
+                if (countPage != MaxPage) next.Update();
+                if (countPage > 1) back.Update();
 
                 if (countPage == MaxPage) exitpage.Update();
             }
@@ -91,7 +92,6 @@ namespace Mystic_Foods.Scenes
                 case 5:
                     spriteBatch.Draw(Page_5, new Vector2(0, 0), Color.White);
                     break;
-
             }
 
             //draw next and back page
@@ -119,6 +119,7 @@ namespace Mystic_Foods.Scenes
             SoundManager.PlaySfx("Click");
             isExitPage = true;
             Game1.wasTutorial = true;
+            //CountTutorial++;
         }
     }
 }

@@ -23,7 +23,8 @@ namespace Mystic_Foods.Scenes
         private Texture2D dayBtn, duskBtn, nightBtn, homeBtn;
 
         public bool MenuRequest = false;
-        public bool gameplayRequest = false;
+        //public bool gameplayRequest = false;
+        public bool tutorial2 = false;
 
         Texture2D bg;
         Button dayButton, duskButton, nightButton, homeButton;
@@ -103,7 +104,8 @@ namespace Mystic_Foods.Scenes
             SoundManager.PlaySfx("Click");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dawn;
-            gameplayRequest = true;
+            //gameplayRequest = true;
+            tutorial2 = true;
             await Task.Delay(500);
             SoundManager.PlaySong("daybgm");
         }
@@ -115,7 +117,8 @@ namespace Mystic_Foods.Scenes
             SoundManager.PlaySfx("Click");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dusk;
-            gameplayRequest = true;
+            //gameplayRequest = true;
+            tutorial2 = true;
             await Task.Delay(500);
             SoundManager.PlaySong("duskbgm");
         }
@@ -127,7 +130,8 @@ namespace Mystic_Foods.Scenes
             SoundManager.PlaySfx("Click");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Night;
-            gameplayRequest = true;
+            //gameplayRequest = true;
+            tutorial2 = true;
             await Task.Delay(500);
             SoundManager.PlaySong("nightbgm");
         }
