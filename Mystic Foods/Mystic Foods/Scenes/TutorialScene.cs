@@ -16,7 +16,7 @@ namespace Mystic_Foods.Scenes
         public static int countPage, MaxPage;
 
         //scene tutorial
-        public static Texture2D Page_1;
+        public static Texture2D Page_1, Page_2, Page_3, Page_4, Page_5;
 
         //button UI
         public static Texture2D nextPage, backPage, exitPage, topicPoint;
@@ -24,11 +24,17 @@ namespace Mystic_Foods.Scenes
 
         //check action page
         public static bool isNextPage, isBackPage, isExitPage;
+        public static int CountTutorial = 0;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             //load scene
-            Page_1 = content.Load<Texture2D>("Tutorial/T1_page_1");
+            //Page_1 = content.Load<Texture2D>("Tutorial/T1_page_1");
+            Page_1 = content.Load<Texture2D>("Tutorial/1หน้ารับออเดอร์");
+            Page_2 = content.Load<Texture2D>("Tutorial/2หนังสือเมนู");
+            Page_3 = content.Load<Texture2D>("Tutorial/3วันและเวลา");
+            Page_4 = content.Load<Texture2D>("Tutorial/4การสั่งซื้อของลูกค้า");
+            Page_5 = content.Load<Texture2D>("Tutorial/5ความประทับใจ");
 
             //load button UI
             nextPage = content.Load<Texture2D>("Tutorial/nextpage");
@@ -48,7 +54,7 @@ namespace Mystic_Foods.Scenes
 
             //assign max page and set count page of the tutorial
             countPage = 1;
-            MaxPage = 1;
+            MaxPage = 5;
         }
 
         public void Update(GameTime gameTime)
@@ -69,7 +75,24 @@ namespace Mystic_Foods.Scenes
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Page_1, new Vector2(0, 0), Color.White);
+            switch (countPage)
+            {
+                case 1:
+                    spriteBatch.Draw(Page_1, new Vector2(0, 0), Color.White);
+                    break;
+                case 2:
+                    spriteBatch.Draw(Page_2, new Vector2(0, 0), Color.White);
+                    break;
+                case 3:
+                    spriteBatch.Draw(Page_3, new Vector2(0, 0), Color.White);
+                    break;
+                case 4:
+                    spriteBatch.Draw(Page_4, new Vector2(0, 0), Color.White);
+                    break;
+                case 5:
+                    spriteBatch.Draw(Page_5, new Vector2(0, 0), Color.White);
+                    break;
+            }
 
             //draw next and back page
             if (countPage < MaxPage) next.Draw(spriteBatch);
@@ -95,7 +118,8 @@ namespace Mystic_Foods.Scenes
         {
             SoundManager.PlaySfx("Click");
             isExitPage = true;
-            //Game1.wasTutorial = true;
+            Game1.wasTutorial = true;
+            //CountTutorial++;
         }
     }
 }

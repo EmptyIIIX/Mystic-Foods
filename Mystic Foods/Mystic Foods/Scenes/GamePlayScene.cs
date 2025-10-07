@@ -78,6 +78,8 @@ namespace Mystic_Foods
         public static bool isClickExit = false;
         public static bool isSkip = false;
 
+        public bool isTutorial2 = false;
+
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
@@ -183,6 +185,7 @@ namespace Mystic_Foods
         {
             var state = Keyboard.GetState();
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (isSkip == false )
             {
                 SkipCustomer();
@@ -456,7 +459,8 @@ namespace Mystic_Foods
                 if (isTutorialInGame)
                 {
                     //for tutorial page
-                    spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
+                    //spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
+                    Game1.callTutorial = true;
                     _tutorialButton.Draw(spriteBatch);
                 }
                 else if (isTutorialInGame == false) 
