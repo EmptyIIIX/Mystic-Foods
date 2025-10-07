@@ -43,7 +43,7 @@ namespace Mystic_Foods
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.IsFullScreen = false;
             Window.AllowUserResizing = true;
-            Window.IsBorderless = true;//better fullscreen
+            Window.IsBorderless = false;//better fullscreen
             _graphics.ApplyChanges();
         }
         protected override void Initialize()
@@ -74,6 +74,7 @@ namespace Mystic_Foods
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            MediaPlayer.IsRepeating = true;
             SoundManager.MusicVolume = 0.5f;
             #region BGM
             SoundManager.AddSong("mainmenu", Content.Load<Song>("Music/BGM/Lao Lum Dab"));

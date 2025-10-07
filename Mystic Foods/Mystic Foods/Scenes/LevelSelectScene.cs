@@ -30,7 +30,7 @@ namespace Mystic_Foods.Scenes
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
-            _font = content.Load<SpriteFont>("MainFont");
+            _font = content.Load<SpriteFont>("BoldFont");
 
             bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
@@ -71,7 +71,7 @@ namespace Mystic_Foods.Scenes
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateBlue);
 
             string text = "Choose the opening hours";
-            float scale = 3.0f;
+            float scale = 1.0f;
 
             // วัดขนาดข้อความหลัง scale
             Vector2 textSize = _font.MeasureString(text) * scale;
@@ -81,7 +81,7 @@ namespace Mystic_Foods.Scenes
             int screenHeight = spriteBatch.GraphicsDevice.Viewport.Height;
 
             // คำนวณตำแหน่งให้อยู่กลางจอ
-            Vector2 position = new Vector2((screenWidth - textSize.X) / 2f,100);
+            Vector2 position = new Vector2((screenWidth - textSize.X) / 2f,50);
 
             spriteBatch.Begin();
             spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);

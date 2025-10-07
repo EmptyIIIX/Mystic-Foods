@@ -23,7 +23,7 @@ namespace Mystic_Foods
         public bool CreditRequested = false;
         public bool SettingRequested = false;
 
-        public Texture2D NameTitle;
+        public Texture2D NameTitle, settingBG;
         public Texture2D PlayBtn, SettingBtn, CreditBtn, ExitBtn, ExitBtn_hover;
         public Button _playBtn, _settingBtn, _creditBtn, _exitBtn;
 
@@ -34,7 +34,7 @@ namespace Mystic_Foods
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
-            _font = content.Load<SpriteFont>("MainFont");
+            _font = content.Load<SpriteFont>("BoldFont");
             Menu_bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
             NameTitle = content.Load<Texture2D>("UI/title");
@@ -42,6 +42,7 @@ namespace Mystic_Foods
             SettingBtn = content.Load<Texture2D>("UI/setting");
             CreditBtn = content.Load<Texture2D>("UI/credit");
             ExitBtn = content.Load<Texture2D>("UI/exit");
+            settingBG = content.Load<Texture2D>("UI/setting/Setting_BG");
             //ExitBtn_hover = content.Load<Texture2D>("UI/exit");
 
             //_playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
@@ -55,7 +56,6 @@ namespace Mystic_Foods
             _exitBtn = new Button(ExitBtn, ExitBtn, _font, "", new Rectangle(1920 - ExitBtn.Width - 20, 1080 - ExitBtn.Height - 20, 80, 100));
             _exitBtn.Click += ExitBtn_Click;
 
-            MediaPlayer.IsRepeating = true;
             SoundManager.PlaySong("mainmenu");
         }
 
@@ -86,7 +86,11 @@ namespace Mystic_Foods
             _creditBtn.DrawHomeBtn(spriteBatch);
             _exitBtn.DrawHomeBtn(spriteBatch);
 
-            if (CreditRequested) spriteBatch.DrawString(_font, "Hello World!", new Vector2(960 , 540), Color.White);
+            if (CreditRequested)
+            {
+                spriteBatch.Draw(settingBG, new Rectangle(1050, 250, 500, 500), Color.White);
+                spriteBatch.DrawString(_font, "Nah", new Vector2(1225, 400), Color.Black);
+            }
 
             spriteBatch.End();
         }

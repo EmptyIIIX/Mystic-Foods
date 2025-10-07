@@ -6,6 +6,8 @@ using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
 using Mystic_Foods.Time;
 using System;
+using System.Formats.Tar;
+using System.Reflection.PortableExecutable;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,6 +27,7 @@ namespace Mystic_Foods
         public bool BackToMenuRequested = false;
         public bool DnDRequested = false;
         public bool ExitRequest = false;
+        public static bool showSettings = false;
         private KeyboardState _oldState;
         private CustomerManager _customerManager;
         public static Customer _currentCustomer;
@@ -36,7 +39,7 @@ namespace Mystic_Foods
         public Button _servedYesButton;
 
         public static bool isPaused = false;
-        public static Button _menuButton, _resumeButton, _homeButton, _tutorialButton, _exitButton;
+        public static Button _menuButton, _resumeButton, _homeButton, _tutorialButton, _settingButton, _exitButton;
         public static Button _yesExit, _noExit;
         public static Texture2D yesExit, yesExit_hover, noExit, noExit_hover, logExit;
         public Button _yesButton;
@@ -51,7 +54,7 @@ namespace Mystic_Foods
         public static Texture2D _textureGrumpy;
 
         public static Texture2D bgBox, dayBox, moneyBox, menuBox, profile, uiBox;
-        public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn;
+        public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn, settingBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D revenueBox;
         public static Texture2D whatButton, whatButton_hover, yesButton, yesButton_hover, diaBox;
@@ -71,6 +74,27 @@ namespace Mystic_Foods
         public static bool isClickExit = false;
 
         public static bool isSkip = false;
+        #region Setting
+        private Texture2D header, settingBG;
+        private Texture2D musicIcon, muteMusicIcon;
+        private Texture2D sfxIcon, muteSfxIcon;
+        private Texture2D barBg, barFill, knob;
+        private Vector2 musicBarPos = new Vector2(600, 425);
+        private Vector2 sfxBarPos = new Vector2(600, 675);
+        private const float barScale = 1.0f;
+
+        private bool _draggingMusic = false;
+        private bool _draggingSfx = false;
+        #endregion
+
+        #region Typing
+        private string fullText = "";
+        private string displayedText = "";
+        private float typingSpeed = 0.005f; //lower the number, faster the typo
+        private float typingTimer = 0f;
+        private int charIndex = 0;
+        #endregion
+
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
@@ -110,6 +134,7 @@ namespace Mystic_Foods
             profile = content.Load<Texture2D>("Etc/Cat1");
             homeBtn = content.Load<Texture2D>("Etc/HomeBtn");
             exitBtn = content.Load<Texture2D>("Etc/ExitBtn");
+            settingBtn = content.Load<Texture2D>("UI/setting/settingButton");
             logExit = content.Load<Texture2D>("DialogueUI/ConfirmExit_UI");
             yesExit = content.Load<Texture2D>("DialogueUI/LeaveAnyway_BeforeClick");
             yesExit_hover = content.Load<Texture2D>("DialogueUI/LeaveAnyway_AfterClick");
@@ -133,7 +158,9 @@ namespace Mystic_Foods
             _whatButton.Click += WhatButton_Click;
             _servedYesButton = new Button(yesButton, yesButton_hover, _font, " ", new Rectangle(1400, 500, 128, 63));
             _servedYesButton.Click += ServedYes_Click;
-            _exitButton = new Button(exitBtn, exitBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + 80, 100, 106));// 61, 67
+            _settingButton = new Button(settingBtn, settingBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + 65, 100, 106));
+            _settingButton.Click += SettingButton_Click;
+            _exitButton = new Button(exitBtn, exitBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + settingBtn.Height + 90, 100, 106));// 61, 67
             _exitButton.Click += ExitButton_Click;
             _resumeButton = new Button(resumeBtn, resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height / 2, 180, 165));
             _resumeButton.Click += ResumeButton_Click;
@@ -145,8 +172,20 @@ namespace Mystic_Foods
 
             _OkButton = new Button(okBtn, okBtn, _font, "", new Rectangle(1450, 840, 300, 150));
             _OkButton.Click += OkEndButton_Click;
-            /*
-             */
+
+            #region setting
+            header = content.Load<Texture2D>("UI/setting/Setting_Word");
+            settingBG = content.Load<Texture2D>("UI/setting/Setting_BG");
+
+            musicIcon = content.Load<Texture2D>("UI/setting/Music_UI");
+            muteMusicIcon = content.Load<Texture2D>("UI/setting/MuteSong");
+            sfxIcon = content.Load<Texture2D>("UI/setting/SoundEffect");
+            muteSfxIcon = content.Load<Texture2D>("UI/setting/MuteSoundEffect");
+
+            barBg = content.Load<Texture2D>("UI/setting/IncreaseSound_BG_UI");
+            barFill = content.Load<Texture2D>("UI/setting/IncreaseSound_UI");
+            knob = content.Load<Texture2D>("UI/setting/SoundButton");
+            #endregion
         }
 
         private void LoadCustomerTextures()
@@ -158,7 +197,21 @@ namespace Mystic_Foods
         public void Update(GameTime gameTime)
         {
             var state = Keyboard.GetState();
+            var mouse = Mouse.GetState();
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // ค่อยๆ เพิ่มตัวอักษร
+            if (charIndex < fullText.Length)
+            {
+                typingTimer += deltaTime;
+                if (typingTimer >= typingSpeed)
+                {
+                    typingTimer = 0f;
+                    charIndex++;
+                    displayedText = fullText.Substring(0, charIndex);
+                }
+            }
+
             if (isSkip == false )
             {
                 SkipCustomer();
@@ -173,19 +226,66 @@ namespace Mystic_Foods
 
                 _exitButton.Update();
                 _homeButton.Update();
-                _resumeButton.Update();
+                _settingButton.Update();
                 if (isClickExit)
                 {
                     _yesExit.Update();
                     _noExit.Update();
                 }
 
+                if (showSettings == true)
+                {
+                    Vector2 musicBarPos = new Vector2(600, 425);
+                    Vector2 sfxBarPos = new Vector2(600, 675);
+
+                    float mx = mouse.X;
+                    float my = mouse.Y;
+
+                    Rectangle musicBarRect = new Rectangle((int)musicBarPos.X, (int)musicBarPos.Y, barBg.Width, barBg.Height);
+                    Rectangle sfxBarRect = new Rectangle((int)sfxBarPos.X, (int)sfxBarPos.Y, barBg.Width, barBg.Height);
+
+                    // --- Mouse Drag Volume ---
+                    if (mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        if (!_draggingMusic && !_draggingSfx)
+                        {
+                            if (musicBarRect.Contains(mx, my))
+                                _draggingMusic = true;
+                            else if (sfxBarRect.Contains(mx, my))
+                                _draggingSfx = true;
+                        }
+                    }
+                    else if (mouse.LeftButton == ButtonState.Released)
+                    {
+                        _draggingMusic = false;
+                        _draggingSfx = false;
+                    }
+
+                    if (_draggingMusic)
+                    {
+                        float newVol = MathHelper.Clamp((mx - musicBarRect.X) / (float)musicBarRect.Width, 0f, 1f);
+                        SoundManager.SetMusicVolume(newVol);
+                    }
+                    else if (_draggingSfx)
+                    {
+                        float newVol = MathHelper.Clamp((mx - sfxBarRect.X) / (float)sfxBarRect.Width, 0f, 1f);
+                        SoundManager.SetSfxVolume(newVol);
+                    }
+                }
+                else
+                {
+                    _resumeButton.Update();
+                }
                 #endregion
             }
             else if (isEndLv == false) 
             {
                 #region Playing the game
-
+                if (mouse.LeftButton == ButtonState.Pressed && charIndex < fullText.Length)
+                {
+                    displayedText = fullText;
+                    charIndex = fullText.Length;
+                }
                 // random, reset Patience
                 if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
                 {
@@ -384,21 +484,42 @@ namespace Mystic_Foods
             switch (GameManager.countDia)
             {
                 case 0:
-                    spriteBatch.DrawString(_font, _currentCustomer.DiaWrong, new Vector2(1000, 300), Color.Black);
+                    if (fullText != _currentCustomer.DiaWrong)
+                        StartTyping(_currentCustomer.DiaWrong);
+
+                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
                     _whatButton.DrawHover(spriteBatch);
-                    break;
-                case 1:
-                    spriteBatch.DrawString(_font, _currentCustomer.DiaCurrect, new Vector2(1000, 300), Color.Black);
-                    break;
-                case 2:
-                    spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, 300), Color.Black);
-                    _whatButton.DrawHover(spriteBatch);
-                    break;
-                case 3:
-                    spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 300), Color.Black);
                     break;
 
+                case 1:
+                    if (fullText != _currentCustomer.DiaCurrect)
+                        StartTyping(_currentCustomer.DiaCurrect);
+
+                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    break;
+
+                case 2:
+                    if (fullText != _currentCustomer.TalkDia)
+                        StartTyping(_currentCustomer.TalkDia);
+
+                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    break;
+                case 3:
+                    if (fullText != _currentCustomer.Dia1)
+                        StartTyping(_currentCustomer.Dia1);
+
+                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    _whatButton.DrawHover(spriteBatch);
+                    break;
+
+                case 4:
+                    if (fullText != _currentCustomer.Dia2)
+                        StartTyping(_currentCustomer.Dia2);
+
+                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    break;
             }
+
 
             #endregion
 
@@ -415,7 +536,20 @@ namespace Mystic_Foods
                 //DrawString(SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
                 //spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
-                _resumeButton.Draw(spriteBatch);
+                if (showSettings == true)
+                {
+                    spriteBatch.Draw(settingBG, new Vector2(224, 175), Color.White);
+
+                    spriteBatch.Draw(header, new Vector2((1920 - header.Width) / 2, 120), Color.White);
+
+                    DrawVolumeBar(spriteBatch, musicBarPos, SoundManager.MusicVolume, SoundManager.MusicVolume > 0, musicIcon, muteMusicIcon);
+                    DrawVolumeBar(spriteBatch, sfxBarPos, SoundManager.SfxVolume, SoundManager.SfxVolume > 0, sfxIcon, muteSfxIcon);
+                }
+                else
+                {
+                    _resumeButton.Draw(spriteBatch);
+                }
+                _settingButton.Draw(spriteBatch);
                 _homeButton.Draw(spriteBatch);
                 _exitButton.Draw(spriteBatch);
                 if (isClickExit)
@@ -464,6 +598,23 @@ namespace Mystic_Foods
             //string patienceText = $"{_patienceMeter:0}%";
             //spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
         }
+
+        private void DrawVolumeBar(SpriteBatch spriteBatch, Vector2 position, float volume, bool notMuted, Texture2D normalIcon, Texture2D muteIcon)
+        {
+            spriteBatch.Draw(notMuted ? normalIcon : muteIcon, new Vector2(position.X - 250, position.Y - 30), Color.White);
+
+            spriteBatch.Draw(barBg, position, null, Color.White, 0f, Vector2.Zero, barScale, SpriteEffects.None, 0f);
+            float fillWidth = barFill.Width * volume;
+            Rectangle sourceRect = new Rectangle(0, 0, (int)fillWidth, barFill.Height);
+
+            spriteBatch.Draw(barFill, position, sourceRect, Color.White, 0f, Vector2.Zero, barScale, SpriteEffects.None, 0f);
+
+            Vector2 knobPos = new Vector2(position.X + fillWidth - knob.Width / 2, position.Y - 5);
+            spriteBatch.Draw(knob, knobPos, Color.White);
+
+            spriteBatch.DrawString(_font, $"{(int)(volume * 100)}%", new Vector2(position.X + barBg.Width + 50, position.Y), Color.Black);
+        }
+
         private void YesButton_Click(Object sender, EventArgs e)
         {
             DnDRequested = true;
@@ -521,6 +672,11 @@ namespace Mystic_Foods
             isEndLv = false;
             BackToMenuRequested = true;
         }
+        private void SettingButton_Click(object sender, EventArgs e)
+        {
+            showSettings = !showSettings;
+        }
+
         public void GetCustomerByPhase()
         {
             switch (CurrentPhase)
@@ -528,11 +684,20 @@ namespace Mystic_Foods
                 case DayPhase.Dawn:
                     _currentCustomer = _customerManager.GetNextCustomer();
                     break;
+
                 case DayPhase.Dusk:
                     _currentCustomer = _customerManager.GetNextCustomer2();
                     break;
+
                 case DayPhase.Night:
-                    _currentCustomer = _customerManager.GetNextCustomer3();
+                    if (!_customerManager.IsEventFinished)
+                    {
+                        _currentCustomer = _customerManager.GetEventCustomer();
+                    }
+                    else
+                    {
+                        _currentCustomer = _customerManager.GetNextCustomer3();
+                    }
                     break;
             }
         }
@@ -542,6 +707,14 @@ namespace Mystic_Foods
             _patienceMeter = _patienceMeterStart;
             LoadCustomerTextures();
             GameManager.countDia = 2;
+        }
+
+        private void StartTyping(string text)
+        {
+            fullText = text;
+            displayedText = "";
+            charIndex = 0;
+            typingTimer = 0f;
         }
 
         public async void wait()

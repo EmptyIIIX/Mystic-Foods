@@ -1,35 +1,30 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\CAMT\\source\\repos\\Mystic-Foods\\Mystic Foods\\",
+  "WorkspaceRootPath": "D:\\Work\\Mystic-Foods\\Mystic Foods\\",
   "Documents": [
-    {
-<<<<<<< HEAD
-      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\scenes\\dndscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\scenes\\dndscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
     {
       "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\scenes\\gameplayscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\scenes\\gameplayscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\scenes\\dndscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\scenes\\dndscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\scenes\\settingscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\scenes\\settingscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\managers\\settingsdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\managers\\settingsdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\managers\\customermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\managers\\customermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|d:\\work\\mystic-foods\\mystic foods\\mystic foods\\scenes\\mainmenuscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\scenes\\mainmenuscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-=======
-      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|c:\\users\\camt\\source\\repos\\mystic-foods\\mystic foods\\mystic foods\\scenes\\gameplayscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\scenes\\gameplayscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|c:\\users\\camt\\source\\repos\\mystic-foods\\mystic foods\\mystic foods\\scenes\\tutorialscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\scenes\\tutorialscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|c:\\users\\camt\\source\\repos\\mystic-foods\\mystic foods\\mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A8861FD2-4F1D-4F27-8FA3-64A77F621F57}|Mystic Foods\\Mystic Foods.csproj|solutionrelative:mystic foods\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
->>>>>>> New-Features
     }
   ],
   "DocumentGroupContainers": [
@@ -39,25 +34,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 267,
-<<<<<<< HEAD
-          "SelectedChildIndex": 1,
-=======
-          "SelectedChildIndex": 2,
->>>>>>> New-Features
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "Game1.cs",
-              "DocumentMoniker": "C:\\Users\\CAMT\\source\\repos\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Game1.cs",
+              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Game1.cs",
               "RelativeDocumentMoniker": "Mystic Foods\\Game1.cs",
-              "ToolTip": "C:\\Users\\CAMT\\source\\repos\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Game1.cs",
+              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Game1.cs",
               "RelativeToolTip": "Mystic Foods\\Game1.cs",
-<<<<<<< HEAD
-              "ViewState": "AgIAAEQAAAAAAAAAAAAAAFQAAAApAAAAAAAAAA==",
-=======
-              "ViewState": "AgIAAN0AAAAAAAAAAAAAAAkAAAAWAAAAAAAAAA==",
->>>>>>> New-Features
+              "ViewState": "AgIAAEcAAAAAAAAAAAAgwE0AAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-08T08:21:14.115Z",
               "IsPinned": true,
@@ -65,16 +52,54 @@
             },
             {
               "$type": "Document",
-<<<<<<< HEAD
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "SettingsData.cs",
+              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Managers\\SettingsData.cs",
+              "RelativeDocumentMoniker": "Mystic Foods\\Managers\\SettingsData.cs",
+              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Managers\\SettingsData.cs",
+              "RelativeToolTip": "Mystic Foods\\Managers\\SettingsData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T19:41:16.844Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SettingScene.cs",
+              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\SettingScene.cs",
+              "RelativeDocumentMoniker": "Mystic Foods\\Scenes\\SettingScene.cs",
+              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\SettingScene.cs",
+              "RelativeToolTip": "Mystic Foods\\Scenes\\SettingScene.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T19:41:11.603Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CustomerManager.cs",
+              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Managers\\CustomerManager.cs",
+              "RelativeDocumentMoniker": "Mystic Foods\\Managers\\CustomerManager.cs",
+              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Managers\\CustomerManager.cs",
+              "RelativeToolTip": "Mystic Foods\\Managers\\CustomerManager.cs",
+              "ViewState": "AgIAAMYAAAAAAAAAAAAswNUAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T19:34:46.982Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "DnDScene.cs",
               "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\DnDScene.cs",
               "RelativeDocumentMoniker": "Mystic Foods\\Scenes\\DnDScene.cs",
               "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\DnDScene.cs",
               "RelativeToolTip": "Mystic Foods\\Scenes\\DnDScene.cs",
-              "ViewState": "AgIAAA0BAAAAAAAAAAAAACEBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-07T08:04:01.437Z",
+              "WhenOpened": "2025-10-07T19:34:40.253Z",
               "EditorCaption": ""
             },
             {
@@ -87,52 +112,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-=======
-              "DocumentIndex": 1,
-              "Title": "TutorialScene.cs",
-              "DocumentMoniker": "C:\\Users\\CAMT\\source\\repos\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\TutorialScene.cs",
-              "RelativeDocumentMoniker": "Mystic Foods\\Scenes\\TutorialScene.cs",
-              "ToolTip": "C:\\Users\\CAMT\\source\\repos\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\TutorialScene.cs",
-              "RelativeToolTip": "Mystic Foods\\Scenes\\TutorialScene.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFwAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-07T08:06:02.886Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
->>>>>>> New-Features
               "Title": "GamePlayScene.cs",
-              "DocumentMoniker": "C:\\Users\\CAMT\\source\\repos\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
+              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
               "RelativeDocumentMoniker": "Mystic Foods\\Scenes\\GamePlayScene.cs",
-              "ToolTip": "C:\\Users\\CAMT\\source\\repos\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
+              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
               "RelativeToolTip": "Mystic Foods\\Scenes\\GamePlayScene.cs",
-<<<<<<< HEAD
-              "ViewState": "AgIAAPoAAAAAAAAAAAArwAQBAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAOoBAAAAAAAAAAAowPYBAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-06T18:56:18.191Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MainMenuScene.cs",
-              "DocumentMoniker": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\MainMenuScene.cs",
-              "RelativeDocumentMoniker": "Mystic Foods\\Scenes\\MainMenuScene.cs",
-              "ToolTip": "D:\\Work\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\MainMenuScene.cs",
-              "RelativeToolTip": "Mystic Foods\\Scenes\\MainMenuScene.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAArwE4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-07T02:56:45.312Z",
-              "EditorCaption": ""
-=======
-              "ViewState": "AgIAACkAAAAAAAAAAAAAAD4AAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T18:56:18.191Z",
-              "EditorCaption": ""
->>>>>>> New-Features
             }
           ]
         }
