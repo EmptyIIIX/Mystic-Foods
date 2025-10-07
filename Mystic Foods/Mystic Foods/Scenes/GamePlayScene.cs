@@ -74,6 +74,7 @@ namespace Mystic_Foods
         public static bool isClickExit = false;
 
         public static bool isSkip = false;
+
         #region Setting
         private Texture2D header, settingBG;
         private Texture2D musicIcon, muteMusicIcon;
@@ -200,17 +201,6 @@ namespace Mystic_Foods
             var mouse = Mouse.GetState();
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // ค่อยๆ เพิ่มตัวอักษร
-            if (charIndex < fullText.Length)
-            {
-                typingTimer += deltaTime;
-                if (typingTimer >= typingSpeed)
-                {
-                    typingTimer = 0f;
-                    charIndex++;
-                    displayedText = fullText.Substring(0, charIndex);
-                }
-            }
 
             if (isSkip == false )
             {
@@ -326,6 +316,16 @@ namespace Mystic_Foods
                     TimeStage = TimeDefault;
                 }
                 #endregion
+            }
+            if (charIndex < fullText.Length)
+            {
+                typingTimer += deltaTime;
+                if (typingTimer >= typingSpeed)
+                {
+                    typingTimer = 0f;
+                    charIndex++;
+                    displayedText = fullText.Substring(0, charIndex);
+                }
             }
             else if (isEndLv)
             {
@@ -503,6 +503,7 @@ namespace Mystic_Foods
                         StartTyping(_currentCustomer.TalkDia);
 
                     spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    _whatButton.DrawHover(spriteBatch);
                     break;
                 case 3:
                     if (fullText != _currentCustomer.Dia1)
@@ -622,7 +623,10 @@ namespace Mystic_Foods
         }
         private void WhatButton_Click(Object sender, EventArgs e)
         {
-            GameManager.countDia = 3;
+            if (GameManager.countDia < 4)
+            {
+                GameManager.countDia++;
+            }
         }
         public void MenuButton_Click(object sender, EventArgs e)
         {
