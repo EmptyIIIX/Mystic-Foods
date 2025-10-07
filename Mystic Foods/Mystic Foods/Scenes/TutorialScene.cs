@@ -16,7 +16,7 @@ namespace Mystic_Foods.Scenes
         public static int countPage, MaxPage;
 
         //scene tutorial
-        public static Texture2D Page_1, Page_2, Page_3, Page_4;
+        public static Texture2D Page_1, Page_2, Page_3, Page_4, Page_5;
 
         //button UI
         public static Texture2D nextPage, backPage, exitPage, topicPoint;
@@ -28,10 +28,11 @@ namespace Mystic_Foods.Scenes
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             //load scene
-            Page_1 = content.Load<Texture2D>("Tutorial/levelscene");
-            Page_2 = content.Load<Texture2D>("Tutorial/หนังสือที่จะขึ้นก่อนเริ่มเกม");
-            Page_3 = content.Load<Texture2D>("Tutorial/หนังสือแบบเลือกดูประวัติได้");
-            Page_4 = content.Load<Texture2D>("Tutorial/levelscene");
+            Page_1 = content.Load<Texture2D>("Tutorial/1เลือกเวลาเปิดร้าน");
+            Page_2 = content.Load<Texture2D>("Tutorial/2หน้ารับออเดอร์");
+            Page_3 = content.Load<Texture2D>("Tutorial/3ความต้องการลูกค้า");
+            Page_4 = content.Load<Texture2D>("Tutorial/4อารมณ์ลูกค้า");
+            Page_5 = content.Load<Texture2D>("Tutorial/5เมนูหยุดเกม");
 
             //load button UI
             nextPage = content.Load<Texture2D>("Tutorial/nextpage");
@@ -51,7 +52,7 @@ namespace Mystic_Foods.Scenes
 
             //assign max page and set count page of the tutorial
             countPage = 1;
-            MaxPage = 4;
+            MaxPage = 5;
         }
 
         public void Update(GameTime gameTime)
@@ -86,6 +87,9 @@ namespace Mystic_Foods.Scenes
                     break;
                 case 4:
                     spriteBatch.Draw(Page_4, new Vector2(0, 0), Color.White);
+                    break;
+                case 5:
+                    spriteBatch.Draw(Page_5, new Vector2(0, 0), Color.White);
                     break;
 
             }

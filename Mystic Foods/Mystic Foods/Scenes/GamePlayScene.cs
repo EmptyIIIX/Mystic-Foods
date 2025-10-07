@@ -13,7 +13,7 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 181f;
+        public static float TimeDefault = 241f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
 
@@ -36,7 +36,7 @@ namespace Mystic_Foods
         public Button _servedYesButton;
 
         public static bool isPaused = false;
-        public static Button _menuButton, _resumeButton, _homeButton, _exitButton;
+        public static Button _menuButton, _resumeButton, _homeButton, _tutorialButton, _exitButton;
         public static Button _yesExit, _noExit;
         public static Texture2D yesExit, yesExit_hover, noExit, noExit_hover, logExit;
         public Button _yesButton;
