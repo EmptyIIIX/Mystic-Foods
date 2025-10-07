@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Mystic_Foods.GamePlayScene;
 
 namespace Mystic_Foods
 {
@@ -27,7 +28,7 @@ namespace Mystic_Foods
         private bool Scroll = false;
         private Vector2 emotion = new Vector2(800, 162 / 5);
 
-        Texture2D bg, ArrowCam;
+        Texture2D bgDawn, bgDusk, bgNight, ArrowCam;
         private Vector2 scroll_factor = new Vector2(5.0f, 1);
         public static Vector2 cameraPos = Vector2.Zero;
         private float CameraSpeed = 0f;
@@ -72,7 +73,10 @@ namespace Mystic_Foods
 
             if (_contentLoaded) return;
 
-            bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
+            bgDawn = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
+            bgDusk = content.Load<Texture2D>("Environments/Cooking/CookingSunsetBG");
+            bgNight = content.Load<Texture2D>("Environments/Cooking/CookingMidnightBG");
+
             steam2 = content.Load<Texture2D>("Environments/tools/steamer2 - test");// test
             table = content.Load<Texture2D>("Environments/tools/Table");
             table_2 = content.Load<Texture2D>("Environments/tools/Table_2");
@@ -266,7 +270,27 @@ namespace Mystic_Foods
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateGray);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(bg, -cameraPos, Color.White);
+            #region Background
+            //spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
+
+            Texture2D background = bgDawn;
+
+            switch (CurrentPhase)
+            {
+                case DayPhase.Dawn:
+                    background = bgDawn;
+                    break;
+                case DayPhase.Dusk:
+                    background = bgDusk;
+                    break;
+                case DayPhase.Night:
+                    background = bgNight;
+                    break;
+            }
+
+            spriteBatch.Draw(background, -cameraPos, Color.White);
+            //spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
+            #endregion
 
             // วาด table ตาม camera
             spriteBatch.Draw(table, new Vector2(304, 143) - cameraPos, Color.White);

@@ -50,7 +50,7 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox;
+        public static Texture2D bgBox, dayBox, moneyBox, menuBox, profile, uiBox;
         public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D revenueBox;
@@ -87,8 +87,6 @@ namespace Mystic_Foods
             _rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             _rectTexture.SetData(new[] { Color.White });
 
-            bg = content.Load<Texture2D>("Environments/BG/orderBG_morning");
-            counter = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
             //Cat = content.Load<Texture2D>("Etc/Cat");
             texDawn = content.Load<Texture2D>("Environments/BG/orderBG_morning");
             texDusk = content.Load<Texture2D>("Environments/BG/orderBG_sunset");
@@ -123,7 +121,7 @@ namespace Mystic_Foods
             yesButton = content.Load<Texture2D>("DialogueUI/YesButton");
             whatButton_hover = content.Load<Texture2D>("DialogueUI/WhatButtonHover");
             yesButton_hover = content.Load<Texture2D>("DialogueUI/YesButtonHover");
-            diaBox = content.Load<Texture2D>("DialogueUI/DialogueBox");
+            diaBox = content.Load<Texture2D>("DialogueUI/DialogueBox2");
 
             _menuButton = new Button(menuBox, menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
             _menuButton.Click += MenuButton_Click;
@@ -259,8 +257,6 @@ namespace Mystic_Foods
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
             spriteBatch.Begin();
-            spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
-            
 
             #region Background
             //spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
