@@ -98,26 +98,38 @@ namespace Mystic_Foods.Scenes
 
         private async void DayButton_Click(object sender, EventArgs e)
         {
-            SoundManager.PlaySfx("Button");
+            SoundManager.StopMusic();
+            GamePlayScene.isSkip = false;
+            SoundManager.PlaySfx("Click");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dawn;
             gameplayRequest = true;
+            await Task.Delay(500);
+            SoundManager.PlaySong("daybgm");
         }
 
         private async void DuskButton_Click(object sender, EventArgs e)
         {
-            SoundManager.PlaySfx("Button");
+            SoundManager.StopMusic();
+            GamePlayScene.isSkip = false;
+            SoundManager.PlaySfx("Click");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dusk;
             gameplayRequest = true;
+            await Task.Delay(500);
+            SoundManager.PlaySong("duskbgm");
         }
 
         private async void NightButton_Click(object sender, EventArgs e)
         {
-            SoundManager.PlaySfx("Button");
+            SoundManager.StopMusic();
+            GamePlayScene.isSkip = false;
+            SoundManager.PlaySfx("Click");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Night;
             gameplayRequest = true;
+            await Task.Delay(500);
+            SoundManager.PlaySong("nightbgm");
         }
         public async void HomeButton_Click(object sender, EventArgs e)
         {

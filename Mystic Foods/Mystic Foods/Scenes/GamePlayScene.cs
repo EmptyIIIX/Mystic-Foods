@@ -6,6 +6,8 @@ using Mystic_Foods.Managers;
 using Mystic_Foods.Systems;
 using Mystic_Foods.Time;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Mystic_Foods
 {
@@ -67,6 +69,8 @@ namespace Mystic_Foods
         public static float Profit = 0.0f;
 
         public static bool isClickExit = false;
+
+        public static bool isSkip = false;
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
@@ -157,6 +161,11 @@ namespace Mystic_Foods
         {
             var state = Keyboard.GetState();
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (isSkip == false )
+            {
+                SkipCustomer();
+                isSkip = true;
+            }
 
             //Button
             _menuButton.Update();
@@ -530,6 +539,18 @@ namespace Mystic_Foods
                     _currentCustomer = _customerManager.GetNextCustomer3();
                     break;
             }
+        }
+        public void SkipCustomer()
+        {
+            GetCustomerByPhase();
+            _patienceMeter = _patienceMeterStart;
+            LoadCustomerTextures();
+            GameManager.countDia = 2;
+        }
+
+        public async void wait()
+        {
+            await Task.Delay(100);
         }
     }
 }

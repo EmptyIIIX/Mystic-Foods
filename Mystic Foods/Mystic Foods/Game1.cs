@@ -76,7 +76,9 @@ namespace Mystic_Foods
 
             SoundManager.MusicVolume = 0.5f;
             #region BGM
-            SoundManager.AddSong("mainmenu", Content.Load<Song>("Music/BGM/bgm02"));
+            SoundManager.AddSong("mainmenu", Content.Load<Song>("Music/BGM/Lao Lum Dab"));
+            SoundManager.AddSong("daybgm", Content.Load<Song>("Music/BGM/Thai Mung"));
+            SoundManager.AddSong("duskbgm", Content.Load<Song>("Music/BGM/Thai Ar Hom (Chaina)"));
             SoundManager.AddSong("nightbgm", Content.Load<Song>("Music/BGM/bgm01"));
             #endregion
 

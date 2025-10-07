@@ -1436,6 +1436,24 @@
 /processorParam:Quality=Best
 /build:Music/BGM/bgm02.mp3
 
+#begin Music/BGM/Lao Lum Dab.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/BGM/Lao Lum Dab.mp3
+
+#begin Music/BGM/Thai Ar Hom (Chaina).mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/BGM/Thai Ar Hom (Chaina).mp3
+
+#begin Music/BGM/Thai Mung.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/BGM/Thai Mung.mp3
+
 #begin Music/SFX/Button Press.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

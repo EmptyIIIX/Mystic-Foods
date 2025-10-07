@@ -21,12 +21,14 @@ namespace Mystic_Foods.Scenes
 
         Button homeButton;
         private Texture2D homeBtn;
+        private Texture2D bg;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _font = content.Load<SpriteFont>("MainFont");
 
             homeBtn = content.Load<Texture2D>("UI/previous");
+            bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
             homeButton = new Button(homeBtn, homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
             homeButton.Click += HomeButton_Click;
@@ -68,6 +70,7 @@ namespace Mystic_Foods.Scenes
             spriteBatch.GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
+            spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
             homeButton.Draw(spriteBatch);
 
             spriteBatch.DrawString(_font, $"BGM Volume: {(int)(SoundManager.MusicVolume * 100)}%", new Vector2(100, 100), Color.White);
