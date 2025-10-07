@@ -272,6 +272,13 @@
 /processorParam:TextureFormat=Color
 /build:Customers/UnHuman/NPC3/npc3UnhumanNormal.png;Customers/UnHuman/NPC3/npc3UnhumanNormal
 
+#begin DiaFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:DiaFont.spritefont
+
 #begin DialogueUI/ConfirmExit_UI.png
 /importer:TextureImporter
 /processor:TextureProcessor

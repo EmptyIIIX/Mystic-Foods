@@ -20,7 +20,7 @@ namespace Mystic_Foods
 
         public bool backToCounter = false;
 
-        private SpriteFont _font;
+        private SpriteFont _font, _font2;
         private bool _contentLoaded = false;
         private KeyboardState _oldState;
         private MouseState _oldMouseState;
@@ -85,6 +85,7 @@ namespace Mystic_Foods
             if (_contentLoaded) return;
 
             _font = content.Load<SpriteFont>("MainFont");
+            _font2 = content.Load<SpriteFont>("DiaFont");
 
             bgDawn = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
             bgDusk = content.Load<Texture2D>("Environments/Cooking/CookingSunsetBG");
@@ -428,6 +429,11 @@ namespace Mystic_Foods
 
             #region UI info
 
+            spriteBatch.Draw(uiBox, new Vector2(0, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width , 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 2, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 3, 32), Color.White);
+
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(GamePlayScene.dayBox, new Vector2(GamePlayScene.profile.Width + 30, GamePlayScene.menuBox.Height / 5), Color.White);
@@ -456,11 +462,15 @@ namespace Mystic_Foods
                 spriteBatch.Draw(LogInfo, new Vector2(130, 160), Color.White);
                 if (GameManager.countDia == 3)
                 {
-                    spriteBatch.DrawString(_font, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
-                    spriteBatch.DrawString(_font, "2. " + GamePlayScene._currentCustomer.Dia2, new Vector2(400, 400), Color.Black);
+                    spriteBatch.DrawString(_font2, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
+
+                } else if (GameManager.countDia == 4)
+                {
+                    spriteBatch.DrawString(_font2, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
+                    spriteBatch.DrawString(_font2, "2. " + GamePlayScene._currentCustomer.Dia2, new Vector2(400, 400), Color.Black);
 
                 }
-                else spriteBatch.DrawString(_font, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
+                else spriteBatch.DrawString(_font2, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
                 _okLogBtn.Draw(spriteBatch);
             }
 

@@ -23,7 +23,7 @@ namespace Mystic_Foods
         public static DayPhase CurrentPhase;
         Texture2D texDawn, texDusk, texNight;
 
-        private SpriteFont _font;
+        private SpriteFont _font, _font2;
         public bool BackToMenuRequested = false;
         public bool DnDRequested = false;
         public bool ExitRequest = false;
@@ -107,6 +107,7 @@ namespace Mystic_Foods
         {
             _contentManager = content;
             _font = content.Load<SpriteFont>("MainFont");
+            _font2 = content.Load<SpriteFont>("DiaFont");
             LoadCustomerTextures();
 
             _rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
@@ -487,7 +488,7 @@ namespace Mystic_Foods
                     if (fullText != _currentCustomer.DiaWrong)
                         StartTyping(_currentCustomer.DiaWrong);
 
-                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
                     _whatButton.DrawHover(spriteBatch);
                     break;
 
@@ -495,21 +496,21 @@ namespace Mystic_Foods
                     if (fullText != _currentCustomer.DiaCurrect)
                         StartTyping(_currentCustomer.DiaCurrect);
 
-                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
                     break;
 
                 case 2:
                     if (fullText != _currentCustomer.TalkDia)
                         StartTyping(_currentCustomer.TalkDia);
 
-                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
                     _whatButton.DrawHover(spriteBatch);
                     break;
                 case 3:
                     if (fullText != _currentCustomer.Dia1)
                         StartTyping(_currentCustomer.Dia1);
 
-                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
                     _whatButton.DrawHover(spriteBatch);
                     break;
 
@@ -517,7 +518,7 @@ namespace Mystic_Foods
                     if (fullText != _currentCustomer.Dia2)
                         StartTyping(_currentCustomer.Dia2);
 
-                    spriteBatch.DrawString(_font, displayedText, new Vector2(1000, 300), Color.Black);
+                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
                     break;
             }
 
