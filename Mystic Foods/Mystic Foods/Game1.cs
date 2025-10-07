@@ -23,6 +23,8 @@ namespace Mystic_Foods
         private DnDScene _dndScene;
         private LevelSelectScene _levelSelectScene;
         private TutorialScene _tutorialScene;
+        private TutorialScene2 _tutorialScene2;
+        private TutorialScene3 _tutorialScene3;
         private SettingScene _settingScene;
 
         private CustomerManager _customerManager;
@@ -55,6 +57,8 @@ namespace Mystic_Foods
             _gamePlayScene = new GamePlayScene(_customerManager);
             _levelSelectScene = new LevelSelectScene();
             _tutorialScene = new TutorialScene();
+            _tutorialScene2 = new TutorialScene2();
+            _tutorialScene3 = new TutorialScene3();
             _settingScene = new SettingScene();
 
             //make it start at main menu
@@ -101,6 +105,8 @@ namespace Mystic_Foods
             _dndScene.LoadContent(Content, _spriteBatch);
             _levelSelectScene.LoadContent(Content, _spriteBatch);
             _tutorialScene.LoadContent(Content, _spriteBatch);
+            _tutorialScene2.LoadContent(Content, _spriteBatch);
+            //_tutorialScene3.LoadContent(Content, _spriteBatch);
             _settingScene.LoadContent(Content, _spriteBatch);
 
         }

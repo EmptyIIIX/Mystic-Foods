@@ -43,12 +43,10 @@ namespace Mystic_Foods.Managers
         public static int IdFlower;
         public static bool HasFood { get; private set; }
         public static bool isChangeFood;
-        public static bool isDecorate;
+        public static bool isDecorate, foodInPlateDeco;
         public static bool readySteam = false;
         public static int countDia = 2;
         public static float countSteam = 3f;
-
-        Texture2D FoodTexture_nonDeco;
 
         public GameManager()
         {
@@ -76,6 +74,7 @@ namespace Mystic_Foods.Managers
             var Lotus_Texture = content.Load<Texture2D>("foods/Lotus");
 
             var plateTexture = content.Load<Texture2D>("foods/Plate");
+            var plateHitbox = content.Load<Texture2D>("foods/PlateHitbox");
             var trashBinTexture = content.Load<Texture2D>("Etc/White_Tako_1");
             var trashBinTexture_2 = content.Load<Texture2D>("Etc/White_Tako");
             var wrappTexture = content.Load<Texture2D>("foods/1");
@@ -122,7 +121,7 @@ namespace Mystic_Foods.Managers
             #endregion
 
             _plate = new Socket(plateTexture, new(1068, 639));
-            _plate2 = new Socket(plateTexture, new(4200 - 958, 644));
+            _plate2 = new Socket(plateHitbox, new(4200 - 958, 644));
             _steam1 = new Socket(steam1Texture, new(1800 + (steam1Texture.Width / 2), 520));
             _trashBin = new TrashBin(trashBinTexture, new Vector2(160, 800));
             _trashBin2 = new TrashBin(trashBinTexture, new Vector2(4000, 800));
@@ -220,6 +219,11 @@ namespace Mystic_Foods.Managers
                     isDecorate = true;
                     var food = _food.Last();
                     ChangeFood(food);
+                    foodInPlateDeco = true;
+                }
+                else if (foodOnPlate == null)
+                {
+                    foodInPlateDeco = false;
                 }
             }
             #endregion
@@ -250,6 +254,7 @@ namespace Mystic_Foods.Managers
                 readySteam = false;
                 countSteam = 3f;
                 DnDScene.isCountDownSteam = false;
+                foodInPlateDeco = false;
             }
             else if ((target == _trashBin || target == _trashBin2) && item is Food changeFood && _food.Contains(changeFood))
             {
@@ -258,6 +263,7 @@ namespace Mystic_Foods.Managers
                 HasFood = false;
                 isChangeFood = false;
                 DnDScene.isClickCook = false;
+                foodInPlateDeco = false;
             }
             else if ((target == _trashBin || target == _trashBin2) && item is Filling filling)
             {
@@ -437,6 +443,7 @@ namespace Mystic_Foods.Managers
             countSteam = 3f;
             DnDScene.isCountDownSteam = false;
             DnDScene.isClickCook = false;
+            foodInPlateDeco = false;
         }
         public void Update()
         {

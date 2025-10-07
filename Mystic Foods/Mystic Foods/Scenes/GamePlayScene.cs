@@ -30,6 +30,7 @@ namespace Mystic_Foods
         public static Customer _currentCustomer;
         private ContentManager _contentManager;
         private DnDScene _dnDScene;
+        private TutorialScene _tnTutorialScene;
 
         public static bool served;
         public static bool isEndLv = false;
@@ -167,6 +168,7 @@ namespace Mystic_Foods
 
             _OkButton = new Button(okBtn, okBtn, _font, "", new Rectangle(1450, 840, 300, 150));
             _OkButton.Click += OkEndButton_Click;
+
             /*
              */
         }
@@ -198,7 +200,7 @@ namespace Mystic_Foods
                     //for button in tutorial
                     _tutorialButton.Update();
                 }
-                else
+                else if (isTutorialInGame == false)
                 {
                     _homeButton.Update();
                     _settingButton.Update();
@@ -292,7 +294,6 @@ namespace Mystic_Foods
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
             spriteBatch.Begin();
             spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
-            
 
             #region Background
             //spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
@@ -387,8 +388,10 @@ namespace Mystic_Foods
             spriteBatch.Draw(dayBox, new Vector2(10, menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(135, (menuBox.Height / 5) + 20), Color.Black);
             //time
-            string Time = $"{(int)TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(145, (menuBox.Height / 5) + 55), Color.Black);
+            if (TimeStage < 241 && TimeStage >= 180) spriteBatch.DrawString(_font, "09:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
+            if (TimeStage < 180 && TimeStage >= 120) spriteBatch.DrawString(_font, "10:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
+            if (TimeStage < 120 && TimeStage >= 60) spriteBatch.DrawString(_font, "11:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
+            if (TimeStage < 60 && TimeStage >= 1) spriteBatch.DrawString(_font, "12:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
 
             spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 10, menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 36), Color.Black);
@@ -445,7 +448,6 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $" CurrectOrder : {GameManager.IsCurrectOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 200), Color.Black);
             string TimeS = $"\nTimePerSec: {TimePSec}";
             spriteBatch.DrawString(_font, $"Count Dialogue : {GameManager.countDia}", new Vector2(100, 300), Color.Blue);
-            spriteBatch.DrawString(_font, $"_what : {_what}", new Vector2(100, 400), Color.Blue);
             */
 
             if (isPaused)
@@ -454,10 +456,10 @@ namespace Mystic_Foods
                 if (isTutorialInGame)
                 {
                     //for tutorial page
-                    spriteBatch.Draw(TutorialScene.Page_5, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
                     _tutorialButton.Draw(spriteBatch);
                 }
-                else
+                else if (isTutorialInGame == false) 
                 {
                     _homeButton.Draw(spriteBatch);
                     _settingButton.Draw(spriteBatch);

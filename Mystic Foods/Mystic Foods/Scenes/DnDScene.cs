@@ -17,6 +17,7 @@ namespace Mystic_Foods
         public GraphicsDeviceManager _graphics;
         private GameManager _gameManager;
         private GamePlayScene _gamePlayScene;
+        private TutorialScene _tnTutorialScene;
 
         public bool backToCounter = false;
 
@@ -64,6 +65,8 @@ namespace Mystic_Foods
         private List<Rectangle> _boxfilling = new List<Rectangle>();
         private List<Rectangle> _boxdough = new List<Rectangle>();
 
+        private Texture2D food_nonDeco;
+
         public DnDScene(GameManager gameManager)
         {
             _gameManager = gameManager;
@@ -71,7 +74,6 @@ namespace Mystic_Foods
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _gamePlayScene = new GamePlayScene();
-
             if (_contentLoaded) return;
 
             bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
@@ -94,6 +96,8 @@ namespace Mystic_Foods
             LogOrder = content.Load<Texture2D>("DialogueUI/LogButton");
             LogInfo = content.Load<Texture2D>("DialogueUI/LogInformation");
             Oklog = content.Load<Texture2D>("DialogueUI/okLog");
+
+            food_nonDeco = content.Load<Texture2D>("foods/food_nonDeco");
 
             _boxfilling.Add(new Rectangle(759, 218, 283, 154));
             _boxfilling.Add(new Rectangle(759 + boxfilling.Width + 16, 218, 283, 154));
@@ -304,6 +308,7 @@ namespace Mystic_Foods
                 spriteBatch.Draw(boxdough, drawRect, Color.Transparent);
             }
 
+            if (GameManager.foodInPlateDeco == false) spriteBatch.Draw(food_nonDeco, new Vector2(2960, 500) - cameraPos, Color.White);
             _gameManager.Draw(cameraPos);
             spriteBatch.End();
 
@@ -351,8 +356,10 @@ namespace Mystic_Foods
             spriteBatch.Draw(GamePlayScene.dayBox, new Vector2(GamePlayScene.profile.Width + 40, GamePlayScene.menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(GamePlayScene.profile.Width + 165, (GamePlayScene.menuBox.Height / 5) + 20), Color.Black);
             //time
-            string Time = $"{(int)GamePlayScene.TimeStage}";
-            spriteBatch.DrawString(_font, Time, new Vector2(GamePlayScene.profile.Width + 175, (GamePlayScene.menuBox.Height / 5) + 55), Color.Black);
+            if (GamePlayScene.TimeStage < 241 && GamePlayScene.TimeStage >= 180) spriteBatch.DrawString(_font, "09:00", new Vector2(GamePlayScene.profile.Width + 165, (GamePlayScene.menuBox.Height / 5) + 55), Color.Black);
+            if (GamePlayScene.TimeStage < 180 && GamePlayScene.TimeStage >= 120) spriteBatch.DrawString(_font, "10:00", new Vector2(GamePlayScene.profile.Width + 165, (GamePlayScene.menuBox.Height / 5) + 55), Color.Black);
+            if (GamePlayScene.TimeStage < 120 && GamePlayScene.TimeStage >= 60) spriteBatch.DrawString(_font, "11:00", new Vector2(GamePlayScene.profile.Width + 165, (GamePlayScene.menuBox.Height / 5) + 55), Color.Black);
+            if (GamePlayScene.TimeStage < 60 && GamePlayScene.TimeStage >= 1) spriteBatch.DrawString(_font, "12:00", new Vector2(GamePlayScene.profile.Width + 165, (GamePlayScene.menuBox.Height / 5) + 55), Color.Black);
 
             spriteBatch.Draw(GamePlayScene.moneyBox, new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + 40, GamePlayScene.menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"{GamePlayScene.TotalMoney}", new Vector2(GamePlayScene.profile.Width + GamePlayScene.dayBox.Width + (GamePlayScene.moneyBox.Width / 2) + 65, (GamePlayScene.menuBox.Height / 5) + 36), Color.Black);
@@ -392,7 +399,7 @@ namespace Mystic_Foods
                 if (GamePlayScene.isTutorialInGame)
                 {
                     //for tutorial page
-                    spriteBatch.Draw(TutorialScene.Page_5, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
                     GamePlayScene._tutorialButton.Draw(spriteBatch);
                 }
                 else
