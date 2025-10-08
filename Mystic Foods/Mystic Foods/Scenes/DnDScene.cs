@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Managers;
 using Mystic_Foods.Scenes;
 using Mystic_Foods.Systems;
+using static Mystic_Foods.GamePlayScene;
 
 namespace Mystic_Foods
 {
@@ -21,7 +22,7 @@ namespace Mystic_Foods
 
         public bool backToCounter = false;
 
-        private SpriteFont _font;
+        private SpriteFont _font, _font2;
         private bool _contentLoaded = false;
         private KeyboardState _oldState;
         private MouseState _oldMouseState;
@@ -29,7 +30,7 @@ namespace Mystic_Foods
         private bool Scroll = false;
         private Vector2 emotion = new Vector2(800, 162 / 5);
 
-        Texture2D bg, ArrowCam;
+        Texture2D bgDawn, bgDusk, bgNight, ArrowCam;
         private Vector2 scroll_factor = new Vector2(5.0f, 1);
         public static Vector2 cameraPos = Vector2.Zero;
         private float CameraSpeed = 0f;
@@ -66,7 +67,18 @@ namespace Mystic_Foods
         private List<Rectangle> _boxdough = new List<Rectangle>();
 
         private Texture2D food_nonDeco;
+        #region Setting
+        private Texture2D header, settingBG;
+        private Texture2D musicIcon, muteMusicIcon;
+        private Texture2D sfxIcon, muteSfxIcon;
+        private Texture2D barBg, barFill, knob;
+        private Vector2 musicBarPos = new Vector2(600, 425);
+        private Vector2 sfxBarPos = new Vector2(600, 675);
+        private const float barScale = 1.0f;
 
+        private bool _draggingMusic = false;
+        private bool _draggingSfx = false;
+        #endregion
         public DnDScene(GameManager gameManager)
         {
             _gameManager = gameManager;
@@ -76,7 +88,13 @@ namespace Mystic_Foods
             _gamePlayScene = new GamePlayScene();
             if (_contentLoaded) return;
 
-            bg = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
+            _font = content.Load<SpriteFont>("MainFont");
+            _font2 = content.Load<SpriteFont>("DiaFont");
+
+            bgDawn = content.Load<Texture2D>("Environments/Cooking/CookingMorningBG");
+            bgDusk = content.Load<Texture2D>("Environments/Cooking/CookingSunsetBG");
+            bgNight = content.Load<Texture2D>("Environments/Cooking/CookingMidnightBG");
+
             steam2 = content.Load<Texture2D>("Environments/tools/steamer2 - test");// test
             table = content.Load<Texture2D>("Environments/tools/Table");
             table_2 = content.Load<Texture2D>("Environments/tools/Table_2");
@@ -87,7 +105,6 @@ namespace Mystic_Foods
             steambar2 = content.Load<Texture2D>("Etc/Red_bar");
 
             ServeBtn = content.Load<Texture2D>("Etc/ServeBtn");
-            _font = content.Load<SpriteFont>("MainFont");
 
             boxdough = content.Load<Texture2D>("foods/hitbox_dough");
             boxfilling = content.Load<Texture2D>("foods/hitbox_filling");
@@ -127,6 +144,20 @@ namespace Mystic_Foods
             _prevBtn = new Button(prevTexture, prevTexture, _font, "", new Rectangle(0, GamePlayScene.menuBox.Height / 5, prevTexture.Width, prevTexture.Height));
             _prevBtn.Click += previousButton_Click;
 
+            #region setting
+            header = content.Load<Texture2D>("UI/setting/Setting_Word");
+            settingBG = content.Load<Texture2D>("UI/setting/Setting_BG");
+
+            musicIcon = content.Load<Texture2D>("UI/setting/Music_UI");
+            muteMusicIcon = content.Load<Texture2D>("UI/setting/MuteSong");
+            sfxIcon = content.Load<Texture2D>("UI/setting/SoundEffect");
+            muteSfxIcon = content.Load<Texture2D>("UI/setting/MuteSoundEffect");
+
+            barBg = content.Load<Texture2D>("UI/setting/IncreaseSound_BG_UI");
+            barFill = content.Load<Texture2D>("UI/setting/IncreaseSound_UI");
+            knob = content.Load<Texture2D>("UI/setting/SoundButton");
+            #endregion
+
             Globals.SpriteBatch = spriteBatch;
             _contentLoaded = true;
         }
@@ -164,14 +195,56 @@ namespace Mystic_Foods
                     GamePlayScene._homeButton.Update();
                     GamePlayScene._settingButton.Update();
                     GamePlayScene._exitButton.Update();
-                    GamePlayScene._resumeButton.Update();
+                    //GamePlayScene._resumeButton.Update();
                     if (GamePlayScene.isClickExit)
                     {
                         GamePlayScene._yesExit.Update();
                         GamePlayScene._noExit.Update();
                     }
                 }
+                if (GamePlayScene.showSettings == true)
+                {
+                    Vector2 musicBarPos = new Vector2(600, 425);
+                    Vector2 sfxBarPos = new Vector2(600, 675);
 
+                    float mx = mouse.X;
+                    float my = mouse.Y;
+
+                    Rectangle musicBarRect = new Rectangle((int)musicBarPos.X, (int)musicBarPos.Y, barBg.Width, barBg.Height);
+                    Rectangle sfxBarRect = new Rectangle((int)sfxBarPos.X, (int)sfxBarPos.Y, barBg.Width, barBg.Height);
+
+                    // --- Mouse Drag Volume ---
+                    if (mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        if (!_draggingMusic && !_draggingSfx)
+                        {
+                            if (musicBarRect.Contains(mx, my))
+                                _draggingMusic = true;
+                            else if (sfxBarRect.Contains(mx, my))
+                                _draggingSfx = true;
+                        }
+                    }
+                    else if (mouse.LeftButton == ButtonState.Released)
+                    {
+                        _draggingMusic = false;
+                        _draggingSfx = false;
+                    }
+
+                    if (_draggingMusic)
+                    {
+                        float newVol = MathHelper.Clamp((mx - musicBarRect.X) / (float)musicBarRect.Width, 0f, 1f);
+                        SoundManager.SetMusicVolume(newVol);
+                    }
+                    else if (_draggingSfx)
+                    {
+                        float newVol = MathHelper.Clamp((mx - sfxBarRect.X) / (float)sfxBarRect.Width, 0f, 1f);
+                        SoundManager.SetSfxVolume(newVol);
+                    }
+                }
+                else
+                {
+                    _resumeButton.Update();
+                }
                 #endregion
             }
             else if (GamePlayScene.isEndLv == false) 
@@ -279,7 +352,27 @@ namespace Mystic_Foods
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateGray);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(bg, -cameraPos, Color.White);
+            #region Background
+            //spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
+
+            Texture2D background = bgDawn;
+
+            switch (CurrentPhase)
+            {
+                case DayPhase.Dawn:
+                    background = bgDawn;
+                    break;
+                case DayPhase.Dusk:
+                    background = bgDusk;
+                    break;
+                case DayPhase.Night:
+                    background = bgNight;
+                    break;
+            }
+
+            spriteBatch.Draw(background, -cameraPos, Color.White);
+            //spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
+            #endregion
 
             // วาด table ตาม camera
             spriteBatch.Draw(table, new Vector2(304, 143) - cameraPos, Color.White);
@@ -351,6 +444,11 @@ namespace Mystic_Foods
 
             #region UI info
 
+            spriteBatch.Draw(uiBox, new Vector2(0, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width , 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 2, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 3, 32), Color.White);
+
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(GamePlayScene.dayBox, new Vector2(GamePlayScene.profile.Width + 40, GamePlayScene.menuBox.Height / 5), Color.White);
@@ -381,11 +479,15 @@ namespace Mystic_Foods
                 spriteBatch.Draw(LogInfo, new Vector2(130, 160), Color.White);
                 if (GameManager.countDia == 3)
                 {
-                    spriteBatch.DrawString(_font, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
-                    spriteBatch.DrawString(_font, "2. " + GamePlayScene._currentCustomer.Dia2, new Vector2(400, 400), Color.Black);
+                    spriteBatch.DrawString(_font2, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
+
+                } else if (GameManager.countDia == 4)
+                {
+                    spriteBatch.DrawString(_font2, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
+                    spriteBatch.DrawString(_font2, "2. " + GamePlayScene._currentCustomer.Dia2, new Vector2(400, 400), Color.Black);
 
                 }
-                else spriteBatch.DrawString(_font, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
+                else spriteBatch.DrawString(_font2, "1. " + GamePlayScene._currentCustomer.Dia1, new Vector2(400, 300), Color.Black);
                 _okLogBtn.Draw(spriteBatch);
             }
 
@@ -395,10 +497,16 @@ namespace Mystic_Foods
             if (GamePlayScene.isPaused)
             {
                 spriteBatch.Draw(GamePlayScene._rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
+                if (showSettings == true)
+                {
+                    spriteBatch.Draw(settingBG, new Vector2(224, 175), Color.White);
 
                 if (GamePlayScene.isTutorialInGame)
-                {
-                    //for tutorial page
+                    spriteBatch.Draw(header, new Vector2((1920 - header.Width) / 2, 120), Color.White);
+
+                    DrawVolumeBar(spriteBatch, musicBarPos, SoundManager.MusicVolume, SoundManager.MusicVolume > 0, musicIcon, muteMusicIcon);
+                    DrawVolumeBar(spriteBatch, sfxBarPos, SoundManager.SfxVolume, SoundManager.SfxVolume > 0, sfxIcon, muteSfxIcon);
+
                     spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
                     GamePlayScene._tutorialButton.Draw(spriteBatch);
                 }
@@ -430,6 +538,22 @@ namespace Mystic_Foods
             GamePlayScene._menuButton.Draw(spriteBatch);
 
             spriteBatch.End();
+        }
+
+        private void DrawVolumeBar(SpriteBatch spriteBatch, Vector2 position, float volume, bool notMuted, Texture2D normalIcon, Texture2D muteIcon)
+        {
+            spriteBatch.Draw(notMuted ? normalIcon : muteIcon, new Vector2(position.X - 250, position.Y - 30), Color.White);
+
+            spriteBatch.Draw(barBg, position, null, Color.White, 0f, Vector2.Zero, barScale, SpriteEffects.None, 0f);
+            float fillWidth = barFill.Width * volume;
+            Rectangle sourceRect = new Rectangle(0, 0, (int)fillWidth, barFill.Height);
+
+            spriteBatch.Draw(barFill, position, sourceRect, Color.White, 0f, Vector2.Zero, barScale, SpriteEffects.None, 0f);
+
+            Vector2 knobPos = new Vector2(position.X + fillWidth - knob.Width / 2, position.Y - 5);
+            spriteBatch.Draw(knob, knobPos, Color.White);
+
+            spriteBatch.DrawString(_font, $"{(int)(volume * 100)}%", new Vector2(position.X + barBg.Width + 50, position.Y), Color.Black);
         }
         public async void CookingBtn_Click(object sender, EventArgs e)
         {

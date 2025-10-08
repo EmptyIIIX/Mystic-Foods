@@ -13,6 +13,13 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin BoldFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:BoldFont.spritefont
+
 #begin Customers/Human/NPC1/npc1HumanAngry.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -265,6 +272,13 @@
 /processorParam:TextureFormat=Color
 /build:Customers/UnHuman/NPC3/npc3UnhumanNormal.png;Customers/UnHuman/NPC3/npc3UnhumanNormal
 
+#begin DiaFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:DiaFont.spritefont
+
 #begin DialogueUI/ConfirmExit_UI.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -324,6 +338,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:DialogueUI/DialogueBox.png
+
+#begin DialogueUI/DialogueBox2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DialogueUI/DialogueBox2.png
 
 #begin DialogueUI/KeepPlaying_AfterClick.png
 /importer:TextureImporter
@@ -565,6 +591,42 @@
 /processorParam:TextureFormat=Color
 /build:Emote/sprite_emotion_icon.png
 
+#begin Emote/เงินเบี้ย.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Emote/เงินเบี้ย.png
+
+#begin Emote/ปุ่ม setting.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Emote/ปุ่ม setting.png
+
+#begin Emote/ปุ่ม tutirial.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Emote/ปุ่ม tutirial.png
+
 #begin Environments/BG/MenuBG.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -684,18 +746,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Environments/Counter/orderCounter_sunset.png
-
-#begin Environments/Counter/Sprite_Cat_Counter.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Environments/Counter/Sprite_Cat_Counter.png
 
 #begin Environments/tools/steamer1.png
 /importer:TextureImporter
@@ -889,18 +939,6 @@
 /processorParam:TextureFormat=Color
 /build:Etc/ExitBtn.png
 
-#begin Etc/Green_bar.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Etc/Green_bar.png
-
 #begin Etc/HomeBtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1045,18 +1083,6 @@
 /processorParam:TextureFormat=Color
 /build:Etc/PointArrow.png
 
-#begin Etc/Red_bar.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Etc/Red_bar.png
-
 #begin Etc/ServeBtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1068,18 +1094,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Etc/ServeBtn.png
-
-#begin Etc/SettingBtn.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Etc/SettingBtn.png
 
 #begin Etc/steam_bar.png
 /importer:TextureImporter
@@ -1417,18 +1431,6 @@
 /processorParam:TextureFormat=Color
 /build:foods/Plate.png
 
-#begin foods/PlateHitbox.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:foods/PlateHitbox.png
-
 #begin foods/Rose.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1556,7 +1558,7 @@
 /processorParam:Quality=Best
 /build:Music/SFX/Page.wav
 
-#begin Tutorial/1หน้าทำอาหาร.png
+#begin Tutorial/1เลือกเวลาเปิดร้าน.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1566,9 +1568,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Tutorial/1หน้าทำอาหาร.png
+/build:Tutorial/1เลือกเวลาเปิดร้าน.png
 
-#begin Tutorial/1หน้ารับออเดอร์.png
+#begin Tutorial/2หน้ารับออเดอร์.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1578,9 +1580,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Tutorial/1หน้ารับออเดอร์.png
+/build:Tutorial/2หน้ารับออเดอร์.png
 
-#begin Tutorial/2ผสมวัตถุดิบ.png
+#begin Tutorial/3ความต้องการลูกค้า.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1590,9 +1592,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Tutorial/2ผสมวัตถุดิบ.png
+/build:Tutorial/3ความต้องการลูกค้า.png
 
-#begin Tutorial/2หนังสือเมนู.png
+#begin Tutorial/4อารมณ์ลูกค้า.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1602,9 +1604,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Tutorial/2หนังสือเมนู.png
+/build:Tutorial/4อารมณ์ลูกค้า.png
 
-#begin Tutorial/3การนึ่ง.png
+#begin Tutorial/5เมนูหยุดเกม.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1614,67 +1616,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Tutorial/3การนึ่ง.png
-
-#begin Tutorial/3วันและเวลา.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tutorial/3วันและเวลา.png
-
-#begin Tutorial/4การสั่งซื้อของลูกค้า.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tutorial/4การสั่งซื้อของลูกค้า.png
-
-#begin Tutorial/4ตกแต่ง.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tutorial/4ตกแต่ง.png
-
-#begin Tutorial/5ความประทับใจ.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tutorial/5ความประทับใจ.png
-
-#begin Tutorial/5ถังขยะ.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tutorial/5ถังขยะ.png
+/build:Tutorial/5เมนูหยุดเกม.png
 
 #begin Tutorial/backpage.png
 /importer:TextureImporter
@@ -1700,6 +1642,18 @@
 /processorParam:TextureFormat=Color
 /build:Tutorial/exitpage.png
 
+#begin Tutorial/levelscene.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tutorial/levelscene.png
+
 #begin Tutorial/nextpage.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1712,18 +1666,6 @@
 /processorParam:TextureFormat=Color
 /build:Tutorial/nextpage.png
 
-#begin Tutorial/T1_page_1.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tutorial/T1_page_1.png
-
 #begin Tutorial/topicPoint.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1735,18 +1677,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Tutorial/topicPoint.png
-
-#begin Tutorial/TutorialBtn.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tutorial/TutorialBtn.png
 
 #begin Tutorial/หนังสือที่จะขึ้นก่อนเริ่มเกม.png
 /importer:TextureImporter
@@ -1867,6 +1797,138 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UI/setting.png
+
+#begin UI/setting/Header UI.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/Header UI.png
+
+#begin UI/setting/IncreaseSound_BG_UI.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/IncreaseSound_BG_UI.png
+
+#begin UI/setting/IncreaseSound_UI.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/IncreaseSound_UI.png
+
+#begin UI/setting/Music_UI.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/Music_UI.png
+
+#begin UI/setting/MuteSong.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/MuteSong.png
+
+#begin UI/setting/MuteSoundEffect.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/MuteSoundEffect.png
+
+#begin UI/setting/Setting_BG.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/Setting_BG.png
+
+#begin UI/setting/Setting_Word.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/Setting_Word.png
+
+#begin UI/setting/settingButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/settingButton.png
+
+#begin UI/setting/SoundButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/SoundButton.png
+
+#begin UI/setting/SoundEffect.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/setting/SoundEffect.png
 
 #begin UI/title.png
 /importer:TextureImporter
