@@ -41,7 +41,7 @@ namespace Mystic_Foods
         public Button _servedYesButton;
 
         public static bool isPaused = false;
-        public static Button _menuButton, _resumeButton, _homeButton, _tutorialButton, _settingButton, _exitButton;
+        public static Button _menuButton, _resumeButton, _homeButton, _settingButton, _exitButton;
         public static Button _yesExit, _noExit;
         public static Texture2D yesExit, yesExit_hover, noExit, noExit_hover, logExit;
         public Button _yesButton;
@@ -174,8 +174,8 @@ namespace Mystic_Foods
             _exitButton.Click += ExitButton_Click;
             _resumeButton = new Button(resumeBtn, resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height / 2, 180, 165));
             _resumeButton.Click += ResumeButton_Click;
-            _tutorialButton = new Button(tutorialBtn, tutorialBtn, _font, "", new Rectangle(1840 - menuBox.Width - tutorialBtn.Width, 40, 100, 100));
-            _tutorialButton.Click += TutorialInGame_Click;
+            //_tutorialButton = new Button(tutorialBtn, tutorialBtn, _font, "", new Rectangle(1840 - menuBox.Width - tutorialBtn.Width, 40, 100, 100));
+            //_tutorialButton.Click += TutorialInGame_Click;
 
             _yesButton = new Button(yesButton, yesButton_hover, _font, " ", new Rectangle(1400, 500, 128, 63));
             _yesButton.Click += YesButton_Click;
@@ -235,7 +235,7 @@ namespace Mystic_Foods
                 if (isTutorialInGame)
                 {
                     //for button in tutorial
-                    _tutorialButton.Update();
+                    //_tutorialButton.Update();
                 }
                 else if (isTutorialInGame == false)
                 {
@@ -345,7 +345,7 @@ namespace Mystic_Foods
                     isEndLv = true;
                     TimeStage = TimeDefault;
                 }
-                _tutorialButton.Update();
+                //_tutorialButton.Update();
                 #endregion
             }
             if (charIndex < fullText.Length)
@@ -388,7 +388,6 @@ namespace Mystic_Foods
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
             spriteBatch.Begin();
-            spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
 
             #region Background
             //spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
@@ -500,7 +499,7 @@ namespace Mystic_Foods
             DrawEmotionIcon(_font, spriteBatch, EmotionPos);
             spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Black);
 
-            _tutorialButton.Draw(spriteBatch);
+            //_tutorialButton.Draw(spriteBatch);
 
             #endregion
 
@@ -588,7 +587,7 @@ namespace Mystic_Foods
                     //for tutorial page
                     //spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
                     Game1.callTutorial = true;
-                    _tutorialButton.Draw(spriteBatch);
+                    //_tutorialButton.Draw(spriteBatch);
                 }
                 else if (isTutorialInGame == false) 
                 {
@@ -700,10 +699,6 @@ namespace Mystic_Foods
             GameManager.countDia = 2;
             isClickExit = false;
             BackToMenuRequested = true;
-        }
-        public void SettingButton_Click(object sender, EventArgs e)
-        {
-
         }
         public void ServedYes_Click(Object sender, EventArgs e)
         {

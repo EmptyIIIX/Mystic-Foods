@@ -188,7 +188,7 @@ namespace Mystic_Foods
                 if (GamePlayScene.isTutorialInGame)
                 {
                     //for button in tutorial
-                    GamePlayScene._tutorialButton.Update();
+                    //GamePlayScene._tutorialButton.Update();
                 }
                 else
                 {
@@ -302,7 +302,7 @@ namespace Mystic_Foods
                 {
                     currentSteam = 0;
                 }
-                GamePlayScene._tutorialButton.Update();
+                //GamePlayScene._tutorialButton.Update();
                 #endregion
 
                 #region scroll camera
@@ -444,10 +444,10 @@ namespace Mystic_Foods
 
             #region UI info
 
-            spriteBatch.Draw(uiBox, new Vector2(0, 32), Color.White);
-            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width , 32), Color.White);
-            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 2, 32), Color.White);
-            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 3, 32), Color.White);
+            //spriteBatch.Draw(uiBox, new Vector2(0, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width + 10, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 2 + 10, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 3 + 10, 32), Color.White);
 
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
@@ -470,7 +470,7 @@ namespace Mystic_Foods
             GamePlayScene.DrawEmotionIcon(_font, spriteBatch, EmotionPos);
 
             _prevBtn.Draw(spriteBatch);
-            GamePlayScene._tutorialButton.Draw(spriteBatch);
+            //GamePlayScene._tutorialButton.Draw(spriteBatch);
             #endregion
 
             _logOrderBtn.Draw(spriteBatch);
@@ -500,15 +500,14 @@ namespace Mystic_Foods
                 if (showSettings == true)
                 {
                     spriteBatch.Draw(settingBG, new Vector2(224, 175), Color.White);
-
-                if (GamePlayScene.isTutorialInGame)
                     spriteBatch.Draw(header, new Vector2((1920 - header.Width) / 2, 120), Color.White);
 
                     DrawVolumeBar(spriteBatch, musicBarPos, SoundManager.MusicVolume, SoundManager.MusicVolume > 0, musicIcon, muteMusicIcon);
                     DrawVolumeBar(spriteBatch, sfxBarPos, SoundManager.SfxVolume, SoundManager.SfxVolume > 0, sfxIcon, muteSfxIcon);
 
-                    spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
-                    GamePlayScene._tutorialButton.Draw(spriteBatch);
+                    //if (GamePlayScene.isTutorialInGame)
+                    //    spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
+                    //    GamePlayScene._tutorialButton.Draw(spriteBatch);
                 }
                 else
                 {
