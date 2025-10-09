@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Mystic_Foods.Managers;
+using Mystic_Foods.Systems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,38 +17,46 @@ namespace Mystic_Foods
     {
         private GraphicsDeviceManager _graphics;
         private SpriteFont _font; //font use to draw string
-        private int _selectedIndex = 0;
-        private string[] _menuItems = { "Start Game", "Drag&Drop", "Exit" }; //selectable text
-        public bool StartGameRequested = false; //check if start game
+        public static bool StartGameRequested = false; //check if start game
         public bool DnDRequested = false;
         public bool ExitRequested = false; //check if exit game
+        public bool CreditRequested = false;
+        public bool SettingRequested = false;
+
+        public Texture2D NameTitle, settingBG;
+        public Texture2D PlayBtn, SettingBtn, CreditBtn, ExitBtn, ExitBtn_hover;
+        public Button _playBtn, _settingBtn, _creditBtn, _exitBtn;
 
         private KeyboardState _oldState; //make it only pressable (can't hold)
         private MouseState _oldMouseState;
-
-        // เก็บ bounding box ของแต่ละเมนู (เพื่อคลิกได้)
-        private List<Rectangle> _menuItemRects = new List<Rectangle>();
 
         Texture2D Menu_bg;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
-            _font = content.Load<SpriteFont>("MainFont");
+            _font = content.Load<SpriteFont>("BoldFont");
             Menu_bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
-            // สร้าง rectangle ของแต่ละเมนูสำหรับตรวจ mouse
-            _menuItemRects.Clear();
-            for (int i = 0; i < _menuItems.Length; i++)
-            {
-                Vector2 size = _font.MeasureString(_menuItems[i]);
-                Rectangle rect = new Rectangle(
-                    (int)((800 - size.X) / 2),
-                    200 + i * 60,
-                    (int)size.X,
-                    (int)size.Y
-                );
-                _menuItemRects.Add(rect);
-            }
+            NameTitle = content.Load<Texture2D>("UI/title");
+            PlayBtn = content.Load<Texture2D>("UI/play");
+            SettingBtn = content.Load<Texture2D>("UI/setting");
+            CreditBtn = content.Load<Texture2D>("UI/credit");
+            ExitBtn = content.Load<Texture2D>("UI/exit");
+            settingBG = content.Load<Texture2D>("UI/setting/Setting_BG");
+            //ExitBtn_hover = content.Load<Texture2D>("UI/exit");
+
+            //_playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
+            //_playBtn.Click += PlayBtn_Click;
+            _playBtn = new Button(PlayBtn, PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
+            _playBtn.Click += PlayBtn_Click;
+            _settingBtn = new Button(SettingBtn, SettingBtn, _font, "", new Rectangle(225, 400 + PlayBtn.Height + 20, 512, 100));
+            _settingBtn.Click += SettingBtn_Click;
+            _creditBtn = new Button(CreditBtn, CreditBtn, _font, "", new Rectangle(225, 400 + (PlayBtn.Height * 2) + 40, 512, 100));
+            _creditBtn.Click += CreditBtn_Click;
+            _exitBtn = new Button(ExitBtn, ExitBtn, _font, "", new Rectangle(1920 - ExitBtn.Width - 20, 1080 - ExitBtn.Height - 20, 80, 100));
+            _exitBtn.Click += ExitBtn_Click;
+
+            SoundManager.PlaySong("mainmenu");
         }
 
         public void Update(GameTime gameTime)
@@ -53,43 +64,10 @@ namespace Mystic_Foods
             var state = Keyboard.GetState();
             var mouse = Mouse.GetState();
 
-            if (state.IsKeyDown(Keys.Down) && _oldState.IsKeyUp(Keys.Down))
-                _selectedIndex = (_selectedIndex + 1) % _menuItems.Length;
-
-            if (state.IsKeyDown(Keys.Up) && _oldState.IsKeyUp(Keys.Up))
-                _selectedIndex = (_selectedIndex - 1 + _menuItems.Length) % _menuItems.Length;
-
-            //game scene selection logic
-            if (state.IsKeyDown(Keys.Enter) && _oldState.IsKeyUp(Keys.Enter))
-            {
-                if (_selectedIndex == 0) StartGameRequested = true;
-                if (_selectedIndex == 1) DnDRequested = true;
-                if (_selectedIndex == 2) ExitRequested = true;
-            }
-
-            // เมาส์อยู่ตำแหน่งไหนให้ไฮไลท์เมนูนั้น (hover)
-            Point mousePos = mouse.Position;
-            for (int i = 0; i < _menuItemRects.Count; i++)
-            {
-                if (_menuItemRects[i].Contains(mousePos))
-                {
-                    _selectedIndex = i;
-                }
-            }
-            // เช็คคลิกซ้าย (Mouse.LeftButton เพิ่งกดจาก unpress)
-            if (mouse.LeftButton == ButtonState.Pressed && _oldMouseState.LeftButton == ButtonState.Released)
-            {
-                for (int i = 0; i < _menuItemRects.Count; i++)
-                {
-                    if (_menuItemRects[i].Contains(mouse.Position))
-                    {
-                        // ขอ scene ตามปุ่มคลิก
-                        if (i == 0) StartGameRequested = true;
-                        if (i == 1) DnDRequested = true;
-                        if (i == 2) ExitRequested = true;
-                    }
-                }
-            }
+            _playBtn.Update();
+            _settingBtn.Update();
+            _creditBtn.Update();
+            _exitBtn.Update();
 
             _oldState = state; //update keyboard status
             _oldMouseState = mouse;
@@ -101,26 +79,45 @@ namespace Mystic_Foods
 
             spriteBatch.Begin();
             spriteBatch.Draw(Menu_bg, new Vector2(0, 0), Color.White);
-            string title = "Main Menu";
-            Vector2 titleSize = _font.MeasureString(title);
-            spriteBatch.DrawString(
-                _font,
-                title,
-                new Vector2((800 - titleSize.X) / 2, 80),
-                Color.White);
+            spriteBatch.Draw(NameTitle, new Vector2(100, 120), Color.White);
 
-            for (int i = 0; i < _menuItems.Length; i++)
+            _playBtn.DrawHomeBtn(spriteBatch);
+            _settingBtn.DrawHomeBtn(spriteBatch);
+            _creditBtn.DrawHomeBtn(spriteBatch);
+            _exitBtn.DrawHomeBtn(spriteBatch);
+
+            if (CreditRequested)
             {
-                Color color = (i == _selectedIndex) ? Color.Yellow : Color.White;
-                Vector2 size = _font.MeasureString(_menuItems[i]);
-                spriteBatch.DrawString(
-                    _font,
-                    _menuItems[i],
-                    new Vector2((800 - size.X) / 2, 200 + i * 60),
-                    color);
+                spriteBatch.Draw(settingBG, new Rectangle(1050, 250, 500, 500), Color.White);
+                spriteBatch.DrawString(_font, "Nah", new Vector2(1225, 400), Color.Black);
             }
 
             spriteBatch.End();
+        }
+
+        public async void PlayBtn_Click(object sender, EventArgs e)
+        {
+            SoundManager.PlaySfx("Click");
+            await Task.Delay(100);
+            StartGameRequested = true;
+        }
+        public async void SettingBtn_Click(object sender, EventArgs e)
+        {
+            SoundManager.PlaySfx("Click");
+            await Task.Delay(100);
+            SettingRequested = true;
+        }
+        public async void CreditBtn_Click(object sender, EventArgs e)
+        {
+            SoundManager.PlaySfx("Click");
+            await Task.Delay(100);
+            CreditRequested = !CreditRequested;
+        }
+        public async void ExitBtn_Click(object sender, EventArgs e)
+        {
+            SoundManager.PlaySfx("Click");
+            await Task.Delay(200);
+            ExitRequested = true;
         }
     }
 }

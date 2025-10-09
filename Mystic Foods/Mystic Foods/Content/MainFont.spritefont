@@ -11,7 +11,7 @@ with.
     <!--
     Modify this string to change the font that will be imported.
     -->
-    <FontName>Arial</FontName>
+    <FontName>MN Plachon Lui Suan</FontName>
 
     <!--
     Size is a float value, measured in points. Modify this value to change
@@ -42,6 +42,7 @@ with.
     or measure text that contains characters which were not included in the font.
     -->
     <!-- <DefaultCharacter>*</DefaultCharacter> -->
+	  <DefaultCharacter>*</DefaultCharacter>
 
     <!--
     CharacterRegions control what letters are available in the font. Every
@@ -51,10 +52,17 @@ with.
     See the documentation for more information.
     -->
     <CharacterRegions>
-      <CharacterRegion>
-        <Start>&#32;</Start>
-        <End>&#126;</End>
-      </CharacterRegion>
+		<!-- Basic Latin -->
+		<CharacterRegion>
+			<Start>&#32;</Start>
+			<End>&#126;</End>
+		</CharacterRegion>
+
+		<!-- Latin-1 Supplement -->
+		<CharacterRegion>
+			<Start>&#160;</Start>
+			<End>&#255;</End>
+		</CharacterRegion>
     </CharacterRegions>
   </Asset>
 </XnaContent>

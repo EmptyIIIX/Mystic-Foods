@@ -8,7 +8,7 @@ namespace Mystic_Foods.Systems
         Rectangle Rectangle { get; }
         Vector2 Position { get; set; }
         Rectangle GetRectangle(Vector2 cameraPos);
-
+        Vector2 Size { get; }
         void RegisterDraggable()
         {
             DragDropManager.AddDraggable(this);
