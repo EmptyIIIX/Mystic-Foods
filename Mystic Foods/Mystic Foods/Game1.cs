@@ -15,18 +15,13 @@ namespace Mystic_Foods
         private SpriteBatch _spriteBatch;
 
         private GameManager _gameManager;
-
-        //Scene Management
         private IGameScene _currentScene;
         private MainMenuScene _mainMenuScene;
         private GamePlayScene _gamePlayScene;
         private DnDScene _dndScene;
         private LevelSelectScene _levelSelectScene;
         private TutorialScene _tutorialScene;
-        //private TutorialScene2 _tutorialScene2;
-        //private TutorialScene3 _tutorialScene3;
         private SettingScene _settingScene;
-
         private CustomerManager _customerManager;
 
         public static bool wasTutorial = false;
@@ -58,8 +53,6 @@ namespace Mystic_Foods
             _gamePlayScene = new GamePlayScene(_customerManager);
             _levelSelectScene = new LevelSelectScene();
             _tutorialScene = new TutorialScene();
-            //_tutorialScene2 = new TutorialScene2();
-            //_tutorialScene3 = new TutorialScene3();
             _settingScene = new SettingScene();
 
             //make it start at main menu
@@ -107,8 +100,6 @@ namespace Mystic_Foods
             _dndScene.LoadContent(Content, _spriteBatch);
             _levelSelectScene.LoadContent(Content, _spriteBatch);
             _tutorialScene.LoadContent(Content, _spriteBatch);
-            //_tutorialScene2.LoadContent(Content, _spriteBatch);
-            //_tutorialScene3.LoadContent(Content, _spriteBatch);
             _settingScene.LoadContent(Content, _spriteBatch);
 
         }
@@ -174,25 +165,9 @@ namespace Mystic_Foods
                     _currentScene = _mainMenuScene;
                 }
             }
-            //else if (_currentScene == _tutorialScene2)
-            //{
-            //    _tutorialScene2.Update(gameTime);
-            //    if (TutorialScene.isExitPage)
-            //    {
-            //        _currentScene = _gamePlayScene;
-            //        TutorialScene.isExitPage = false;
-            //    }
-            //}
             else if (_currentScene == _gamePlayScene)
             {
                 _gamePlayScene.Update(gameTime);
-                //if (_gamePlayScene.isTutorial2 == false && TutorialScene.CountTutorial == 1)
-                //{
-                //    _currentScene = _tutorialScene2;
-                //    _gamePlayScene.isTutorial2 = true;
-                //    wasTutorial = false;
-                //}
-                //else 
                 if (_gamePlayScene.BackToMenuRequested)
                 {
                     _gamePlayScene.BackToMenuRequested = false;

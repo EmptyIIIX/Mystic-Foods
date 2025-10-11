@@ -12,11 +12,12 @@ using System.Reflection.PortableExecutable;
 using System.Threading;
 using System.Threading.Tasks;
 
+//for fixing bug
 namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 241f;
+        public static float TimeDefault = 24111f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
         public enum DayPhase { Dawn, Dusk, Night }
@@ -50,7 +51,7 @@ namespace Mystic_Foods
 
         public static float _patienceMeter;        // current patience
         public static float _patienceMeterStart = 100f;   // default / max patience
-        public static float _patienceDecreaseRate = 1.28f; // decrease rate
+        public static float _patienceDecreaseRate = 0.0001f; // decrease rate
         public static Texture2D _textureHappy;
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;

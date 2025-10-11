@@ -18,7 +18,7 @@ namespace Mystic_Foods.Managers
         public static float MusicVolume
         {
             get => MediaPlayer.Volume;
-            set => MediaPlayer.Volume = MathHelper.Clamp(value, 0f, 1f);
+            set => MediaPlayer.Volume = MathHelper.Clamp(value, 0f, 0f);
         }
 
         public static float SfxVolume { get; set; } = 1f;

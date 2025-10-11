@@ -111,7 +111,8 @@ namespace Mystic_Foods
         {
             SoundManager.PlaySfx("Click");
             await Task.Delay(100);
-            CreditRequested = !CreditRequested;
+            //CreditRequested = !CreditRequested;
+            DnDRequested = true;
         }
         public async void ExitBtn_Click(object sender, EventArgs e)
         {

@@ -32,6 +32,7 @@ namespace Mystic_Foods.Managers
         {
             if (!_draggables.Contains(item))
                 _draggables.Add(item);
+
         }
         public static void AddHitbox(Rectangle rect)
         {
@@ -39,7 +40,7 @@ namespace Mystic_Foods.Managers
         }
         public static void RemoveDraggable(IDraggable item)
         {
-            _draggables.RemoveAll(d => d == item);
+            _draggables.Remove(item);
             if (_dragItem == item)
             {
                 _dragItem = null;
@@ -52,18 +53,6 @@ namespace Mystic_Foods.Managers
         }
         private static void CheckDragStart()
         {
-            //if (InputManager.MouseClicked)
-            //{
-            //    foreach (var item in _draggables)
-            //    {
-            //        if (item.GetRectangle(_cameraPos).Contains(InputManager.MousePosition))
-            //        {
-            //            _dragItem = item;
-            //            Mouse.SetCursor(MouseCursor.Hand);
-            //            break;
-            //        }
-            //    }
-            //}
             if (!InputManager.MouseClicked) return;
 
             if (InputManager.MouseClicked)
@@ -79,12 +68,30 @@ namespace Mystic_Foods.Managers
 
                     if (adjustedHitbox.Contains(InputManager.MousePosition))
                     {
-                        Vector2 hitCenter = new Vector2(adjustedHitbox.Center.X, adjustedHitbox.Center.Y);
-
-                        _dragItem = _draggables.OrderBy(d => Vector2.Distance(d.Position, hitCenter)).FirstOrDefault();
-                        if (_dragItem != null)
+                        var draggablesInHitbox = _draggables.Where(d =>
                         {
-                            break;
+                            var rect = new Rectangle(
+                                (int)(d.Position.X - d.Size.X / 2),
+                                (int)(d.Position.Y - d.Size.Y / 2),
+                                (int)d.Size.X,
+                                (int)d.Size.Y
+                            );
+                            return adjustedHitbox.Intersects(rect);
+                        }).ToList();
+
+                        if (draggablesInHitbox.Any())
+                        {
+                            Vector2 hitCenter = new Vector2(adjustedHitbox.Center.X, adjustedHitbox.Center.Y);
+
+                            _dragItem = draggablesInHitbox
+                                .OrderBy(d => Vector2.Distance(d.Position, hitCenter))
+                                .FirstOrDefault();
+
+                            if (_dragItem != null)
+                            {
+
+                                break;
+                            }
                         }
                     }
                     else
@@ -113,7 +120,6 @@ namespace Mystic_Foods.Managers
                     _dragItem.Position = item.Position;
                     OnDrop?.Invoke(_dragItem, item);
                     droppedOnTarget = true;
-                    break;
                 }
             }
             if (!droppedOnTarget)
