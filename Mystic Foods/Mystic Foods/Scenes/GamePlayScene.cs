@@ -51,7 +51,8 @@ namespace Mystic_Foods
 
         public static float _patienceMeter;        // current patience
         public static float _patienceMeterStart = 100f;   // default / max patience
-        public static float _patienceDecreaseRate = 0.0001f; // decrease rate
+        public static float _patienceDecreaseRate = 0f; // decrease rate
+        public static bool _orderRecieve = false;
         public static Texture2D _textureHappy;
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
@@ -243,16 +244,22 @@ namespace Mystic_Foods
                     _homeButton.Update();
                     _settingButton.Update();
                     _exitButton.Update();
-                    _resumeButton.Update();
+                    
                     if (isClickExit)
                     {
                         _yesExit.Update();
                         _noExit.Update();
                     }
+
+                    if (!isClickExit && !showSettings)
+                    {
+                        _resumeButton.Update();
+                    }
                 }
 
                 if (showSettings == true)
                 {
+
                     Vector2 musicBarPos = new Vector2(600, 425);
                     Vector2 sfxBarPos = new Vector2(600, 675);
 
@@ -290,7 +297,7 @@ namespace Mystic_Foods
                         SoundManager.SetSfxVolume(newVol);
                     }
                 }
-                else
+                else if (showSettings && isClickExit)
                 {
                     _resumeButton.Update();
                 }
@@ -370,6 +377,14 @@ namespace Mystic_Foods
             {
                 isPaused = !isPaused;
                 isClickExit = false;
+            }
+            // Click yes & patience start decreasing
+            if (_orderRecieve)
+            {
+                _patienceDecreaseRate = 0.68f;
+            } else if (!_orderRecieve)
+            {
+                _patienceDecreaseRate = 0f;
             }
 
             //P
@@ -579,10 +594,7 @@ namespace Mystic_Foods
                     DrawVolumeBar(spriteBatch, musicBarPos, SoundManager.MusicVolume, SoundManager.MusicVolume > 0, musicIcon, muteMusicIcon);
                     DrawVolumeBar(spriteBatch, sfxBarPos, SoundManager.SfxVolume, SoundManager.SfxVolume > 0, sfxIcon, muteSfxIcon);
                 }
-                else
-                {
-                    _resumeButton.Draw(spriteBatch);
-                }
+                
                 if (isTutorialInGame)
                 {
                     //for tutorial page
@@ -594,7 +606,6 @@ namespace Mystic_Foods
                 {
                     _homeButton.Draw(spriteBatch);
                     _settingButton.Draw(spriteBatch);
-                    _resumeButton.Draw(spriteBatch);
                     _exitButton.Draw(spriteBatch);
                     if (isClickExit)
                     {
@@ -602,6 +613,11 @@ namespace Mystic_Foods
                         _yesExit.DrawHover(spriteBatch);
                         _noExit.DrawHover(spriteBatch);
                     }
+                    if (!showSettings && !isClickExit)
+                    {
+                        _resumeButton.Draw(spriteBatch);
+                    }
+
                 }
             }
             else if (isEndLv)
@@ -674,11 +690,13 @@ namespace Mystic_Foods
         {
             DnDRequested = true;
             DnDScene.cameraPos = Vector2.Zero;
+            _orderRecieve = true;
         }
         private void WhatButton_Click(Object sender, EventArgs e)
         {
             if (GameManager.countDia < 4)
             {
+                _patienceMeter -= 10f;
                 GameManager.countDia++;
             }
         }
@@ -721,9 +739,11 @@ namespace Mystic_Foods
         private void ExitButton_Click(object sender, EventArgs e)
         {
             isClickExit = !isClickExit;
+            showSettings = false;
         }
         private void yesExitButton_Click(object sender, EventArgs e)
         {
+            _orderRecieve = false;
             ExitRequest = true;
         }
         private void noExitButton_Click(object sender, EventArgs e)
@@ -738,6 +758,7 @@ namespace Mystic_Foods
         private void SettingButton_Click(object sender, EventArgs e)
         {
             showSettings = !showSettings;
+            isClickExit = false;
         }
 
         public void GetCustomerByPhase()
