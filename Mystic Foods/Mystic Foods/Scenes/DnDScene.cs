@@ -241,7 +241,7 @@ namespace Mystic_Foods
                         SoundManager.SetSfxVolume(newVol);
                     }
                 }
-                else
+                else if (!isClickExit && !showSettings)
                 {
                     _resumeButton.Update();
                 }
@@ -497,6 +497,9 @@ namespace Mystic_Foods
             if (isPaused)
             {
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
+                _homeButton.Draw(spriteBatch);
+                _settingButton.Draw(spriteBatch);
+                _exitButton.Draw(spriteBatch);
                 if (showSettings == true)
                 {
                     spriteBatch.Draw(settingBG, new Vector2(224, 175), Color.White);
@@ -509,19 +512,15 @@ namespace Mystic_Foods
                     //    spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
                     //    GamePlayScene._tutorialButton.Draw(spriteBatch);
                 }
-                else
+                if (isClickExit)
                 {
-                    // should create separate menu button
-                    _homeButton.Draw(spriteBatch);
-                    _settingButton.Draw(spriteBatch);
+                    spriteBatch.Draw(logExit, new Rectangle(448, 263, 1024, 534), Color.White);
+                    _yesExit.DrawHover(spriteBatch);
+                    _noExit.DrawHover(spriteBatch);
+                }
+                else if (!isClickExit && !showSettings)
+                {
                     _resumeButton.Draw(spriteBatch);
-                    _exitButton.Draw(spriteBatch);
-                    if (isClickExit)
-                    {
-                        spriteBatch.Draw(logExit, new Rectangle(448, 263, 1024, 534), Color.White);
-                        _yesExit.DrawHover(spriteBatch);
-                        _noExit.DrawHover(spriteBatch);
-                    }
                 }
             }
             else if (isEndLv)
@@ -569,6 +568,7 @@ namespace Mystic_Foods
             {
                 ServeRequest = true;
                 served = true;
+                _orderRecieve = false;
                 _gameManager.ServeFood();
             }
         }
