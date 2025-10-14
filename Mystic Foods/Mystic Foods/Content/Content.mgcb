@@ -1107,18 +1107,6 @@
 /processorParam:TextureFormat=Color
 /build:Etc/steam_bar.png
 
-#begin Etc/steam_bar.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Etc/steam_bar.png
-
 #begin Etc/SteamBtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1575,6 +1563,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Music/SFX/Cooking.wav
+
+#begin Music/SFX/Mixed.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SFX/Mixed.wav
 
 #begin Music/SFX/Page.wav
 /importer:WavImporter
