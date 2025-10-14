@@ -62,9 +62,11 @@ namespace Mystic_Foods
 
         public static Texture2D boxfilling;
         public static Texture2D boxdough;
+        public static Texture2D boxflower;
 
         private List<Rectangle> _boxfilling = new List<Rectangle>();
         private List<Rectangle> _boxdough = new List<Rectangle>();
+        private List<Rectangle> _boxflower = new List<Rectangle>();
 
         private Texture2D food_nonDeco;
         #region Setting
@@ -108,6 +110,7 @@ namespace Mystic_Foods
 
             boxdough = content.Load<Texture2D>("foods/hitbox_dough");
             boxfilling = content.Load<Texture2D>("foods/hitbox_filling");
+            boxflower = content.Load<Texture2D>("foods/hitbox_filling");
             prevTexture = content.Load<Texture2D>("UI/previous2");
 
             LogOrder = content.Load<Texture2D>("DialogueUI/LogButton");
@@ -119,14 +122,24 @@ namespace Mystic_Foods
             _boxfilling.Add(new Rectangle(759, 218, 283, 154));
             _boxfilling.Add(new Rectangle(759 + boxfilling.Width + 16, 218, 283, 154));
             _boxfilling.Add(new Rectangle(759 + 2 * (boxfilling.Width + 16), 218, 283, 154));
-            foreach (var rect in _boxfilling) DragDropManager.AddHitbox(rect);
+            DragDropManager.AddHitboxFilling(_boxfilling[0], Filling.FillingType.Coconut_Amber);
+            DragDropManager.AddHitboxFilling(_boxfilling[1], Filling.FillingType.Pandan_Taro_Cream);
+            DragDropManager.AddHitboxFilling(_boxfilling[2], Filling.FillingType.Lotus_Root_Spirit);
 
             _boxdough.Add(new Rectangle(371, 215, 280, 183));
             _boxdough.Add(new Rectangle(371, 215 + boxdough.Height + 12, 280, 183));
             _boxdough.Add(new Rectangle(371, 215 + 2 * (boxdough.Height + 12), 280, 183));
-            foreach(var rect in _boxdough) DragDropManager.AddHitbox(rect);
+            DragDropManager.AddHitboxDough(_boxdough[0], Dough.DoughType.Jasmine_Moon);
+            DragDropManager.AddHitboxDough(_boxdough[1], Dough.DoughType.Lotus_Blossom);
+            DragDropManager.AddHitboxDough(_boxdough[2], Dough.DoughType.Golden_Moon);
 
-            //currentSteam = steamBar.Height - 4;
+            _boxflower.Add(new Rectangle(2808, 218, 283, 154));
+            _boxflower.Add(new Rectangle(2808 + boxfilling.Width + 16, 218, 283, 154));
+            _boxflower.Add(new Rectangle(2808 + 2 * (boxfilling.Width + 16), 218, 283, 154));
+            DragDropManager.AddHitboxFlower(_boxflower[0], Flowers.FlowersType.Mali);
+            DragDropManager.AddHitboxFlower(_boxflower[1], Flowers.FlowersType.Rose);
+            DragDropManager.AddHitboxFlower(_boxflower[2], Flowers.FlowersType.Lotus);
+
             currentSteam = steambar2.Height;
 
             _cookingBtn = new Button(CookingBtn, CookingBtn, _font, " ", new Rectangle(1800 + (818 / 2) - (CookingBtn.Width / 2), 900, 262, 109));
@@ -399,6 +412,18 @@ namespace Mystic_Foods
                     rect.Height
                 );
                 spriteBatch.Draw(boxdough, drawRect, Color.White);
+            }
+
+            // วาด flower hitboxes → worldPos - cameraPos
+            foreach (var rect in _boxflower)
+            {
+                var drawRect = new Rectangle(
+                    rect.X - (int)cameraPos.X,
+                    rect.Y - (int)cameraPos.Y,
+                    rect.Width,
+                    rect.Height
+                );
+                spriteBatch.Draw(boxflower, drawRect, Color.White);
             }
 
             if (GameManager.foodInPlateDeco == false) spriteBatch.Draw(food_nonDeco, new Vector2(2960, 500) - cameraPos, Color.White);
