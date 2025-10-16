@@ -265,7 +265,6 @@ namespace Mystic_Foods
                 #region Playing the game
 
                 //TimeStage every scene
-                TimePSec = 1.0f / 60.0f;
                 TimeStage -= TimePSec;
 
                 _gameManager.Update();
@@ -446,6 +445,7 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 590), Color.Blue);
+            spriteBatch.DrawString(_font, $"Time {TimeStage}", new Vector2(100, 200), Color.Black);
              */
 
             if (GameManager.readySteam)
@@ -480,11 +480,39 @@ namespace Mystic_Foods
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(dayBox, new Vector2(profile.Width + 40, menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 20), Color.Black);
-            //time
-            if (TimeStage < 241 && TimeStage >= 180) spriteBatch.DrawString(_font, "09:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
-            if (TimeStage < 180 && TimeStage >= 120) spriteBatch.DrawString(_font, "10:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
-            if (TimeStage < 120 && TimeStage >= 60) spriteBatch.DrawString(_font, "11:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
-            if (TimeStage < 60 && TimeStage >= 1) spriteBatch.DrawString(_font, "12:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+
+            #region Time UI
+            if (CurrentPhase == DayPhase.Dawn)
+            {
+                if (TimeStage < 181 && TimeStage >= 150) spriteBatch.DrawString(_font, "06:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 150 && TimeStage >= 120) spriteBatch.DrawString(_font, "06:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 120 && TimeStage >= 90) spriteBatch.DrawString(_font, "07:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 90 && TimeStage >= 60) spriteBatch.DrawString(_font, "07:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 60 && TimeStage >= 30) spriteBatch.DrawString(_font, "08:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 30 && TimeStage >= 1) spriteBatch.DrawString(_font, "08:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage == 0) spriteBatch.DrawString(_font, "09:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+            }
+            if (CurrentPhase == DayPhase.Dusk)
+            {
+                if (TimeStage < 181 && TimeStage >= 150) spriteBatch.DrawString(_font, "16:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 150 && TimeStage >= 120) spriteBatch.DrawString(_font, "16:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 120 && TimeStage >= 90) spriteBatch.DrawString(_font, "17:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 90 && TimeStage >= 60) spriteBatch.DrawString(_font, "17:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 60 && TimeStage >= 30) spriteBatch.DrawString(_font, "18:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 30 && TimeStage >= 1) spriteBatch.DrawString(_font, "18:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage == 0) spriteBatch.DrawString(_font, "19:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+            }
+            if (CurrentPhase == DayPhase.Night)
+            {
+                if (TimeStage < 181 && TimeStage >= 150) spriteBatch.DrawString(_font, "00:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 150 && TimeStage >= 120) spriteBatch.DrawString(_font, "00:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 120 && TimeStage >= 90) spriteBatch.DrawString(_font, "01:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 90 && TimeStage >= 60) spriteBatch.DrawString(_font, "01:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 60 && TimeStage >= 30) spriteBatch.DrawString(_font, "02:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 30 && TimeStage >= 1) spriteBatch.DrawString(_font, "02:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage == 0) spriteBatch.DrawString(_font, "03:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+            }
+            #endregion
 
             spriteBatch.Draw(moneyBox, new Vector2(profile.Width + dayBox.Width + 40, menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(profile.Width + dayBox.Width + (moneyBox.Width / 2) + 65, (menuBox.Height / 5) + 36), Color.Black);
