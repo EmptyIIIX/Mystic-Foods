@@ -305,6 +305,8 @@ namespace Mystic_Foods
                 {
                     GameManager.countDia = 2;
                     BackToGame = true;
+
+                    _gameManager.ResetAll();
                 }
 
                 if (currentSteam > 0 && isClickCook)

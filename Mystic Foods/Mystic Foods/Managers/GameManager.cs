@@ -182,6 +182,11 @@ namespace Mystic_Foods.Managers
                     }
                 }
 
+                if (item is Flowers flower)
+                {
+                    if (_flowersOriginalPositions.TryGetValue(flower, out var pos)) flower.Position = pos;
+                }
+
                 // ตรวจสอบการสร้าง Food
                 var fillingOnPlate = _fillings.FirstOrDefault(f => f.Position == _plate.Position);
                 var doughOnPlate = _doughs.FirstOrDefault(d => d.Position == _plate.Position);
@@ -225,6 +230,19 @@ namespace Mystic_Foods.Managers
                 {
                     foodInPlateDeco = false;
                 }
+
+                if (item is Filling filling)
+                {
+                    if (_fillingOriginalPositions.TryGetValue(filling, out var pos)) filling.Position = pos;
+                }
+                else if (item is Dough dough)
+                {
+                    if (_doughOriginalPositions.TryGetValue(dough, out var pos)) dough.Position = pos;
+                }
+                else if (item is Wrapper wrapper)
+                {
+                    if (_wrapperOriginalPositions.TryGetValue(wrapper, out var pos)) wrapper.Position = pos;
+                }
             }
             #endregion
 
@@ -237,7 +255,22 @@ namespace Mystic_Foods.Managers
                     readySteam = true;
                     DragDropManager.RemoveDraggable(food);
                     //System.Diagnostics.Debug.WriteLine($"Food placed on steam1: {food}, readySteam={readySteam}");
-
+                }
+                else if (item is Filling filling)
+                {
+                    if (_fillingOriginalPositions.TryGetValue(filling, out var pos)) filling.Position = pos;
+                }
+                else if (item is Dough dough)
+                {
+                    if (_doughOriginalPositions.TryGetValue(dough, out var pos)) dough.Position = pos;
+                }
+                else if (item is Wrapper wrapper)
+                {
+                    if (_wrapperOriginalPositions.TryGetValue(wrapper, out var pos)) wrapper.Position = pos;
+                }
+                else if (item is Flowers flower)
+                {
+                    if (_flowersOriginalPositions.TryGetValue(flower, out var pos)) flower.Position = pos;
                 }
 
             }
@@ -444,6 +477,50 @@ namespace Mystic_Foods.Managers
             DnDScene.isCountDownSteam = false;
             DnDScene.isClickCook = false;
             foodInPlateDeco = false;
+        }
+        public void ResetAll()
+        {
+            foreach (var food in _food.ToList())
+            {
+                _food.Remove(food);
+                DragDropManager.RemoveDraggable(food);
+            }
+            _food.Clear();
+
+            IdFood = 0;
+            IdFilling = 0;
+            IdDough = 0;
+            IdFlower = 0;
+            HasFood = false;
+            isChangeFood = false;
+            isDecorate = false;
+            foodInPlateDeco = false;
+            readySteam = false;
+            countSteam = 3f;
+            DnDScene.isCountDownSteam = false;
+            DnDScene.isClickCook = false;
+
+            foreach (var filling in _fillings)
+            {
+                if (_fillingOriginalPositions.TryGetValue(filling, out var pos)) filling.Position = pos;
+            }
+
+            foreach (var dough in _doughs)
+            {
+                if (_doughOriginalPositions.TryGetValue(dough, out var pos)) dough.Position = pos;
+
+                dough.SetOnPlate(false);
+            }
+
+            foreach (var wrapper in _wrapper)
+            {
+                if (_wrapperOriginalPositions.TryGetValue(wrapper, out var pos)) wrapper.Position = pos;
+            }
+
+            foreach (var flower in _flowers)
+            {
+                if (_flowersOriginalPositions.TryGetValue(flower, out var pos)) flower.Position = pos;
+            }
         }
         public void Update()
         {

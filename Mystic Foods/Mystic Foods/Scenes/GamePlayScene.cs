@@ -12,7 +12,6 @@ using System.Reflection.PortableExecutable;
 using System.Threading;
 using System.Threading.Tasks;
 
-//for fixing bug
 namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
@@ -51,7 +50,7 @@ namespace Mystic_Foods
 
         public static float _patienceMeter;        // current patience
         public static float _patienceMeterStart = 100f;   // default / max patience
-        public static float _patienceDecreaseRate = 0f; // decrease rate
+        public static float _patienceDecreaseRate = 3f; // decrease rate
         public static bool _orderRecieve = false;
         public static Texture2D _textureHappy;
         public static Texture2D _textureNeutral;
@@ -111,7 +110,9 @@ namespace Mystic_Foods
             GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
         }
-        public GamePlayScene() {}
+        public GamePlayScene()
+        {
+        }
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _contentManager = content;
@@ -345,6 +346,7 @@ namespace Mystic_Foods
                     GetCustomerByPhase();
                     _patienceMeter = _patienceMeterStart;
                     LoadCustomerTextures();
+
                 }
                 //Check time out to back to mainmenu scene
                 if (TimeStage <= 0)
@@ -352,7 +354,9 @@ namespace Mystic_Foods
                     //BackToMenuRequested = true;
                     isEndLv = true;
                     TimeStage = TimeDefault;
+
                 }
+
                 //_tutorialButton.Update();
                 #endregion
             }
@@ -381,7 +385,7 @@ namespace Mystic_Foods
             // Click yes & patience start decreasing
             if (_orderRecieve)
             {
-                _patienceDecreaseRate = 0.68f;
+                _patienceDecreaseRate = 3f;
             } else if (!_orderRecieve)
             {
                 _patienceDecreaseRate = 0f;
