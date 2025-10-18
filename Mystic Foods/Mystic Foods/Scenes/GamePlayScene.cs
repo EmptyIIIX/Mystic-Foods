@@ -17,7 +17,7 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 24111f;
+        public static float TimeDefault = 10f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
         public enum DayPhase { Dawn, Dusk, Night }
@@ -346,13 +346,7 @@ namespace Mystic_Foods
                     _patienceMeter = _patienceMeterStart;
                     LoadCustomerTextures();
                 }
-                //Check time out to back to mainmenu scene
-                if (TimeStage <= 0)
-                {
-                    //BackToMenuRequested = true;
-                    isEndLv = true;
-                    TimeStage = TimeDefault;
-                }
+
                 //_tutorialButton.Update();
                 #endregion
             }
@@ -726,6 +720,12 @@ namespace Mystic_Foods
             LoadCustomerTextures();
             GameManager.countDia = 2;
             served = false;
+
+            if (TimeStage <= 0)
+            {
+                isEndLv = true;
+                TimeStage = TimeDefault;
+            }
         }
         public void ResumeButton_Click(object sender, EventArgs e)
         {

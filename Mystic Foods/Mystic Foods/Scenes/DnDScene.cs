@@ -188,11 +188,13 @@ namespace Mystic_Foods
             _menuButton.Update();
             Globals.Update(gameTime);
 
+            /*
             if (TimeStage <= 0)
             {
                 TimeStage = TimeDefault;
                 isEndLv = true;
             } //Check Time up
+            */
 
             if (isPaused)
             {
