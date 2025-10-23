@@ -41,7 +41,7 @@ namespace Mystic_Foods
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.IsFullScreen = false;
             Window.AllowUserResizing = true;
-            Window.IsBorderless = false;//better fullscreen
+            Window.IsBorderless = true;//better fullscreen
             _graphics.ApplyChanges();
         }
         protected override void Initialize()
@@ -63,7 +63,6 @@ namespace Mystic_Foods
         }
         private void OnClientSizeChanged(object sender, System.EventArgs e)
         {
-            //อัปเดตขนาด back bufferเมื่อหน้าต่างเปลี่ยนขนาด
             _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
             _graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
             _graphics.ApplyChanges();

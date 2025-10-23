@@ -17,7 +17,7 @@ namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 10f;
+        public static float TimeDefault = 100f;
         public static float TimeStage = TimeDefault;
         public static float TimePSec;
         public enum DayPhase { Dawn, Dusk, Night }
@@ -84,6 +84,7 @@ namespace Mystic_Foods
         public static bool isSkip = false;
 
         public bool isTutorial2 = false;
+
         #region Setting
         private Texture2D header, settingBG;
         private Texture2D musicIcon, muteMusicIcon;
@@ -103,6 +104,14 @@ namespace Mystic_Foods
         private float typingSpeed = 0.005f; //lower the number, faster the typo
         private float typingTimer = 0f;
         private int charIndex = 0;
+        #endregion
+
+        #region fade in & out
+        private float _alpha = 0f;
+        private float _fadeSpeed = 1f; // ความเร็วในการเฟด
+        private bool _isFadingIn = true;
+        private bool _isFadingOut = false;
+        private bool _fadedOut = false;
         #endregion
 
         public GamePlayScene(CustomerManager cm)
@@ -348,6 +357,32 @@ namespace Mystic_Foods
                 }
 
                 //_tutorialButton.Update();
+
+                #region Fade in & out
+                if (state.IsKeyDown(Keys.F1)) FadeIn();
+                if (state.IsKeyDown(Keys.F2)) FadeOut();
+
+                if (_isFadingIn)
+                {
+                    _alpha += _fadeSpeed * deltaTime;
+                    if (_alpha >= 1f)
+                    {
+                        _alpha = 1f;
+                        _isFadingIn = false;
+                    }
+                }
+
+                if (_isFadingOut)
+                {
+                    _alpha -= _fadeSpeed * deltaTime;
+                    if (_alpha <= 0f)
+                    {
+                        _alpha = 0f;
+                        _isFadingOut = false;
+                    }
+                }
+                #endregion
+
                 #endregion
             }
             if (charIndex < fullText.Length)
@@ -453,7 +488,7 @@ namespace Mystic_Foods
                     drawTexture = _textureNeutral;
                     break;
             }
-            spriteBatch.Draw(drawTexture, new Vector2(200, 0), null, Color.White, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(drawTexture, new Vector2(200, 0), null, Color.White * _alpha, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
             #endregion
 
             #region Counter
@@ -713,12 +748,17 @@ namespace Mystic_Foods
             isClickExit = false;
             BackToMenuRequested = true;
         }
-        public void ServedYes_Click(Object sender, EventArgs e)
+        public async void ServedYes_Click(Object sender, EventArgs e)
         {
+            FadeOut();
+
+            await Task.Delay(1000);
+
             GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
             LoadCustomerTextures();
             GameManager.countDia = 2;
+            FadeIn();
             served = false;
 
             if (TimeStage <= 0)
@@ -802,7 +842,21 @@ namespace Mystic_Foods
 
         public async void wait()
         {
-            await Task.Delay(100);
+            await Task.Delay(1000);
+        }
+
+        public void FadeIn()
+        {
+            _isFadingIn = true;
+            _isFadingOut = false;
+            _alpha = 0f;
+        }
+
+        public void FadeOut()
+        {
+            _isFadingOut = true;
+            _isFadingIn = false;
+            _alpha = 1f;
         }
     }
 }
