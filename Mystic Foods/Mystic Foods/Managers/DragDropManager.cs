@@ -38,6 +38,15 @@ namespace Mystic_Foods.Managers
                 _draggables.Add(item);
 
         }
+        public static void RemoveDraggable(IDraggable item)
+        {
+            _draggables.Remove(item);
+            if (_dragItem == item)
+            {
+                _dragItem = null;
+                Mouse.SetCursor(MouseCursor.Arrow);
+            }
+        }
         public static void AddHitboxFilling(Rectangle rect, Filling.FillingType type)
         {
             _fillingHitboxMap[rect] = type;
@@ -49,15 +58,6 @@ namespace Mystic_Foods.Managers
         public static void AddHitboxFlower(Rectangle rect, Flowers.FlowersType type)
         {
             _flowerHitboxMap[rect] = type;
-        }
-        public static void RemoveDraggable(IDraggable item)
-        {
-            _draggables.Remove(item);
-            if (_dragItem == item)
-            {
-                _dragItem = null;
-                Mouse.SetCursor(MouseCursor.Arrow);
-            }
         }
         public static void AddTarget(ITargetable item)
         {

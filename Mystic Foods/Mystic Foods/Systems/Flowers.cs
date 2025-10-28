@@ -15,8 +15,6 @@ namespace Mystic_Foods.Systems
         }
         public FlowersType FlowerKind { get; private set; }
 
-        public string Type => $"Flowers_{FlowerKind}";
-
         public Flowers(Texture2D tex, Vector2 pos,  FlowersType kind) : base(tex, pos)
         {
             FlowerKind = kind;

@@ -65,9 +65,9 @@ namespace Mystic_Foods.Managers
             var Jasmine_MoonTexture = content.Load<Texture2D>("foods/Jasmine Moon");
             var Lotus_BlossomTexture = content.Load<Texture2D>("foods/Lotus Blossom");
             var Golden_MoonTexture = content.Load<Texture2D>("foods/Golden Moon");
-            var Jasmine_MoonPlate = content.Load<Texture2D>("foods/12");
-            var Lotus_BlossomPlate = content.Load<Texture2D>("foods/10");
-            var Golden_MoonPlate = content.Load<Texture2D>("foods/11");
+            var Jasmine_MoonPlate = content.Load<Texture2D>("foods/Jasmine Moon_OnPlate");
+            var Lotus_BlossomPlate = content.Load<Texture2D>("foods/Lotus Blossom_OnPlate");
+            var Golden_MoonPlate = content.Load<Texture2D>("foods/Golden Moon_OnPlate");
 
             var Mali_Texture = content.Load<Texture2D>("foods/Mali");
             var Rose_Texture = content.Load<Texture2D>("foods/Rose");
@@ -77,8 +77,8 @@ namespace Mystic_Foods.Managers
             var plateHitbox = content.Load<Texture2D>("foods/PlateHitbox");
             var trashBinTexture = content.Load<Texture2D>("Etc/White_Tako_1");
             var trashBinTexture_2 = content.Load<Texture2D>("Etc/White_Tako");
-            var wrappTexture = content.Load<Texture2D>("foods/1");
-            var foodTexture = content.Load<Texture2D>("foods/3");
+            var wrappTexture = content.Load<Texture2D>("foods/WrapTexture");
+            var foodTexture = content.Load<Texture2D>("foods/food_normal");
 
             var steam1Texture = content.Load<Texture2D>("Environments/tools/steamer1");
             #endregion
@@ -377,7 +377,7 @@ namespace Mystic_Foods.Managers
             wrapper.Position = new Vector2(_originWrapper.X, _originWrapper.Y);
 
             //สร้าง food
-            var foodTexture = Globals.Content.Load<Texture2D>("foods/3");
+            var foodTexture = Globals.Content.Load<Texture2D>("foods/food_normal");
             var newFood = new Food(foodTexture, _plate.Position);
             _food.Add(newFood);
 
@@ -393,7 +393,6 @@ namespace Mystic_Foods.Managers
             //delete the food
             _food.Remove(food);
             DragDropManager.RemoveDraggable(food);
-
             //change asset from food to changeFood
             if (isDecorate)
             {
@@ -434,7 +433,7 @@ namespace Mystic_Foods.Managers
             }
             else
             {
-                var foodTexture = Globals.Content.Load<Texture2D>("foods/2");
+                var foodTexture = Globals.Content.Load<Texture2D>("foods/food_coocked");
                 var changeFood = new Food(foodTexture, _steam1.Position);
                 DragDropManager.AddDraggable(changeFood);
                 _food.Add(changeFood);
@@ -554,7 +553,6 @@ namespace Mystic_Foods.Managers
             {
                 flowers.Draw(cameraPos);
             }
-
 
             if (GamePlayScene.isEndLv)//remove food when end game
             {

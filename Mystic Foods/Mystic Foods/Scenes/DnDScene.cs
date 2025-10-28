@@ -400,7 +400,7 @@ namespace Mystic_Foods
                     rect.Width,
                     rect.Height
                 );
-                spriteBatch.Draw(boxfilling, drawRect, Color.White);
+                spriteBatch.Draw(boxfilling, drawRect, Color.Transparent);
             }
 
             // วาด dough hitboxes → worldPos - cameraPos
@@ -412,7 +412,7 @@ namespace Mystic_Foods
                     rect.Width,
                     rect.Height
                 );
-                spriteBatch.Draw(boxdough, drawRect, Color.White);
+                spriteBatch.Draw(boxdough, drawRect, Color.Transparent);
             }
 
             // วาด flower hitboxes → worldPos - cameraPos
@@ -424,7 +424,7 @@ namespace Mystic_Foods
                     rect.Width,
                     rect.Height
                 );
-                spriteBatch.Draw(boxflower, drawRect, Color.White);
+                spriteBatch.Draw(boxflower, drawRect, Color.Transparent);
             }
 
             if (GameManager.foodInPlateDeco == false) spriteBatch.Draw(food_nonDeco, new Vector2(2960, 500) - cameraPos, Color.White);
@@ -583,9 +583,9 @@ namespace Mystic_Foods
                 Profit = Revenue - Cost;
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
                 spriteBatch.Draw(revenueBox, new Vector2(100, 100), Color.White);
-                spriteBatch.DrawString(_font, $"{Revenue}", new Vector2(1250, 350), Color.Green);
-                spriteBatch.DrawString(_font, $"{Cost}", new Vector2(1250, 460), Color.Red);
-                spriteBatch.DrawString(_font, $"{Profit}", new Vector2(1250, 720), Color.Black);
+                spriteBatch.DrawString(_font, $"Revenue...........................................{Revenue}B", new Vector2(350, 280), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"Cost..................................................{Cost}B", new Vector2(350, 390), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"Profit..............................................{Profit}B", new Vector2(350, 650), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
                 _OkButton.Draw(spriteBatch);
             }
             _menuButton.Draw(spriteBatch);

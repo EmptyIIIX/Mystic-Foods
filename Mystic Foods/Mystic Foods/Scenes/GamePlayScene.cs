@@ -347,13 +347,11 @@ namespace Mystic_Foods
                     LoadCustomerTextures();
 
                 }
-                //Check time out to back to mainmenu scene
+                //Check time out to back to mainmenu scene(end game)
                 if (TimeStage <= 0)
                 {
-                    //BackToMenuRequested = true;
                     isEndLv = true;
                     TimeStage = TimeDefault;
-
                 }
 
                 //_tutorialButton.Update();
@@ -657,9 +655,9 @@ namespace Mystic_Foods
                 Profit = Revenue - Cost;
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
                 spriteBatch.Draw(revenueBox, new Vector2(100, 100), Color.White);
-                spriteBatch.DrawString(_font, $"{Revenue}", new Vector2(1250, 320), Color.Green, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
-                spriteBatch.DrawString(_font, $"{Cost}", new Vector2(1250, 430), Color.Red, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
-                spriteBatch.DrawString(_font, $"{Profit}", new Vector2(1250, 690), Color.Black, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"Revenue...........................................{Revenue}B", new Vector2(350, 280), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"Cost..................................................{Cost}B", new Vector2(350, 390), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"Profit..............................................{Profit}B", new Vector2(350, 650), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
                 //DnDScene._okLogBtn.Draw(spriteBatch);
                 _OkButton.Draw(spriteBatch);
             }
@@ -682,24 +680,22 @@ namespace Mystic_Foods
             float patiencePerc = _patienceMeter / _patienceMeterStart;
             if (patiencePerc >= 2f / 3f)
             {
-                //spriteBatch.Draw(_happy, EmotionPos, Color.White);
+                //customer happy
                 spriteBatch.Draw(spriteEmoIcon, EmotionPos, new Rectangle(0, 0, 264, 104), Color.White);
                 weight = 1.0f;
             }
             else if (patiencePerc >= 1f / 3f)
             {
-                //spriteBatch.Draw(_natural, EmotionPos, Color.White);
+                //customer netural
                 spriteBatch.Draw(spriteEmoIcon, EmotionPos, new Rectangle(0, 104, 264, 104), Color.White);
                 weight = 0.75f;
             }
             else
             {
-                //spriteBatch.Draw(_angry, EmotionPos, Color.White);
+                //customer angry
                 spriteBatch.Draw(spriteEmoIcon, EmotionPos, new Rectangle(0, 208, 264, 104), Color.White);
                 weight = 0.25f;
             }
-            //string patienceText = $"{_patienceMeter:0}%";
-            //spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
         }
 
         private void DrawVolumeBar(SpriteBatch spriteBatch, Vector2 position, float volume, bool notMuted, Texture2D normalIcon, Texture2D muteIcon)
