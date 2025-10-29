@@ -108,10 +108,14 @@ namespace Mystic_Foods
 
         #region fade in & out
         private float _alpha = 0f;
-        private float _fadeSpeed = 1f; // ความเร็วในการเฟด
+        private float _fadeSpeed = 2f; // ความเร็วในการเฟด
         private bool _isFadingIn = true;
         private bool _isFadingOut = false;
         private bool _fadedOut = false;
+
+        private Vector2 _startPos;
+        private Vector2 _endPos;
+        private Vector2 _customerPosition;
         #endregion
 
         public GamePlayScene(CustomerManager cm)
@@ -217,6 +221,9 @@ namespace Mystic_Foods
             barFill = content.Load<Texture2D>("UI/setting/IncreaseSound_UI");
             knob = content.Load<Texture2D>("UI/setting/SoundButton");
             #endregion
+
+            _startPos = new Vector2(00, 0);
+            _endPos = new Vector2(200, 0);
         }
 
         private void LoadCustomerTextures()
@@ -322,14 +329,16 @@ namespace Mystic_Foods
                 {
                     displayedText = fullText;
                     charIndex = fullText.Length;
+
+                    _alpha = 1f;
                 }
                 // random, reset Patience
-                if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
+                if (!_isFadingIn && !_isFadingOut)
                 {
-                    GetCustomerByPhase();
-                    _patienceMeter = _patienceMeterStart;
-                    LoadCustomerTextures();
-                    GameManager.countDia = 2;
+                    if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
+                    {
+                        changeCustomer();
+                    }
                 }
                 _whatButton.Update();
                 
@@ -370,6 +379,7 @@ namespace Mystic_Foods
                         _alpha = 1f;
                         _isFadingIn = false;
                     }
+                    _customerPosition = Vector2.Lerp(_startPos, _endPos, _alpha);
                 }
 
                 if (_isFadingOut)
@@ -380,6 +390,7 @@ namespace Mystic_Foods
                         _alpha = 0f;
                         _isFadingOut = false;
                     }
+                    _customerPosition = Vector2.Lerp(_startPos, _endPos, _alpha);
                 }
                 #endregion
 
@@ -488,7 +499,8 @@ namespace Mystic_Foods
                     drawTexture = _textureNeutral;
                     break;
             }
-            spriteBatch.Draw(drawTexture, new Vector2(200, 0), null, Color.White * _alpha, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
+            //new Vector2(200, 0)
+            spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
             #endregion
 
             #region Counter
@@ -752,7 +764,7 @@ namespace Mystic_Foods
         {
             FadeOut();
 
-            await Task.Delay(1000);
+            await Task.Delay(500);
 
             GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
@@ -850,6 +862,7 @@ namespace Mystic_Foods
             _isFadingIn = true;
             _isFadingOut = false;
             _alpha = 0f;
+            _customerPosition = _startPos;
         }
 
         public void FadeOut()
@@ -857,6 +870,21 @@ namespace Mystic_Foods
             _isFadingOut = true;
             _isFadingIn = false;
             _alpha = 1f;
+            _customerPosition = _endPos;
+        }
+        
+        public async void changeCustomer()
+        {
+            FadeOut();
+
+            await Task.Delay(500);
+
+            GetCustomerByPhase();
+            _patienceMeter = _patienceMeterStart;
+            LoadCustomerTextures();
+            GameManager.countDia = 2;
+            FadeIn();
+            served = false;
         }
     }
 }
