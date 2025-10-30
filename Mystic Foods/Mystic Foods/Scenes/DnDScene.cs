@@ -18,7 +18,7 @@ namespace Mystic_Foods
         public GraphicsDeviceManager _graphics;
         private GameManager _gameManager;
         private GamePlayScene _gamePlayScene;
-        private TutorialScene _tnTutorialScene;
+        private Recipe _tnTutorialScene;
 
         public bool backToCounter = false;
 
@@ -441,11 +441,12 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
             spriteBatch.DrawString(_font, $"CounDia : {GameManager.countDia}", new Vector2(500, 590), Color.Blue);
             spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
+            spriteBatch.DrawString(_font, $"Time {TimeStage}", new Vector2(100, 200), Color.Black);
             spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
             spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 590), Color.Blue);
-            spriteBatch.DrawString(_font, $"Time {TimeStage}", new Vector2(100, 200), Color.Black);
+            spriteBatch.DrawString(_font, $"isDecorate : {GameManager.isDecorate}", new Vector2(500, 620), Color.Blue);
              */
 
             if (GameManager.readySteam)

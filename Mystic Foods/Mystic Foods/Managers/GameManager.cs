@@ -351,7 +351,7 @@ namespace Mystic_Foods.Managers
             else if (item is Flowers flowers)
             {
                 flowers.Position = _flowersOriginalPositions[flowers];
-                if (!_flowers.Any(fw => fw.Position == _plate2.Position))
+                if (!_flowers.Any(fw => fw.Position == _plate2.Position) && isDecorate == false)
                 {
                     IdFlower = 0;
                 }
@@ -428,7 +428,6 @@ namespace Mystic_Foods.Managers
                 {
                     _placedFlowers.Position = _flowersOriginalPositions[_placedFlowers];
                     _placedFlowers = null;
-                    IdFlower = 0;
                 }
             }
             else
@@ -441,7 +440,6 @@ namespace Mystic_Foods.Managers
             }
 
             isChangeFood = true;
-            isDecorate = false;
             HasFood = true;
             readySteam = false;
             countSteam = 3f;
@@ -449,6 +447,7 @@ namespace Mystic_Foods.Managers
         }
         public void ServeFood()
         {
+            IdFood += IdFlower;
             if(IdFood == GamePlayScene._currentCustomer.IdOrder)
             {
                 countDia = 1;
@@ -471,6 +470,8 @@ namespace Mystic_Foods.Managers
             HasFood = false;
             isChangeFood = false;
             readySteam = false;
+            isDecorate = false;
+            IdFlower = 0;
             IdFood = 0;
             countSteam = 3f;
             DnDScene.isCountDownSteam = false;

@@ -10,7 +10,7 @@ using Mystic_Foods.Systems;
 
 namespace Mystic_Foods.Scenes
 {
-    public class TutorialScene : IGameScene
+    public class Recipe : IGameScene
     {
         private SpriteFont _font;
         public static int countPage, MaxPage;

@@ -20,7 +20,7 @@ namespace Mystic_Foods
         private GamePlayScene _gamePlayScene;
         private DnDScene _dndScene;
         private LevelSelectScene _levelSelectScene;
-        private TutorialScene _tutorialScene;
+        private Recipe _recipeScene;
         private SettingScene _settingScene;
         private CustomerManager _customerManager;
 
@@ -52,7 +52,7 @@ namespace Mystic_Foods
             _mainMenuScene = new MainMenuScene();
             _gamePlayScene = new GamePlayScene(_customerManager);
             _levelSelectScene = new LevelSelectScene();
-            _tutorialScene = new TutorialScene();
+            _recipeScene = new Recipe();
             _settingScene = new SettingScene();
 
             //make it start at main menu
@@ -99,7 +99,7 @@ namespace Mystic_Foods
             _gamePlayScene.LoadContent(Content, _spriteBatch);
             _dndScene.LoadContent(Content, _spriteBatch);
             _levelSelectScene.LoadContent(Content, _spriteBatch);
-            _tutorialScene.LoadContent(Content, _spriteBatch);
+            _recipeScene.LoadContent(Content, _spriteBatch);
             _settingScene.LoadContent(Content, _spriteBatch);
 
         }
@@ -110,18 +110,11 @@ namespace Mystic_Foods
             if (_currentScene == _mainMenuScene)
             {
                 _mainMenuScene.Update(gameTime);
-                if (MainMenuScene.StartGameRequested && wasTutorial == false)
-                {
-                    MainMenuScene.StartGameRequested = false;
-                    //_currentScene = _levelSelectScene;
-                    _currentScene = _tutorialScene;
-                }
-                else if (MainMenuScene.StartGameRequested && wasTutorial)
+                if (MainMenuScene.StartGameRequested)
                 {
                     MainMenuScene.StartGameRequested = false;
                     _currentScene = _levelSelectScene;
                 }
-
                 if (_mainMenuScene.DnDRequested)
                 {
                     _mainMenuScene.DnDRequested = false;
@@ -133,15 +126,15 @@ namespace Mystic_Foods
                     _currentScene = _settingScene;
                 }
             }
-            else if(_currentScene == _tutorialScene)
-            {
-                _tutorialScene.Update(gameTime);
-                if (TutorialScene.isExitPage)
-                {
-                    _currentScene = _levelSelectScene;
-                    TutorialScene.isExitPage = false;
-                }
-            }
+            //else if(_currentScene == _recipeScene)
+            //{
+            //    _recipeScene.Update(gameTime);
+            //    if (Recipe.isExitPage)
+            //    {
+            //        _currentScene = _levelSelectScene;
+            //        Recipe.isExitPage = false;
+            //    }
+            //}
             else if (_currentScene == _levelSelectScene)
             {
                 _levelSelectScene.Update(gameTime);

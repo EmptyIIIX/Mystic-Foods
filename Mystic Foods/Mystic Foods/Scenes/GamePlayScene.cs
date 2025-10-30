@@ -33,7 +33,7 @@ namespace Mystic_Foods
         public static Customer _currentCustomer;
         private ContentManager _contentManager;
         private DnDScene _dnDScene;
-        private TutorialScene _tnTutorialScene;
+        private Recipe _tnTutorialScene;
 
         public static bool served;
         public static bool isEndLv = false;

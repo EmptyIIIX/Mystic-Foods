@@ -1810,6 +1810,18 @@
 /processorParam:TextureFormat=Color
 /build:Tutorial/หัวข้อวัน & เวลา.png
 
+#begin UI/continue.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/continue.png
+
 #begin UI/credit.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1833,6 +1845,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UI/exit.png
+
+#begin UI/new_game.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/new_game.png
 
 #begin UI/play.png
 /importer:TextureImporter
