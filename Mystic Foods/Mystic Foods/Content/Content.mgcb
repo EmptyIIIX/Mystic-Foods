@@ -1576,6 +1576,18 @@
 /processorParam:Quality=Best
 /build:Music/SFX/Page.wav
 
+#begin Music/SFX/prink.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SFX/prink.wav;Music/SFX/prink
+
+#begin Music/SFX/pu.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SFX/pu.wav;Music/SFX/pu
+
 #begin Tutorial/1หน้าทำอาหาร.png
 /importer:TextureImporter
 /processor:TextureProcessor

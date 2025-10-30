@@ -38,7 +38,9 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Hmm… thank you, but I think something is \nmissing.",
                     DiaHappy = "Thank you so much, it smells wonderful.",
                     DiaNormal = "Thank you, it looks nice.",
-                    DiaAngry = "I waited a little while… but it does look delicious."
+                    DiaAngry = "I waited a little while… but it does look delicious.",
+                    VoicePathTalk = "Music/SFX/prink",
+                    VoicePathMood = "Music/SFX/pu"
                 },
                 new Customer {
                     Id = 5,
@@ -54,7 +56,9 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wrong. Completely wrong.",
                     DiaHappy = "Nice.",
                     DiaNormal = "Hmph. Fine.",
-                    DiaAngry = "Seriously? I could’ve made it myself \nfaster."
+                    DiaAngry = "Seriously? I could’ve made it myself \nfaster.",
+                    VoicePathTalk = "Music/SFX/prink",
+                    VoicePathMood = "Music/SFX/pu"
                 },
                 new Customer {
                     Id = 3,
@@ -70,7 +74,9 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "G Order wrong",
                     DiaHappy = "Tch… quick hands. Don’t think that \nmakes you better than me.",
                     DiaNormal = "Well, that’s… acceptable, I suppose.",
-                    DiaAngry = "Even a turtle could cook faster \nthan you."
+                    DiaAngry = "Even a turtle could cook faster \nthan you.",
+                    VoicePathTalk = "Music/SFX/prink",
+                    VoicePathMood = "Music/SFX/pu"
                 },
                 new Customer {
                     Id = 4,

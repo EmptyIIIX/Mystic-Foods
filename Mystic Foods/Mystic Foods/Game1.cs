@@ -41,7 +41,7 @@ namespace Mystic_Foods
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.IsFullScreen = false;
             Window.AllowUserResizing = true;
-            Window.IsBorderless = true;//better fullscreen
+            Window.IsBorderless = false;//better fullscreen
             _graphics.ApplyChanges();
         }
         protected override void Initialize()
@@ -85,6 +85,8 @@ namespace Mystic_Foods
             SoundManager.AddSound("Button", Content.Load<SoundEffect>("Music/SFX/Button Press"));
             SoundManager.AddSound("Click", Content.Load<SoundEffect>("Music/SFX/Click2"));
             SoundManager.AddSound("Cooking", Content.Load<SoundEffect>("Music/SFX/Cooking"));
+            SoundManager.AddSound("VoiceTalk", Content.Load<SoundEffect>(GamePlayScene._currentCustomer.VoicePathTalk));
+            SoundManager.AddSound("VoiceMood", Content.Load<SoundEffect>(GamePlayScene._currentCustomer.VoicePathMood));
             #endregion
 
             Globals.Content = Content;

@@ -18,5 +18,7 @@ namespace Mystic_Foods
         public string DiaHappy { get; set; }
         public string DiaNormal { get; set; }
         public string DiaAngry { get; set; }
+        public string VoicePathTalk { get; set; }
+        public string VoicePathMood { get; set; }
     }
 }

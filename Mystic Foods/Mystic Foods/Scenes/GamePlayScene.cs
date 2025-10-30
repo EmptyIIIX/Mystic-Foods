@@ -118,6 +118,14 @@ namespace Mystic_Foods
         private Vector2 _customerPosition;
         #endregion
 
+        #region Idle Anim
+        float _idleTime = 0f;
+        float _baseScaleX = 0.9f;       // สเกลแกน X คงที่
+        float _baseScaleY = 0.9f;       // สเกลปกติของแกน Y
+        float _scaleAmplitudeY = 0.005f; // ขยาย/หดแกน Y
+        float _scaleSpeed = 1f;         // ความเร็วของการเต้น
+        #endregion
+
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
@@ -237,6 +245,11 @@ namespace Mystic_Foods
             var state = Keyboard.GetState();
             var mouse = Mouse.GetState();
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+            if (!_isFadingIn && !_isFadingOut)
+            {
+                _idleTime += deltaTime * _scaleSpeed;
+            }
 
             if (isSkip == false )
             {
@@ -499,8 +512,11 @@ namespace Mystic_Foods
                     drawTexture = _textureNeutral;
                     break;
             }
-            //new Vector2(200, 0)
-            spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
+
+            float scaleY = _baseScaleY + (float)Math.Sin(_idleTime) * _scaleAmplitudeY;
+            Vector2 scale = new Vector2(_baseScaleX, scaleY);
+
+            spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             #endregion
 
             #region Counter
@@ -562,15 +578,19 @@ namespace Mystic_Foods
 
             #region Dialouge
             //Dia
-            spriteBatch.Draw(diaBox, new Vector2(900, 200), Color.White);
             Vector2 diaPos = new Vector2(900, 200);
 
-            if (served == true)
+            if (!_isFadingIn && !_isFadingOut)
             {
-                _servedYesButton.DrawHover(spriteBatch);
-            } else
-            {
-                _yesButton.DrawHover(spriteBatch);
+                spriteBatch.Draw(diaBox, new Vector2(900, 200), Color.White);
+                if (served == true)
+                {
+                    _servedYesButton.DrawHover(spriteBatch);
+                }
+                else
+                {
+                    _yesButton.DrawHover(spriteBatch);
+                }
             }
 
             switch (GameManager.countDia)
@@ -595,7 +615,10 @@ namespace Mystic_Foods
                         StartTyping(_currentCustomer.TalkDia);
 
                     spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
-                    _whatButton.DrawHover(spriteBatch);
+                    if (!_isFadingIn && !_isFadingOut)
+                    {
+                        _whatButton.DrawHover(spriteBatch);
+                    }
                     break;
                 case 3:
                     if (fullText != _currentCustomer.Dia1)
@@ -612,7 +635,11 @@ namespace Mystic_Foods
                     spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
                     break;
             }
-
+            if (_isFadingOut)
+            {
+                displayedText = " ";
+                spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
+            }
 
             #endregion
 
@@ -763,13 +790,12 @@ namespace Mystic_Foods
         public async void ServedYes_Click(Object sender, EventArgs e)
         {
             FadeOut();
-
+            GameManager.countDia = 2;
             await Task.Delay(500);
 
             GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
             LoadCustomerTextures();
-            GameManager.countDia = 2;
             FadeIn();
             served = false;
 
@@ -846,10 +872,18 @@ namespace Mystic_Foods
         }
         private void StartTyping(string text)
         {
-            fullText = text;
-            displayedText = "";
-            charIndex = 0;
-            typingTimer = 0f;
+            if (!_isFadingIn && !_isFadingOut)
+            {
+                fullText = text;
+                displayedText = "";
+                charIndex = 0;
+                typingTimer = 0f;
+
+                if (GameManager.countDia == 2)
+                {
+                    SoundManager.PlaySfx("VoiceTalk");
+                }
+            }
         }
 
         public async void wait()
@@ -876,13 +910,12 @@ namespace Mystic_Foods
         public async void changeCustomer()
         {
             FadeOut();
-
+            GameManager.countDia = 2;
             await Task.Delay(500);
 
             GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
             LoadCustomerTextures();
-            GameManager.countDia = 2;
             FadeIn();
             served = false;
         }
