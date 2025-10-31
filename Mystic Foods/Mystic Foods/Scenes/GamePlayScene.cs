@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -110,7 +111,7 @@ namespace Mystic_Foods
         private float _fadeSpeed = 2f; // ความเร็วในการเฟด
         private bool _isFadingIn = true;
         private bool _isFadingOut = false;
-        private bool _fadedOut = false;
+        private bool _isTransition = true;
 
         private Vector2 _startPos;
         private Vector2 _endPos;
@@ -241,13 +242,14 @@ namespace Mystic_Foods
             _textureNeutral = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathNeutral);
             _textureGrumpy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathGrumpy);
         }
+
         public void Update(GameTime gameTime)
         {
             var state = Keyboard.GetState();
             var mouse = Mouse.GetState();
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            if (!_isFadingIn && !_isFadingOut)
+            if (!_isTransition)
             {
                 _idleTime += deltaTime * _scaleSpeed;
             }
@@ -347,7 +349,7 @@ namespace Mystic_Foods
                     _alpha = 1f;
                 }
                 // random, reset Patience
-                if (!_isFadingIn && !_isFadingOut)
+                if (!_isTransition)
                 {
                     if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
                     {
@@ -397,6 +399,7 @@ namespace Mystic_Foods
                     {
                         _alpha = 1f;
                         _isFadingIn = false;
+                        _isTransition = false;
                     }
                     _customerPosition = Vector2.Lerp(_startPos, _endPos, _alpha);
                 }
@@ -410,7 +413,9 @@ namespace Mystic_Foods
                         _isFadingOut = false;
                     }
                     _customerPosition = Vector2.Lerp(_startPos, _endPos, _alpha);
+                    _isTransition = true;
                 }
+
                 #endregion
 
                 #endregion
@@ -519,10 +524,19 @@ namespace Mystic_Foods
                     break;
             }
 
-            float scaleY = _baseScaleY + (float)Math.Sin(_idleTime) * _scaleAmplitudeY;
-            Vector2 scale = new Vector2(_baseScaleX, scaleY);
+            if (_currentCustomer.Name != "Tall dude")
+            {
+                float scaleY = _baseScaleY + (float)Math.Sin(_idleTime) * _scaleAmplitudeY;
+                Vector2 scale = new Vector2(_baseScaleX, scaleY);
+                spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            } else
+            {
+                spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
+            }
 
-            spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            //float scaleY = _baseScaleY + (float)Math.Sin(_idleTime) * _scaleAmplitudeY;
+            //Vector2 scale = new Vector2(_baseScaleX, scaleY);
+            //spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             #endregion
 
             #region Counter
@@ -611,10 +625,8 @@ namespace Mystic_Foods
             #endregion
 
             #region Dialouge
-            //Dia
-            Vector2 diaPos = new Vector2(900, 200);
 
-            if (!_isFadingIn && !_isFadingOut)
+            if (!_isTransition)
             {
                 spriteBatch.Draw(diaBox, new Vector2(900, 200), Color.White);
                 if (served == true)
@@ -634,7 +646,6 @@ namespace Mystic_Foods
                         StartTyping(_currentCustomer.DiaWrong);
 
                     spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
-                    _whatButton.DrawHover(spriteBatch);
                     break;
 
                 case 1:
@@ -648,9 +659,9 @@ namespace Mystic_Foods
                     if (fullText != _currentCustomer.TalkDia)
                         StartTyping(_currentCustomer.TalkDia);
 
-                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
-                    if (!_isFadingIn && !_isFadingOut)
+                    if (!_isTransition)
                     {
+                        spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
                         _whatButton.DrawHover(spriteBatch);
                     }
                     break;
@@ -697,7 +708,7 @@ namespace Mystic_Foods
                     DrawVolumeBar(spriteBatch, musicBarPos, SoundManager.MusicVolume, SoundManager.MusicVolume > 0, musicIcon, muteMusicIcon);
                     DrawVolumeBar(spriteBatch, sfxBarPos, SoundManager.SfxVolume, SoundManager.SfxVolume > 0, sfxIcon, muteSfxIcon);
                 }
-                else if (isRecipeInGame == false) 
+                if (isRecipeInGame == false) 
                 {
                     _homeButton.Draw(spriteBatch);
                     _settingButton.Draw(spriteBatch);
@@ -781,6 +792,7 @@ namespace Mystic_Foods
 
         private void YesButton_Click(Object sender, EventArgs e)
         {
+            SoundManager.PlaySfx("Button");
             DnDRequested = true;
             DnDScene.cameraPos = Vector2.Zero;
             _orderRecieve = true;
@@ -789,6 +801,7 @@ namespace Mystic_Foods
         {
             if (GameManager.countDia < 4)
             {
+                SoundManager.PlaySfx(_currentCustomer.VoicePathMood);
                 _patienceMeter -= 10f;
                 GameManager.countDia++;
             }
@@ -798,6 +811,7 @@ namespace Mystic_Foods
             isPaused = !isPaused;
             isClickExit = false;
             isRecipeInGame = false;
+            SoundManager.PlaySfx("Click");
         }
         public void HomeButton_Click(Object sender, EventArgs e)
         {
@@ -810,30 +824,15 @@ namespace Mystic_Foods
             isEndLv = false;
             GameManager.countDia = 2;
             isClickExit = false;
+            showSettings = false;
             BackToMenuRequested = true;
             DnDScene.isReset = true;
         }
-        public async void ServedYes_Click(Object sender, EventArgs e)
-        {
-            FadeOut();
-            GameManager.countDia = 2;
-            await Task.Delay(500);
 
-            GetCustomerByPhase();
-            _patienceMeter = _patienceMeterStart;
-            LoadCustomerTextures();
-            FadeIn();
-            served = false;
-
-            if (TimeStage <= 0)
-            {
-                isEndLv = true;
-                TimeStage = TimeDefault;
-            }
-        }
         public void ResumeButton_Click(object sender, EventArgs e)
         {
             isPaused = false;
+            SoundManager.PlaySfx("Click");
         }
         public void RecipeInGame(object sender, EventArgs e)
         {
@@ -844,25 +843,30 @@ namespace Mystic_Foods
         {
             isClickExit = !isClickExit;
             showSettings = false;
+            SoundManager.PlaySfx("Click");
         }
         private void yesExitButton_Click(object sender, EventArgs e)
         {
             _orderRecieve = false;
             ExitRequest = true;
+            SoundManager.PlaySfx("Click");
         }
         private void noExitButton_Click(object sender, EventArgs e)
         {
             isClickExit = false;
+            SoundManager.PlaySfx("Click");
         }
         private void OkEndButton_Click(object sender, EventArgs e)
         {
             isEndLv = false;
             BackToMenuRequested = true;
+            SoundManager.PlaySfx("Click");
         }
         private void SettingButton_Click(object sender, EventArgs e)
         {
             showSettings = !showSettings;
             isClickExit = false;
+            SoundManager.PlaySfx("Click");
         }
 
         public void GetCustomerByPhase()
@@ -898,7 +902,7 @@ namespace Mystic_Foods
         }
         private void StartTyping(string text)
         {
-            if (!_isFadingIn && !_isFadingOut)
+            if (!_isTransition)
             {
                 fullText = text;
                 displayedText = "";
@@ -907,7 +911,7 @@ namespace Mystic_Foods
 
                 if (GameManager.countDia == 2)
                 {
-                    SoundManager.PlaySfx("VoiceTalk");
+                    SoundManager.PlaySfx(_currentCustomer.VoicePathTalk);
                 }
             }
         }
@@ -937,6 +941,7 @@ namespace Mystic_Foods
         {
             FadeOut();
             GameManager.countDia = 2;
+            SoundManager.PlaySfx("Walking");
             await Task.Delay(500);
 
             GetCustomerByPhase();
@@ -944,6 +949,17 @@ namespace Mystic_Foods
             LoadCustomerTextures();
             FadeIn();
             served = false;
+        }
+
+        public void ServedYes_Click(Object sender, EventArgs e)
+        {
+            changeCustomer();
+
+            if (TimeStage <= 0)
+            {
+                isEndLv = true;
+                TimeStage = TimeDefault;
+            }
         }
     }
 }

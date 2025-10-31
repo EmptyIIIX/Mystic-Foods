@@ -450,6 +450,7 @@ namespace Mystic_Foods.Managers
             IdFood += IdFlower;
             if(IdFood == GamePlayScene._currentCustomer.IdOrder)
             {
+                SoundManager.PlaySfx("Coin");
                 countDia = 1;
                 GamePlayScene.pay = GamePlayScene.price * GamePlayScene.weight;
                 GamePlayScene.Revenue += GamePlayScene.pay;
@@ -457,6 +458,7 @@ namespace Mystic_Foods.Managers
             }
             else
             {
+                SoundManager.PlaySfx(GamePlayScene._currentCustomer.VoicePathWrong);
                 countDia = 0;
             }
 

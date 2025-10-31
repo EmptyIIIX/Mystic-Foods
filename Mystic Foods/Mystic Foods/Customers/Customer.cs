@@ -20,5 +20,6 @@ namespace Mystic_Foods
         public string DiaAngry { get; set; }
         public string VoicePathTalk { get; set; }
         public string VoicePathMood { get; set; }
+        public string VoicePathWrong { get; set; }
     }
 }

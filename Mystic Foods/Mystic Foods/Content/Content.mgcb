@@ -1570,6 +1570,12 @@
 /processorParam:Quality=Best
 /build:Music/SFX/Coin.wav
 
+#begin Music/SFX/Coin2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SFX/Coin2.wav
+
 #begin Music/SFX/Cooking.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1599,6 +1605,138 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Music/SFX/pu.wav;Music/SFX/pu
+
+#begin Music/SFX/Trash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SFX/Trash.wav
+
+#begin Music/SFX/Walking.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SFX/Walking.wav
+
+#begin Music/SFX/woosh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SFX/woosh.wav
+
+#begin Music/Voice/Cartoon Talk.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Cartoon Talk.wav
+
+#begin Music/Voice/Female Ahem.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Ahem.wav
+
+#begin Music/Voice/Female Augh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Augh.wav
+
+#begin Music/Voice/Female Augh2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Augh2.wav
+
+#begin Music/Voice/Female Disagree1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Disagree1.wav
+
+#begin Music/Voice/Female Disagree2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Disagree2.wav
+
+#begin Music/Voice/Female Hmm1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Hmm1.wav
+
+#begin Music/Voice/Female Hmm2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Hmm2.wav
+
+#begin Music/Voice/Female Laugh1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Laugh1.wav
+
+#begin Music/Voice/Female Laugh2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Laugh2.wav
+
+#begin Music/Voice/Female Reject.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Female Reject.wav
+
+#begin Music/Voice/Giant Mood.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Giant Mood.wav
+
+#begin Music/Voice/Giant Pleasure.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Giant Pleasure.wav
+
+#begin Music/Voice/Kid Angry.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Kid Angry.wav
+
+#begin Music/Voice/Kid Surprise.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Kid Surprise.wav
+
+#begin Music/Voice/Male Angry1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Male Angry1.wav
+
+#begin Music/Voice/Male Angry2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Male Angry2.wav
+
+#begin Music/Voice/Male Hi.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Male Hi.wav
+
+#begin Music/Voice/Male Sigh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Voice/Male Sigh.wav
 
 #begin Recipe/backpage.png
 /importer:TextureImporter
@@ -1672,30 +1810,6 @@
 /processorParam:TextureFormat=Color
 /build:UI/credit.png
 
-#begin UI/credit.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:UI/credit.png
-
-#begin UI/exit.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:UI/exit.png
-
 #begin UI/exit.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1755,18 +1869,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UI/previous2.png
-
-#begin UI/setting.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:UI/setting.png
 
 #begin UI/setting.png
 /importer:TextureImporter

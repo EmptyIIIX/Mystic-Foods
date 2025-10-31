@@ -39,7 +39,7 @@ namespace Mystic_Foods
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.IsFullScreen = false;
             Window.AllowUserResizing = true;
-            Window.IsBorderless = true;//better fullscreen
+            Window.IsBorderless = false;//better fullscreen
             _graphics.ApplyChanges();
         }
         protected override void Initialize()
@@ -78,13 +78,40 @@ namespace Mystic_Foods
             SoundManager.AddSong("nightbgm", Content.Load<Song>("Music/BGM/bgm01"));
             #endregion
 
-            SoundManager.SfxVolume = 0.1f;
+            SoundManager.SfxVolume = 0.5f;
             #region SFX
             SoundManager.AddSound("Button", Content.Load<SoundEffect>("Music/SFX/Button Press"));
+            SoundManager.AddSound("Button2", Content.Load<SoundEffect>("Music/SFX/Button Press2"));
             SoundManager.AddSound("Click", Content.Load<SoundEffect>("Music/SFX/Click2"));
             SoundManager.AddSound("Cooking", Content.Load<SoundEffect>("Music/SFX/Cooking"));
-            SoundManager.AddSound("VoiceTalk", Content.Load<SoundEffect>(GamePlayScene._currentCustomer.VoicePathTalk));
-            SoundManager.AddSound("VoiceMood", Content.Load<SoundEffect>(GamePlayScene._currentCustomer.VoicePathMood));
+            SoundManager.AddSound("Walking", Content.Load<SoundEffect>("Music/SFX/Walking"));
+            SoundManager.AddSound("Coin", Content.Load<SoundEffect>("Music/SFX/Coin2"));
+            #endregion
+
+            #region Voice
+            SoundManager.AddSound("Cartoon Talk", Content.Load<SoundEffect>("Music/Voice/Cartoon Talk"));
+
+            SoundManager.AddSound("Female Ahem", Content.Load<SoundEffect>("Music/Voice/Female Ahem"));
+            SoundManager.AddSound("Female Augh", Content.Load<SoundEffect>("Music/Voice/Female Augh"));
+            SoundManager.AddSound("Female Augh2", Content.Load<SoundEffect>("Music/Voice/Female Augh2"));
+            SoundManager.AddSound("Female Disagree1", Content.Load<SoundEffect>("Music/Voice/Female Disagree1"));
+            SoundManager.AddSound("Female Disagree2", Content.Load<SoundEffect>("Music/Voice/Female Disagree2"));
+            SoundManager.AddSound("Female Hmm1", Content.Load<SoundEffect>("Music/Voice/Female Hmm1"));
+            SoundManager.AddSound("Female Hmm2", Content.Load<SoundEffect>("Music/Voice/Female Hmm2"));
+            SoundManager.AddSound("Female Laugh1", Content.Load<SoundEffect>("Music/Voice/Female Laugh1"));
+            SoundManager.AddSound("Female Laugh2", Content.Load<SoundEffect>("Music/Voice/Female Laugh2"));
+            SoundManager.AddSound("Female Reject", Content.Load<SoundEffect>("Music/Voice/Female Reject"));
+
+            SoundManager.AddSound("Giant Mood", Content.Load<SoundEffect>("Music/Voice/Giant Mood"));
+            SoundManager.AddSound("Giant Pleasure", Content.Load<SoundEffect>("Music/Voice/Giant Pleasure"));
+
+            SoundManager.AddSound("Kid Angry", Content.Load<SoundEffect>("Music/Voice/Kid Angry"));
+            SoundManager.AddSound("Kid Surprise", Content.Load<SoundEffect>("Music/Voice/Kid Surprise"));
+
+            SoundManager.AddSound("Male Hi", Content.Load<SoundEffect>("Music/Voice/Male Hi"));
+            SoundManager.AddSound("Male Angry1", Content.Load<SoundEffect>("Music/Voice/Male Angry1"));
+            SoundManager.AddSound("Male Angry2", Content.Load<SoundEffect>("Music/Voice/Male Angry2"));
+            SoundManager.AddSound("Male Sigh", Content.Load<SoundEffect>("Music/Voice/Male Sigh"));
             #endregion
 
             Globals.Content = Content;

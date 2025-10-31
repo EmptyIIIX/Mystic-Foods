@@ -206,6 +206,8 @@ namespace Mystic_Foods
 
                 if (isRecipeInGame)
                 {
+                    showSettings = false;
+                    isClickExit = false;
                     //for button in tutorial
                     //GamePlayScene._tutorialButton.Update();
                 }
@@ -221,7 +223,7 @@ namespace Mystic_Foods
                         _noExit.Update();
                     }
                 }
-                if (showSettings == true)
+                if (showSettings)
                 {
                     Vector2 musicBarPos = new Vector2(600, 425);
                     Vector2 sfxBarPos = new Vector2(600, 675);

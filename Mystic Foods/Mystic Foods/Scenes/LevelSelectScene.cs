@@ -104,6 +104,7 @@ namespace Mystic_Foods.Scenes
             SoundManager.PlaySfx("Click");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dawn;
+            SoundManager.PlaySfx("Walking");
             //gameplayRequest = true;
             tutorial2 = true;
             await Task.Delay(500);
@@ -117,6 +118,7 @@ namespace Mystic_Foods.Scenes
             SoundManager.PlaySfx("Click");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dusk;
+            SoundManager.PlaySfx("Walking");
             //gameplayRequest = true;
             tutorial2 = true;
             await Task.Delay(500);
@@ -130,6 +132,7 @@ namespace Mystic_Foods.Scenes
             SoundManager.PlaySfx("Click");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Night;
+            SoundManager.PlaySfx("Walking");
             //gameplayRequest = true;
             tutorial2 = true;
             await Task.Delay(500);
