@@ -38,7 +38,7 @@ namespace Mystic_Foods
             Menu_bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
             NameTitle = content.Load<Texture2D>("UI/title");
-            PlayBtn = content.Load<Texture2D>("UI/play");
+            PlayBtn = content.Load<Texture2D>("UI/new_game");
             SettingBtn = content.Load<Texture2D>("UI/setting");
             CreditBtn = content.Load<Texture2D>("UI/credit");
             ExitBtn = content.Load<Texture2D>("UI/exit");
@@ -47,14 +47,14 @@ namespace Mystic_Foods
 
             //_playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
             //_playBtn.Click += PlayBtn_Click;
-            _playBtn = new Button(PlayBtn, PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
+            _playBtn = new Button(PlayBtn, PlayBtn, _font, "", new Rectangle(225, 500, 512, 100));
             _playBtn.Click += PlayBtn_Click;
-            _settingBtn = new Button(SettingBtn, SettingBtn, _font, "", new Rectangle(225, 400 + PlayBtn.Height + 20, 512, 100));
-            _settingBtn.Click += SettingBtn_Click;
-            _creditBtn = new Button(CreditBtn, CreditBtn, _font, "", new Rectangle(225, 400 + (PlayBtn.Height * 2) + 40, 512, 100));
-            _creditBtn.Click += CreditBtn_Click;
-            _exitBtn = new Button(ExitBtn, ExitBtn, _font, "", new Rectangle(1920 - ExitBtn.Width - 20, 1080 - ExitBtn.Height - 20, 80, 100));
+            _exitBtn = new Button(ExitBtn, ExitBtn, _font, "", new Rectangle(225, 500 + 100 + 10, 512, 100));
             _exitBtn.Click += ExitBtn_Click;
+            _creditBtn = new Button(CreditBtn, CreditBtn, _font, "", new Rectangle(1920 - CreditBtn.Width - 20, 1080 - (CreditBtn.Height * 2) - 40, 88, 88));
+            _creditBtn.Click += CreditBtn_Click;
+            _settingBtn = new Button(SettingBtn, SettingBtn, _font, "", new Rectangle(1920 - CreditBtn.Width - 20, 1080 - CreditBtn.Height - 20, 88, 88));
+            _settingBtn.Click += SettingBtn_Click;
 
             SoundManager.PlaySong("mainmenu");
         }

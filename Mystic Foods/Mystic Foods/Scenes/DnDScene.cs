@@ -18,7 +18,7 @@ namespace Mystic_Foods
         public GraphicsDeviceManager _graphics;
         private GameManager _gameManager;
         private GamePlayScene _gamePlayScene;
-        private TutorialScene _tnTutorialScene;
+        private Recipe _tnTutorialScene;
 
         public bool backToCounter = false;
 
@@ -53,6 +53,7 @@ namespace Mystic_Foods
         public static Button _cookingBtn, _serveBtn;
         public static Texture2D CookingBtn, ServeBtn;
         public static bool isCountDownSteam = false;
+        public static bool isReset = false;
         public bool ServeRequest = false;
         private bool SteamRequest = false;
         private List<Rectangle> btnItemRect = new List<Rectangle>();
@@ -188,6 +189,7 @@ namespace Mystic_Foods
 
             DragDropManager.SetCamera(cameraPos);
             _menuButton.Update();
+            _recipeButton.Update();
             Globals.Update(gameTime);
 
             /*
@@ -202,7 +204,7 @@ namespace Mystic_Foods
             {
                 #region Stopping the game
 
-                if (isTutorialInGame)
+                if (isRecipeInGame)
                 {
                     //for button in tutorial
                     //GamePlayScene._tutorialButton.Update();
@@ -269,13 +271,18 @@ namespace Mystic_Foods
                 #region Playing the game
 
                 //TimeStage every scene
-                TimePSec = 1.0f / 60.0f;
                 TimeStage -= TimePSec;
 
                 _gameManager.Update();
                 _prevBtn.Update();
                 _logOrderBtn.Update();
                 _okLogBtn.Update();
+
+                if (isReset)
+                {
+                    _gameManager.ResetAll();
+                    isReset = false;
+                }
 
                 if (isCountDownSteam)
                 {
@@ -309,6 +316,7 @@ namespace Mystic_Foods
                 {
                     GameManager.countDia = 2;
                     BackToGame = true;
+                    isReset = true;
                 }
 
                 if (currentSteam > 0 && isClickCook)
@@ -403,7 +411,7 @@ namespace Mystic_Foods
                     rect.Width,
                     rect.Height
                 );
-                spriteBatch.Draw(boxfilling, drawRect, Color.White);
+                spriteBatch.Draw(boxfilling, drawRect, Color.Transparent);
             }
 
             // วาด dough hitboxes → worldPos - cameraPos
@@ -415,7 +423,7 @@ namespace Mystic_Foods
                     rect.Width,
                     rect.Height
                 );
-                spriteBatch.Draw(boxdough, drawRect, Color.White);
+                spriteBatch.Draw(boxdough, drawRect, Color.Transparent);
             }
 
             // วาด flower hitboxes → worldPos - cameraPos
@@ -427,7 +435,7 @@ namespace Mystic_Foods
                     rect.Width,
                     rect.Height
                 );
-                spriteBatch.Draw(boxflower, drawRect, Color.White);
+                spriteBatch.Draw(boxflower, drawRect, Color.Transparent);
             }
 
             if (GameManager.foodInPlateDeco == false) spriteBatch.Draw(food_nonDeco, new Vector2(2960, 500) - cameraPos, Color.White);
@@ -444,10 +452,13 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $"Weight : {GamePlayScene.weight}", new Vector2(500, 650), Color.Blue);
             spriteBatch.DrawString(_font, $"CounDia : {GameManager.countDia}", new Vector2(500, 590), Color.Blue);
             spriteBatch.DrawString(_font, $"isClickCook : {isClickCook}", new Vector2(500, 620), Color.Blue);
+            spriteBatch.DrawString(_font, $"Time {TimeStage}", new Vector2(100, 200), Color.Black);
             spriteBatch.DrawString(_font, $"IdFilling : {GameManager.IdFilling}", new Vector2(500, 500), Color.Blue);
             spriteBatch.DrawString(_font, $"IdDough : {GameManager.IdDough}", new Vector2(500, 530), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 590), Color.Blue);
+            spriteBatch.DrawString(_font, $"isDecorate : {GameManager.isDecorate}", new Vector2(500, 620), Color.Blue);
+            spriteBatch.DrawString(_font, $"isReset : {isReset}", new Vector2(500, 620), Color.Blue);
              */
 
             if (GameManager.readySteam)
@@ -482,11 +493,39 @@ namespace Mystic_Foods
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
             spriteBatch.Draw(dayBox, new Vector2(profile.Width + 40, menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 20), Color.Black);
-            //time
-            if (TimeStage < 241 && TimeStage >= 180) spriteBatch.DrawString(_font, "09:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
-            if (TimeStage < 180 && TimeStage >= 120) spriteBatch.DrawString(_font, "10:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
-            if (TimeStage < 120 && TimeStage >= 60) spriteBatch.DrawString(_font, "11:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
-            if (TimeStage < 60 && TimeStage >= 1) spriteBatch.DrawString(_font, "12:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+
+            #region Time UI
+            if (CurrentPhase == DayPhase.Dawn)
+            {
+                if (TimeStage < 181 && TimeStage >= 150) spriteBatch.DrawString(_font, "06:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 150 && TimeStage >= 120) spriteBatch.DrawString(_font, "06:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 120 && TimeStage >= 90) spriteBatch.DrawString(_font, "07:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 90 && TimeStage >= 60) spriteBatch.DrawString(_font, "07:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 60 && TimeStage >= 30) spriteBatch.DrawString(_font, "08:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 30 && TimeStage >= 1) spriteBatch.DrawString(_font, "08:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage == 0) spriteBatch.DrawString(_font, "09:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+            }
+            if (CurrentPhase == DayPhase.Dusk)
+            {
+                if (TimeStage < 181 && TimeStage >= 150) spriteBatch.DrawString(_font, "16:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 150 && TimeStage >= 120) spriteBatch.DrawString(_font, "16:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 120 && TimeStage >= 90) spriteBatch.DrawString(_font, "17:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 90 && TimeStage >= 60) spriteBatch.DrawString(_font, "17:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 60 && TimeStage >= 30) spriteBatch.DrawString(_font, "18:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 30 && TimeStage >= 1) spriteBatch.DrawString(_font, "18:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage == 0) spriteBatch.DrawString(_font, "19:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+            }
+            if (CurrentPhase == DayPhase.Night)
+            {
+                if (TimeStage < 181 && TimeStage >= 150) spriteBatch.DrawString(_font, "00:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 150 && TimeStage >= 120) spriteBatch.DrawString(_font, "00:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 120 && TimeStage >= 90) spriteBatch.DrawString(_font, "01:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 90 && TimeStage >= 60) spriteBatch.DrawString(_font, "01:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 60 && TimeStage >= 30) spriteBatch.DrawString(_font, "02:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage < 30 && TimeStage >= 1) spriteBatch.DrawString(_font, "02:30", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+                if (TimeStage == 0) spriteBatch.DrawString(_font, "03:00", new Vector2(profile.Width + 165, (menuBox.Height / 5) + 55), Color.Black);
+            }
+            #endregion
 
             spriteBatch.Draw(moneyBox, new Vector2(profile.Width + dayBox.Width + 40, menuBox.Height / 5), Color.White);
             spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(profile.Width + dayBox.Width + (moneyBox.Width / 2) + 65, (menuBox.Height / 5) + 36), Color.Black);
@@ -551,18 +590,23 @@ namespace Mystic_Foods
                 {
                     _resumeButton.Draw(spriteBatch);
                 }
+                if (isRecipeInGame == true)
+                {
+                    spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
+                }
             }
             else if (isEndLv)
             {
                 Profit = Revenue - Cost;
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
                 spriteBatch.Draw(revenueBox, new Vector2(100, 100), Color.White);
-                spriteBatch.DrawString(_font, $"{Revenue}", new Vector2(1250, 350), Color.Green);
-                spriteBatch.DrawString(_font, $"{Cost}", new Vector2(1250, 460), Color.Red);
-                spriteBatch.DrawString(_font, $"{Profit}", new Vector2(1250, 720), Color.Black);
+                spriteBatch.DrawString(_font, $"Revenue...........................................{Revenue}B", new Vector2(350, 280), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"Cost..................................................{Cost}B", new Vector2(350, 390), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"Profit..............................................{Profit}B", new Vector2(350, 650), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
                 _OkButton.Draw(spriteBatch);
             }
             _menuButton.Draw(spriteBatch);
+            _recipeButton.Draw(spriteBatch);
 
             spriteBatch.End();
         }

@@ -65,9 +65,9 @@ namespace Mystic_Foods.Managers
             var Jasmine_MoonTexture = content.Load<Texture2D>("foods/Jasmine Moon");
             var Lotus_BlossomTexture = content.Load<Texture2D>("foods/Lotus Blossom");
             var Golden_MoonTexture = content.Load<Texture2D>("foods/Golden Moon");
-            var Jasmine_MoonPlate = content.Load<Texture2D>("foods/12");
-            var Lotus_BlossomPlate = content.Load<Texture2D>("foods/10");
-            var Golden_MoonPlate = content.Load<Texture2D>("foods/11");
+            var Jasmine_MoonPlate = content.Load<Texture2D>("foods/Jasmine Moon_OnPlate");
+            var Lotus_BlossomPlate = content.Load<Texture2D>("foods/Lotus Blossom_OnPlate");
+            var Golden_MoonPlate = content.Load<Texture2D>("foods/Golden Moon_OnPlate");
 
             var Mali_Texture = content.Load<Texture2D>("foods/Mali");
             var Rose_Texture = content.Load<Texture2D>("foods/Rose");
@@ -77,8 +77,8 @@ namespace Mystic_Foods.Managers
             var plateHitbox = content.Load<Texture2D>("foods/PlateHitbox");
             var trashBinTexture = content.Load<Texture2D>("Etc/White_Tako_1");
             var trashBinTexture_2 = content.Load<Texture2D>("Etc/White_Tako");
-            var wrappTexture = content.Load<Texture2D>("foods/1");
-            var foodTexture = content.Load<Texture2D>("foods/3");
+            var wrappTexture = content.Load<Texture2D>("foods/WrapTexture");
+            var foodTexture = content.Load<Texture2D>("foods/food_normal");
 
             var steam1Texture = content.Load<Texture2D>("Environments/tools/steamer1");
             #endregion
@@ -182,6 +182,11 @@ namespace Mystic_Foods.Managers
                     }
                 }
 
+                if (item is Flowers flower)
+                {
+                    if (_flowersOriginalPositions.TryGetValue(flower, out var pos)) flower.Position = pos;
+                }
+
                 // ตรวจสอบการสร้าง Food
                 var fillingOnPlate = _fillings.FirstOrDefault(f => f.Position == _plate.Position);
                 var doughOnPlate = _doughs.FirstOrDefault(d => d.Position == _plate.Position);
@@ -225,6 +230,19 @@ namespace Mystic_Foods.Managers
                 {
                     foodInPlateDeco = false;
                 }
+
+                if (item is Filling filling)
+                {
+                    if (_fillingOriginalPositions.TryGetValue(filling, out var pos)) filling.Position = pos;
+                }
+                else if (item is Dough dough)
+                {
+                    if (_doughOriginalPositions.TryGetValue(dough, out var pos)) dough.Position = pos;
+                }
+                else if (item is Wrapper wrapper)
+                {
+                    if (_wrapperOriginalPositions.TryGetValue(wrapper, out var pos)) wrapper.Position = pos;
+                }
             }
             #endregion
 
@@ -237,7 +255,22 @@ namespace Mystic_Foods.Managers
                     readySteam = true;
                     DragDropManager.RemoveDraggable(food);
                     //System.Diagnostics.Debug.WriteLine($"Food placed on steam1: {food}, readySteam={readySteam}");
-
+                }
+                else if (item is Filling filling)
+                {
+                    if (_fillingOriginalPositions.TryGetValue(filling, out var pos)) filling.Position = pos;
+                }
+                else if (item is Dough dough)
+                {
+                    if (_doughOriginalPositions.TryGetValue(dough, out var pos)) dough.Position = pos;
+                }
+                else if (item is Wrapper wrapper)
+                {
+                    if (_wrapperOriginalPositions.TryGetValue(wrapper, out var pos)) wrapper.Position = pos;
+                }
+                else if (item is Flowers flower)
+                {
+                    if (_flowersOriginalPositions.TryGetValue(flower, out var pos)) flower.Position = pos;
                 }
 
             }
@@ -318,7 +351,7 @@ namespace Mystic_Foods.Managers
             else if (item is Flowers flowers)
             {
                 flowers.Position = _flowersOriginalPositions[flowers];
-                if (!_flowers.Any(fw => fw.Position == _plate2.Position))
+                if (!_flowers.Any(fw => fw.Position == _plate2.Position) && isDecorate == false)
                 {
                     IdFlower = 0;
                 }
@@ -344,7 +377,7 @@ namespace Mystic_Foods.Managers
             wrapper.Position = new Vector2(_originWrapper.X, _originWrapper.Y);
 
             //สร้าง food
-            var foodTexture = Globals.Content.Load<Texture2D>("foods/3");
+            var foodTexture = Globals.Content.Load<Texture2D>("foods/food_normal");
             var newFood = new Food(foodTexture, _plate.Position);
             _food.Add(newFood);
 
@@ -360,7 +393,6 @@ namespace Mystic_Foods.Managers
             //delete the food
             _food.Remove(food);
             DragDropManager.RemoveDraggable(food);
-
             //change asset from food to changeFood
             if (isDecorate)
             {
@@ -396,12 +428,11 @@ namespace Mystic_Foods.Managers
                 {
                     _placedFlowers.Position = _flowersOriginalPositions[_placedFlowers];
                     _placedFlowers = null;
-                    IdFlower = 0;
                 }
             }
             else
             {
-                var foodTexture = Globals.Content.Load<Texture2D>("foods/2");
+                var foodTexture = Globals.Content.Load<Texture2D>("foods/food_coocked");
                 var changeFood = new Food(foodTexture, _steam1.Position);
                 DragDropManager.AddDraggable(changeFood);
                 _food.Add(changeFood);
@@ -409,7 +440,6 @@ namespace Mystic_Foods.Managers
             }
 
             isChangeFood = true;
-            isDecorate = false;
             HasFood = true;
             readySteam = false;
             countSteam = 3f;
@@ -417,6 +447,7 @@ namespace Mystic_Foods.Managers
         }
         public void ServeFood()
         {
+            IdFood += IdFlower;
             if(IdFood == GamePlayScene._currentCustomer.IdOrder)
             {
                 countDia = 1;
@@ -439,11 +470,57 @@ namespace Mystic_Foods.Managers
             HasFood = false;
             isChangeFood = false;
             readySteam = false;
+            isDecorate = false;
+            IdFlower = 0;
             IdFood = 0;
             countSteam = 3f;
             DnDScene.isCountDownSteam = false;
             DnDScene.isClickCook = false;
             foodInPlateDeco = false;
+        }
+        public void ResetAll()
+        {
+            foreach (var food in _food.ToList())
+            {
+                _food.Remove(food);
+                DragDropManager.RemoveDraggable(food);
+            }
+            _food.Clear();
+
+            IdFood = 0;
+            IdFilling = 0;
+            IdDough = 0;
+            IdFlower = 0;
+            HasFood = false;
+            isChangeFood = false;
+            isDecorate = false;
+            foodInPlateDeco = false;
+            readySteam = false;
+            countSteam = 3f;
+            DnDScene.isCountDownSteam = false;
+            DnDScene.isClickCook = false;
+
+            foreach (var filling in _fillings)
+            {
+                if (_fillingOriginalPositions.TryGetValue(filling, out var pos)) filling.Position = pos;
+            }
+
+            foreach (var dough in _doughs)
+            {
+                if (_doughOriginalPositions.TryGetValue(dough, out var pos)) dough.Position = pos;
+
+                dough.SetOnPlate(false);
+            }
+
+            foreach (var wrapper in _wrapper)
+            {
+                if (_wrapperOriginalPositions.TryGetValue(wrapper, out var pos)) wrapper.Position = pos;
+            }
+
+            foreach (var flower in _flowers)
+            {
+                if (_flowersOriginalPositions.TryGetValue(flower, out var pos)) flower.Position = pos;
+            }
         }
         public void Update()
         {
@@ -477,7 +554,6 @@ namespace Mystic_Foods.Managers
             {
                 flowers.Draw(cameraPos);
             }
-
 
             if (GamePlayScene.isEndLv)//remove food when end game
             {

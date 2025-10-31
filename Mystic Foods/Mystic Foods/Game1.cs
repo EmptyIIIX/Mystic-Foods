@@ -20,12 +20,10 @@ namespace Mystic_Foods
         private GamePlayScene _gamePlayScene;
         private DnDScene _dndScene;
         private LevelSelectScene _levelSelectScene;
-        private TutorialScene _tutorialScene;
+        private Recipe _recipeScene;
         private SettingScene _settingScene;
         private CustomerManager _customerManager;
 
-        public static bool wasTutorial = false;
-        public static bool callTutorial = false;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -41,7 +39,7 @@ namespace Mystic_Foods
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.IsFullScreen = false;
             Window.AllowUserResizing = true;
-            Window.IsBorderless = false;//better fullscreen
+            Window.IsBorderless = true;//better fullscreen
             _graphics.ApplyChanges();
         }
         protected override void Initialize()
@@ -52,7 +50,7 @@ namespace Mystic_Foods
             _mainMenuScene = new MainMenuScene();
             _gamePlayScene = new GamePlayScene(_customerManager);
             _levelSelectScene = new LevelSelectScene();
-            _tutorialScene = new TutorialScene();
+            _recipeScene = new Recipe();
             _settingScene = new SettingScene();
 
             //make it start at main menu
@@ -100,7 +98,7 @@ namespace Mystic_Foods
             _gamePlayScene.LoadContent(Content, _spriteBatch);
             _dndScene.LoadContent(Content, _spriteBatch);
             _levelSelectScene.LoadContent(Content, _spriteBatch);
-            _tutorialScene.LoadContent(Content, _spriteBatch);
+            _recipeScene.LoadContent(Content, _spriteBatch);
             _settingScene.LoadContent(Content, _spriteBatch);
 
         }
@@ -111,18 +109,11 @@ namespace Mystic_Foods
             if (_currentScene == _mainMenuScene)
             {
                 _mainMenuScene.Update(gameTime);
-                if (MainMenuScene.StartGameRequested && wasTutorial == false)
-                {
-                    MainMenuScene.StartGameRequested = false;
-                    //_currentScene = _levelSelectScene;
-                    _currentScene = _tutorialScene;
-                }
-                else if (MainMenuScene.StartGameRequested && wasTutorial)
+                if (MainMenuScene.StartGameRequested)
                 {
                     MainMenuScene.StartGameRequested = false;
                     _currentScene = _levelSelectScene;
                 }
-
                 if (_mainMenuScene.DnDRequested)
                 {
                     _mainMenuScene.DnDRequested = false;
@@ -134,13 +125,13 @@ namespace Mystic_Foods
                     _currentScene = _settingScene;
                 }
             }
-            else if(_currentScene == _tutorialScene)
+            else if (_currentScene == _recipeScene)
             {
-                _tutorialScene.Update(gameTime);
-                if (TutorialScene.isExitPage)
+                _recipeScene.Update(gameTime);
+                if (Recipe.isExitPage)
                 {
-                    _currentScene = _levelSelectScene;
-                    TutorialScene.isExitPage = false;
+                    _currentScene = _dndScene;
+                    Recipe.isExitPage = false;
                 }
             }
             else if (_currentScene == _levelSelectScene)
@@ -169,6 +160,7 @@ namespace Mystic_Foods
             else if (_currentScene == _gamePlayScene)
             {
                 _gamePlayScene.Update(gameTime);
+                
                 if (_gamePlayScene.BackToMenuRequested)
                 {
                     _gamePlayScene.BackToMenuRequested = false;
@@ -183,6 +175,7 @@ namespace Mystic_Foods
             else if (_currentScene == _dndScene)
             {
                 _dndScene.Update(gameTime);
+                
                 if (_gamePlayScene.BackToMenuRequested)
                 {
                     _gamePlayScene.BackToMenuRequested = false;
@@ -202,6 +195,11 @@ namespace Mystic_Foods
                 {
                     _currentScene = _gamePlayScene;
                     _dndScene.backToCounter = false;
+                }
+                if (Recipe.RecipeBookRequest)
+                {
+                    Recipe.RecipeBookRequest = false;
+                    _currentScene = _recipeScene;
                 }
             }
             //Check exit game
