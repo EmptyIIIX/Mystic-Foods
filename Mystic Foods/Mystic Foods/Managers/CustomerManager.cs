@@ -95,7 +95,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Hmm… thank you, but I think something is \nmissing.",
                     DiaHappy = "Thank you so much, it smells wonderful.",
                     DiaNormal = "Thank you, it looks nice.",
-                    DiaAngry = "I waited a little while… but it does look\ndelicious."
+                    DiaAngry = "I waited a little while… but it does look\ndelicious.",
+                    VoicePathTalk = "Female Laugh1",
+                    VoicePathMood = "Kid Surprise",
+                    VoicePathWrong = "Female Reject"
                 },
                 new Customer {
                     Id = 5,
@@ -111,7 +114,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wrong. Completely wrong.",
                     DiaHappy = "Nice.",
                     DiaNormal = "Hmph. Fine.",
-                    DiaAngry = "Seriously? I could’ve made it myself \nfaster."
+                    DiaAngry = "Seriously? I could’ve made it myself \nfaster.",
+                    VoicePathTalk = "Male Hi",
+                    VoicePathMood = "Male Sigh",
+                    VoicePathWrong = "Male Angry1"
                 },
                 new Customer {
                     Id = 6,
@@ -127,7 +133,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "G Order wrong",
                     DiaHappy = "Tch… quick hands. Don’t think that \nmakes you better than me.",
                     DiaNormal = "Well, that’s… acceptable, I suppose.",
-                    DiaAngry = "Even a turtle could cook faster \nthan you."
+                    DiaAngry = "Even a turtle could cook faster \nthan you.",
+                    VoicePathTalk = "Female Augh",
+                    VoicePathMood = "Female Augh2",
+                    VoicePathWrong = "Female Disagree2"
                 },
                 new Customer {
                     Id = 7,
@@ -143,7 +152,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Hmm… thank you, but I think something\nis missing.",
                     DiaHappy = "Thank you so much, it smells wonderful.",
                     DiaNormal = "Thank you, it looks nice.",
-                    DiaAngry = "I waited a little while… but it does\nlook delicious."
+                    DiaAngry = "I waited a little while… but it does\nlook delicious.",
+                    VoicePathTalk = "Female Laugh1",
+                    VoicePathMood = "Kid Surprise",
+                    VoicePathWrong = "Female Reject"
                 },
                 new Customer {
                     Id = 8,
@@ -159,7 +171,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wrong. Completely wrong.",
                     DiaHappy = "Nice.",
                     DiaNormal = "Hmph. Fine.",
-                    DiaAngry = "Seriously? I could’ve made it myself \nfaster."
+                    DiaAngry = "Seriously? I could’ve made it myself \nfaster.",
+                    VoicePathTalk = "Male Hi",
+                    VoicePathMood = "Male Sigh",
+                    VoicePathWrong = "Male Angry1"
                 },
                 new Customer {
                     Id = 9,
@@ -175,7 +190,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "G Order wrong",
                     DiaHappy = "Tch… quick hands. Don’t think that \nmakes you better than me.",
                     DiaNormal = "Well, that’s… acceptable, I suppose.",
-                    DiaAngry = "Even a turtle could cook faster \nthan you."
+                    DiaAngry = "Even a turtle could cook faster \nthan you.",
+                    VoicePathTalk = "Female Augh",
+                    VoicePathMood = "Female Augh2",
+                    VoicePathWrong = "Female Disagree2"
                 }
             };
 
@@ -195,7 +213,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Hmm… thank you, but I think something is \nmissing.",
                     DiaHappy = "Thank you so much, it smells wonderful.",
                     DiaNormal = "Thank you, it looks nice.",
-                    DiaAngry = "I waited a little while… but it does \nlook delicious."
+                    DiaAngry = "I waited a little while… but it does \nlook delicious.",
+                    VoicePathTalk = "Female Laugh1",
+                    VoicePathMood = "Kid Surprise",
+                    VoicePathWrong = "Female Reject"
                 },
                 new Customer {
                     Id = 2,
@@ -211,7 +232,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wrong. Completely wrong.",
                     DiaHappy = "Nice.",
                     DiaNormal = "Hmph. Fine.",
-                    DiaAngry = "Seriously? I could’ve made it myself \nfaster."
+                    DiaAngry = "Seriously? I could’ve made it myself \nfaster.",
+                    VoicePathTalk = "Male Hi",
+                    VoicePathMood = "Male Sigh",
+                    VoicePathWrong = "Male Angry1"
                 },
                 new Customer {
                     Id = 3,
@@ -228,6 +252,9 @@ namespace Mystic_Foods.Managers
                     DiaHappy = "Swift and sharp… just the way I \nlike it.",
                     DiaNormal = "Adequate. Not too slow, not too fast",
                     DiaAngry = "Took you ages… even the trees grow \nfaster.",
+                    VoicePathTalk = "Female Hmm2",
+                    VoicePathMood = "Female Ahem",
+                    VoicePathWrong = "Female Disagree1"
                 },
                 new Customer {
                     Id = 4,
@@ -243,7 +270,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "That’s not what I asked for… but \nI’ll take it.",
                     DiaHappy = "Well, well… you actually nailed \nit this time!",
                     DiaNormal = "Alright, that’ll do.",
-                    DiaAngry = "You’re slower than I expected…"
+                    DiaAngry = "You’re slower than I expected…",
+                    VoicePathTalk = "Cartoon Talk",
+                    VoicePathMood = "Kid Surprise",
+                    VoicePathWrong = "Kid Angry"
                 },
                 new Customer {
                     Id = 5,
@@ -259,7 +289,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Hmm… thank you, but I think something is \nmissing.",
                     DiaHappy = "Thank you so much, it smells wonderful.",
                     DiaNormal = "Thank you, it looks nice.",
-                    DiaAngry = "I waited a little while… but it does \nlook delicious."
+                    DiaAngry = "I waited a little while… but it does \nlook delicious.",
+                    VoicePathTalk = "Female Laugh1",
+                    VoicePathMood = "Kid Surprise",
+                    VoicePathWrong = "Female Reject"
                 },
                 new Customer {
                     Id = 6,
@@ -275,7 +308,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wrong. Completely wrong.",
                     DiaHappy = "Nice.",
                     DiaNormal = "Hmph. Fine.",
-                    DiaAngry = "Seriously? I could’ve made it myself \nfaster."
+                    DiaAngry = "Seriously? I could’ve made it myself \nfaster.",
+                    VoicePathTalk = "Male Hi",
+                    VoicePathMood = "Male Sigh",
+                    VoicePathWrong = "Male Angry1"
                 },
                 new Customer {
                     Id = 7,
@@ -291,7 +327,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wrong. Utterly wrong. How disappointing.",
                     DiaHappy = "Swift and sharp… just the way I \nlike it.",
                     DiaNormal = "Adequate. Not too slow, not too fast",
-                    DiaAngry = "Took you ages… even the trees grow \nfaster."
+                    DiaAngry = "Took you ages… even the trees grow \nfaster.",
+                    VoicePathTalk = "Female Hmm2",
+                    VoicePathMood = "Female Ahem",
+                    VoicePathWrong = "Female Disagree1"
                 },
                 new Customer {
                     Id = 8,
@@ -307,7 +346,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "That’s not what I asked for… but \nI’ll take it.",
                     DiaHappy = "Well, well… you actually nailed \nit this time!",
                     DiaNormal = "Alright, that’ll do.",
-                    DiaAngry = "You’re slower than I expected…"
+                    DiaAngry = "You’re slower than I expected…",
+                    VoicePathTalk = "Cartoon Talk",
+                    VoicePathMood = "Kid Surprise",
+                    VoicePathWrong = "Kid Angry"
                 },
             };
 
@@ -384,7 +426,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wrong. Utterly wrong. How disappointing.",
                     DiaHappy = "Swift and sharp… just the way \nI like it.",
                     DiaNormal = "Adequate. Not too slow, not too \nfast",
-                    DiaAngry = "Took you ages… even the trees grow \nfaster."
+                    DiaAngry = "Took you ages… even the trees grow \nfaster.",
+                    VoicePathTalk = "Female Hmm2",
+                    VoicePathMood = "Female Ahem",
+                    VoicePathWrong = "Female Disagree1"
                 },
                 new Customer {
                     Id = 5,
@@ -400,7 +445,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wait, seriously? That’s not even \nclose!",
                     DiaHappy = "Ah, finally! Just what I wanted. \nPerfect!",
                     DiaNormal = "Hmm… alright, not bad.",
-                    DiaAngry = "Hey, I’m not getting any younger here!"
+                    DiaAngry = "Hey, I’m not getting any younger here!",
+                    VoicePathTalk = "Giant Pleasure",
+                    VoicePathMood = "Giant Mood",
+                    VoicePathWrong = "Male Angry2"
                 },
                 new Customer {
                     Id = 6,
@@ -416,7 +464,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "That’s not what I asked for… but \nI’ll take it.",
                     DiaHappy = "Well, well… you actually nailed it \nthis time!",
                     DiaNormal = "Alright, that’ll do.",
-                    DiaAngry = "You’re slower than I expected…"
+                    DiaAngry = "You’re slower than I expected…",
+                    VoicePathTalk = "Cartoon Talk",
+                    VoicePathMood = "Kid Surprise",
+                    VoicePathWrong = "Kid Angry"
                 },
                 new Customer {
                     Id = 7,
@@ -432,7 +483,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wrong. Utterly wrong. How disappointing.",
                     DiaHappy = "Swift and sharp… just the way \nI like it.",
                     DiaNormal = "Adequate. Not too slow, not too \nfast",
-                    DiaAngry = "Took you ages… even the trees grow \nfaster."
+                    DiaAngry = "Took you ages… even the trees grow \nfaster.",
+                    VoicePathTalk = "Female Hmm2",
+                    VoicePathMood = "Female Ahem",
+                    VoicePathWrong = "Female Disagree1"
                 },
                 new Customer {
                     Id = 8,
@@ -448,7 +502,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wait, seriously? That’s not even \nclose!",
                     DiaHappy = "Ah, finally! Just what I wanted. \nPerfect!",
                     DiaNormal = "Hmm… alright, not bad.",
-                    DiaAngry = "Hey, I’m not getting any younger here!"
+                    DiaAngry = "Hey, I’m not getting any younger here!",
+                    VoicePathTalk = "Giant Pleasure",
+                    VoicePathMood = "Giant Mood",
+                    VoicePathWrong = "Male Angry2"
                 },
                 new Customer {
                     Id = 9,
@@ -464,7 +521,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "That’s not what I asked for… but \nI’ll take it.",
                     DiaHappy = "Well, well… you actually nailed it \nthis time!",
                     DiaNormal = "Alright, that’ll do.",
-                    DiaAngry = "You’re slower than I expected…"
+                    DiaAngry = "You’re slower than I expected…",
+                    VoicePathTalk = "Cartoon Talk",
+                    VoicePathMood = "Kid Surprise",
+                    VoicePathWrong = "Kid Angry"
                 }
             };
 
@@ -484,7 +544,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "seriously? all banana leaves waste to this?",
                     DiaHappy = "Hmmm this is so good",
                     DiaNormal = "Adequate. Not too slow, not too fast",
-                    DiaAngry = "Took you ages… even the trees grow \nfaster."
+                    DiaAngry = "Took you ages… even the trees grow \nfaster.",
+                    VoicePathTalk = "Female Hmm2",
+                    VoicePathMood = "Female Ahem",
+                    VoicePathWrong = "Female Disagree1"
                 },
                 new Customer {
                     Id = 2,
@@ -500,7 +563,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wrong. Utterly wrong. How disappointing.",
                     DiaHappy = "So sweettt~~~, I'll let you enjoy this\na bit longer",
                     DiaNormal = "Hmm… acceptable.",
-                    DiaAngry = "Delicious but better be faster next time."
+                    DiaAngry = "Delicious but better be faster next time.",
+                    VoicePathTalk = "Female Hmm2",
+                    VoicePathMood = "Female Ahem",
+                    VoicePathWrong = "Female Disagree1"
                 },
                 new Customer {
                     Id = 3,
@@ -516,7 +582,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "Wait, seriously? That’s not even \nclose!",
                     DiaHappy = "Ah, finally! Just what I wanted. \nPerfect!",
                     DiaNormal = "Hmm… alright, not bad.",
-                    DiaAngry = "Hey, I’m not getting any younger here!"
+                    DiaAngry = "Hey, I’m not getting any younger here!",
+                    VoicePathTalk = "Giant Pleasure",
+                    VoicePathMood = "Giant Mood",
+                    VoicePathWrong = "Male Angry2"
                 },
                 new Customer {
                     Id = 4,
@@ -532,7 +601,10 @@ namespace Mystic_Foods.Managers
                     DiaWrong = "That’s not what I asked for… but \nI’ll take it.",
                     DiaHappy = "Well, well… you actually nailed it \nthis time!",
                     DiaNormal = "Alright, that’ll do.",
-                    DiaAngry = "You’re slower than I expected…"
+                    DiaAngry = "You’re slower than I expected…",
+                    VoicePathTalk = "Cartoon Talk",
+                    VoicePathMood = "Kid Surprise",
+                    VoicePathWrong = "Kid Angry"
                 }
             };
         }
@@ -592,20 +664,20 @@ namespace Mystic_Foods.Managers
 
         public Customer GetNextCustomer()
         {
-            return GetNextFromList(Customers, ref _currentIndex);
-            //return GetRandomFromList(Customers);
+            //return GetNextFromList(Customers, ref _currentIndex);
+            return GetRandomFromList(Customers);
         }
 
         public Customer GetNextCustomer2()
         {
-            return GetNextFromList(Customers2, ref _currentIndex2);
-            //return GetRandomFromList(Customers2);
+            //return GetNextFromList(Customers2, ref _currentIndex2);
+            return GetRandomFromList(Customers2);
         }
 
         public Customer GetNextCustomer3()
         {
-            return GetNextFromList(Customers3, ref _currentIndex3);
-            //return GetRandomFromList(Customers3);
+            //return GetNextFromList(Customers3, ref _currentIndex3);
+            return GetRandomFromList(Customers3);
         }
 
         public Customer GetEventCustomer()
