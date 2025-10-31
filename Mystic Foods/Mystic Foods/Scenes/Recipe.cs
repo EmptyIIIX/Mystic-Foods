@@ -14,44 +14,80 @@ namespace Mystic_Foods.Scenes
     {
         private SpriteFont _font;
         public static int countPage, MaxPage;
+        public static int numTopic = 0;
         public static bool RecipeBookRequest = false;
-        public static Texture2D _rectTexture1;
 
         //scene tutorial
         public static Texture2D Recipe_book;
+        public static Texture2D Pcook1, Pcook2, Pcook3;
+        public static Texture2D Preceive;
+        public static Texture2D Pserve;
+        public static Texture2D PthrowAway;
 
         //button UI
-        public static Texture2D nextPage, backPage, exitPage, topicPoint;
+        public static Texture2D nextPage, backPage, exitPage;
+        public static Texture2D nextPage_hover, backPage_hover;
         public static Button next, back, exitpage;
+
+        public static Texture2D topic1, topic2, topic3, topic4;
+        public static Texture2D topic1_focus, topic2_focus, topic3_focus, topic4_focus;
+        public static Button topic1btn, topic2btn, topic3btn, topic4btn, topicDefaultBtn;
 
         //check action page
         public static bool isNextPage, isBackPage, isExitPage;
+        //public static bool isTopic1, isTopic2, isTopic3, isTopic4;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
-            _rectTexture1 = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-            _rectTexture1.SetData(new[] { Color.White });
             //load scene
             Recipe_book = content.Load<Texture2D>("Recipe/Recipe");
+            Pcook1 = content.Load<Texture2D>("Recipe/Book/cook 1");
+            Pcook2 = content.Load<Texture2D>("Recipe/Book/cook 2");
+            Pcook3 = content.Load<Texture2D>("Recipe/Book/cook 3");
+            Preceive = content.Load<Texture2D>("Recipe/Book/receive 1");
+            Pserve = content.Load<Texture2D>("Recipe/Book/Serve 1");
+            PthrowAway = content.Load<Texture2D>("Recipe/Book/Throw 1");
 
             //load button UI
-            nextPage = content.Load<Texture2D>("Recipe/nextpage");
-            backPage = content.Load<Texture2D>("Recipe/backpage");
+            topic1 = content.Load<Texture2D>("Recipe/Buttons/ReceiveTopic");
+            topic1_focus = content.Load<Texture2D>("Recipe/Buttons/ReceiveTopic_focus");
+            topic2 = content.Load<Texture2D>("Recipe/Buttons/CookTopic");
+            topic2_focus = content.Load<Texture2D>("Recipe/Buttons/CookTopic_focus");
+            topic3 = content.Load<Texture2D>("Recipe/Buttons/serveTopic");
+            topic3_focus = content.Load<Texture2D>("Recipe/Buttons/serveTopic_focus");
+            topic4 = content.Load<Texture2D>("Recipe/Buttons/throwTopic");
+            topic4_focus = content.Load<Texture2D>("Recipe/Buttons/throwTopic_focus");
+
+            nextPage = content.Load<Texture2D>("Recipe/Buttons/NextBtn");
+            nextPage_hover = content.Load<Texture2D>("Recipe/Buttons/NextBtn_hover");
+            backPage = content.Load<Texture2D>("Recipe/Buttons/BackBtn");
+            backPage_hover = content.Load<Texture2D>("Recipe/Buttons/BackBtn_hover");
             exitPage = content.Load<Texture2D>("Recipe/exitpage");
 
             //button manager
-            next = new Button(nextPage, nextPage, _font, "", new Rectangle(1674, 838, 136, 134));
+            topic1btn = new Button(topic1, topic1_focus, _font, "", new Rectangle(266, 236, 384, 157));
+            topic1btn.Click += Topic1_click;
+            topic2btn = new Button(topic2, topic2_focus, _font, "", new Rectangle(266, 393, 384, 157));
+            topic2btn.Click += Topic2_click;
+            topic3btn = new Button(topic3, topic3_focus, _font, "", new Rectangle(266, 550, 384, 157));
+            topic3btn.Click += Topic3_click;
+            topic4btn = new Button(topic4, topic4_focus, _font, "", new Rectangle(266, 707, 384, 157));
+            topic4btn.Click += Topic4_click;
+            topicDefaultBtn = new Button(topic1_focus, topic1_focus, _font, "", new Rectangle(266, 236, 384, 157));
+            topicDefaultBtn.Click += TopicDefault_click;
+
+            next = new Button(nextPage, nextPage_hover, _font, "", new Rectangle(1343, 823, 190, 81));
             next.Click += NextButton_click;
 
-            back = new Button(backPage, backPage, _font, "", new Rectangle(110, 838, 136, 134));
+            back = new Button(backPage, backPage_hover, _font, "", new Rectangle(806, 823, 190, 81));
             back.Click += BackButton_click;
 
-            exitpage = new Button(exitPage, exitPage, _font, "", new Rectangle(1720, 106, 90, 79));
+            exitpage = new Button(exitPage, exitPage, _font, "", new Rectangle(1567, 215, 90, 79));
             exitpage.Click += ExitPageButton_click;
 
             //assign max page and set count page of the tutorial
             countPage = 1;
-            MaxPage = 9;
+            MaxPage = 3;
         }
 
         public void Update(GameTime gameTime)
@@ -59,8 +95,46 @@ namespace Mystic_Foods.Scenes
             if (countPage == 0) countPage = 1; //this cannot be less than 1 page
             if (countPage > MaxPage) countPage = MaxPage; // this cannot be more max page
 
-            if (countPage < MaxPage) next.Update();
-            if (countPage > 1) back.Update();
+            switch (numTopic)
+            {
+                case 1:
+                    topic2btn.Update();
+                    topic3btn.Update();
+                    topic4btn.Update();
+                    MaxPage = 1;
+                    break;
+                case 2:
+                    topic1btn.Update();
+                    topic3btn.Update();
+                    topic4btn.Update();
+                    MaxPage = 3;
+                    break;
+                case 3:
+                    topic1btn.Update();
+                    topic2btn.Update();
+                    topic4btn.Update();
+                    MaxPage = 1;
+                    break;
+                case 4:
+                    topic1btn.Update();
+                    topic2btn.Update();
+                    topic3btn.Update();
+                    MaxPage = 1;
+                    break;
+                default:
+                    //topic1btn.Update();
+                    topic2btn.Update();
+                    topic3btn.Update();
+                    topic4btn.Update();
+                    topicDefaultBtn.Update();
+                    break;
+            }
+
+            if (numTopic == 2)
+            {
+                if (countPage < MaxPage) next.Update();
+                if (countPage > 1) back.Update();
+            }
 
             exitpage.Update();
         }
@@ -69,46 +143,75 @@ namespace Mystic_Foods.Scenes
         {
             spriteBatch.Begin();
 
-            switch (countPage)
+            switch (numTopic)
             {
                 case 1:
-                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 1), 850 * (countPage - 1), 1410, 850), Color.White);
+                    spriteBatch.Draw(Preceive, new Vector2(0, 0), Color.White);
                     break;
                 case 2:
-                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 1), 850 * (countPage - 2), 1410, 850), Color.White);
+                    switch (countPage)
+                    {
+                        case 1:
+                            spriteBatch.Draw(Pcook1, new Vector2(0, 0), Color.White); break;
+                        case 2:
+                            spriteBatch.Draw(Pcook2, new Vector2(0, 0), Color.White); break;
+                        case 3:
+                            spriteBatch.Draw(Pcook3, new Vector2(0, 0), Color.White); break;
+                    }
                     break;
                 case 3:
-                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 1), 850 * (countPage - 3), 1410, 850), Color.White);
+                    spriteBatch.Draw(Pserve, new Vector2(0, 0), Color.White);
                     break;
                 case 4:
-                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 4), 850 * (countPage - 3), 1410, 850), Color.White);
+                    spriteBatch.Draw(PthrowAway, new Vector2(0, 0), Color.White);
                     break;
-                case 5:
-                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 4), 850 * (countPage - 4), 1410, 850), Color.White);
-                    break;
-                case 6:
-                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 4), 850 * (countPage - 5), 1410, 850), Color.White);
-                    break;
-                case 7:
-                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 7), 850 * (countPage - 5), 1410, 850), Color.White);
-                    break;
-                case 8:
-                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 7), 850 * (countPage - 6), 1410, 850), Color.White);
-                    break;
-                case 9:
-                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 7), 850 * (countPage - 7), 1410, 850), Color.White);
+                default:
+                    spriteBatch.Draw(Preceive, new Vector2(0, 0), Color.White);
                     break;
             }
 
-            ////draw next and back page
-            if (countPage < MaxPage) next.Draw(spriteBatch);
-            if (countPage > 1) back.Draw(spriteBatch);
+            //draw topic buttons
+            topic1btn.DrawHover(spriteBatch);
+            topic2btn.DrawHover(spriteBatch);
+            topic3btn.DrawHover(spriteBatch);
+            topic4btn.DrawHover(spriteBatch);
+
+            //draw next and back page
+            if (numTopic == 2)
+            {
+                if (countPage < MaxPage) next.DrawHover(spriteBatch);
+                if (countPage > 1) back.DrawHover(spriteBatch);
+
+            }
+            else if (numTopic == 0)
+            {
+                topicDefaultBtn.DrawHover(spriteBatch);
+            }
 
             exitpage.Draw(spriteBatch);
 
             spriteBatch.End();
         }
-
+        public void Topic1_click(object sender, EventArgs e)
+        {
+            numTopic = 1;
+        }
+        public void Topic2_click(object sender, EventArgs e)
+        {
+            numTopic = 2;
+        }
+        public void Topic3_click(object sender, EventArgs e)
+        {
+            numTopic = 3;
+        }
+        public void Topic4_click(object sender, EventArgs e)
+        {
+            numTopic = 4;
+        }
+        public void TopicDefault_click(object sender, EventArgs e)
+        {
+            numTopic = 1;
+        }
         public void NextButton_click(object sender, EventArgs e)
         {
             SoundManager.PlaySfx("Click");
