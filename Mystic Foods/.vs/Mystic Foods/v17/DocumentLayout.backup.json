@@ -67,9 +67,9 @@
               "Title": "GamePlayScene.cs",
               "DocumentMoniker": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project-3-subject\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
               "RelativeDocumentMoniker": "Mystic Foods\\Scenes\\GamePlayScene.cs",
-              "ToolTip": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project-3-subject\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs \u2B24",
-              "RelativeToolTip": "Mystic Foods\\Scenes\\GamePlayScene.cs \u2B24",
-              "ViewState": "AgIAALsAAAAAAAAAAAAUwMkAAACEAAAAAAAAAA==",
+              "ToolTip": "D:\\UNIVERSITY\\CAMT_DG\\Courses\\Co-Project-3-subject\\Mystic-Foods\\Mystic Foods\\Mystic Foods\\Scenes\\GamePlayScene.cs",
+              "RelativeToolTip": "Mystic Foods\\Scenes\\GamePlayScene.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAANIAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-31T15:42:51.173Z",
               "EditorCaption": ""
@@ -84,8 +84,7 @@
               "RelativeToolTip": "Mystic Foods\\Scenes\\DnDScene.cs",
               "ViewState": "AgIAAIkAAAAAAAAAAAAYwJsAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T05:08:16.525Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-30T05:08:16.525Z"
             },
             {
               "$type": "Document",
@@ -121,8 +120,7 @@
               "RelativeToolTip": "Mystic Foods\\Scenes\\Recipe.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAAAIwBAAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T07:35:49.736Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-30T07:35:49.736Z"
             },
             {
               "$type": "Document",
