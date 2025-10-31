@@ -25,7 +25,7 @@ namespace Mystic_Foods.Managers
         private readonly Dictionary<Wrapper, Vector2> _wrapperOriginalPositions = new();
         private readonly Dictionary<Flowers, Vector2> _flowersOriginalPositions = new();
         private Socket _plate, _plate2, _steam1;
-        private TrashBin _trashBin, _trashBin2;
+        private TrashBin _trashBin;
         private Filling _placedFilling;
         private Dough _placedDough;
         private Flowers _placedFlowers;
@@ -75,7 +75,7 @@ namespace Mystic_Foods.Managers
 
             var plateTexture = content.Load<Texture2D>("foods/Plate");
             var plateHitbox = content.Load<Texture2D>("foods/PlateHitbox");
-            var trashBinTexture = content.Load<Texture2D>("Etc/White_Tako_1");
+            var trashBinTexture = content.Load<Texture2D>("Etc/TrashBin");
             var trashBinTexture_2 = content.Load<Texture2D>("Etc/White_Tako");
             var wrappTexture = content.Load<Texture2D>("foods/WrapTexture");
             var foodTexture = content.Load<Texture2D>("foods/food_normal");
@@ -123,8 +123,7 @@ namespace Mystic_Foods.Managers
             _plate = new Socket(plateTexture, new(1068, 639));
             _plate2 = new Socket(plateHitbox, new(4200 - 958, 644));
             _steam1 = new Socket(steam1Texture, new(1800 + (steam1Texture.Width / 2), 520));
-            _trashBin = new TrashBin(trashBinTexture, new Vector2(160, 800));
-            _trashBin2 = new TrashBin(trashBinTexture, new Vector2(4000, 800));
+            _trashBin = new TrashBin(trashBinTexture, new Vector2(160, 750));
         }
         private void HandleDrop(IDraggable item, ITargetable target)
         {
@@ -277,7 +276,7 @@ namespace Mystic_Foods.Managers
             #endregion
 
             #region TrashBin
-            else if ((target == _trashBin || target == _trashBin2) && item is Food food && _food.Contains(food))
+            else if ((target == _trashBin) && item is Food food && _food.Contains(food))
             {
                 _food.Remove(food);
                 DragDropManager.RemoveDraggable(food);
@@ -289,7 +288,7 @@ namespace Mystic_Foods.Managers
                 DnDScene.isCountDownSteam = false;
                 foodInPlateDeco = false;
             }
-            else if ((target == _trashBin || target == _trashBin2) && item is Food changeFood && _food.Contains(changeFood))
+            else if ((target == _trashBin) && item is Food changeFood && _food.Contains(changeFood))
             {
                 _food.Remove(changeFood);
                 (changeFood as IDraggable).UnregisterDraggable();
@@ -298,7 +297,7 @@ namespace Mystic_Foods.Managers
                 DnDScene.isClickCook = false;
                 foodInPlateDeco = false;
             }
-            else if ((target == _trashBin || target == _trashBin2) && item is Filling filling)
+            else if ((target == _trashBin) && item is Filling filling)
             {
                 filling.Position = _fillingOriginalPositions[filling];
                 if (!_fillings.Any(f => f.Position == _plate.Position))
@@ -306,7 +305,7 @@ namespace Mystic_Foods.Managers
                     IdFilling = 0;
                 }
             }
-            else if ((target == _trashBin || target == _trashBin2) && item is Dough dough)
+            else if ((target == _trashBin) && item is Dough dough)
             {
                 dough.Position = _doughOriginalPositions[dough];
                 dough.SetOnPlate(false);
@@ -315,7 +314,7 @@ namespace Mystic_Foods.Managers
                     IdDough = 0;
                 }
             }
-            else if ((target == _trashBin || target == _trashBin2) && item is Flowers flowers)
+            else if ((target == _trashBin) && item is Flowers flowers)
             {
                 flowers.Position = _flowersOriginalPositions[flowers];
                 if (!_flowers.Any(fw => fw.Position == _plate2.Position))
@@ -323,7 +322,7 @@ namespace Mystic_Foods.Managers
                     IdFlower = 0;
                 }
             }
-            else if ((target == _trashBin || target == _trashBin2) && item is Wrapper wrapper)
+            else if ((target == _trashBin) && item is Wrapper wrapper)
             {
                 wrapper.Position = _wrapperOriginalPositions[wrapper];
             }
@@ -534,7 +533,6 @@ namespace Mystic_Foods.Managers
             _plate.Draw(cameraPos);
             _plate2.Draw(cameraPos);
             _trashBin.Draw(cameraPos);
-            _trashBin2.Draw(cameraPos);
             _steam1.Draw(cameraPos);
             foreach (var wrapper in _wrapper)
             {

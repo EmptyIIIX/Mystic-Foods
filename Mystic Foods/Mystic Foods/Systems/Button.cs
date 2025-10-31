@@ -142,5 +142,25 @@ namespace Mystic_Foods.Systems
                 spriteBatch.DrawString(_font, _text, textPosition, Color.Black);
             }
         }
+        public void DrawTako(SpriteBatch spriteBatch, Vector2 cameraPos)
+        {
+            texture = _isHovering ? _hoverTexture : _normalTexture;
+            var drawRect = new Rectangle(
+                _rectangle.X - (int)cameraPos.X,
+                _rectangle.Y - (int)cameraPos.Y,
+                _rectangle.Width,
+                _rectangle.Height
+            );
+            spriteBatch.Draw(texture, drawRect, Color.White);
+            if (!string.IsNullOrEmpty(_text))
+            {
+                var textSize = _font.MeasureString(_text);
+                var textPosition = new Vector2(
+                    drawRect.X + (drawRect.Width / 2) - (textSize.X / 2),
+                    drawRect.Y + (drawRect.Height / 2) - (textSize.Y / 2));
+
+                spriteBatch.DrawString(_font, _text, textPosition, Color.Black);
+            }
+        }
     }
 }

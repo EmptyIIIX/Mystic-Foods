@@ -168,7 +168,7 @@ namespace Mystic_Foods
             dayBox = content.Load<Texture2D>("Etc/Day");
             moneyBox = content.Load<Texture2D>("Etc/Money");
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
-            recipeBtn = content.Load<Texture2D>("Emote/EmoteMenu");
+            recipeBtn = content.Load<Texture2D>("Recipe/TutorialBtn");
             uiBox = content.Load<Texture2D>("UI/UIBOX");
 
             profile = content.Load<Texture2D>("Etc/Cat1");
@@ -199,7 +199,7 @@ namespace Mystic_Foods
             _exitButton.Click += ExitButton_Click;
             _resumeButton = new Button(resumeBtn, resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height / 2, 180, 165));
             _resumeButton.Click += ResumeButton_Click;
-            _recipeButton = new Button(recipeBtn, recipeBtn, _font, "", new Rectangle(1920 - menuBox.Width - recipeBtn.Width - 20, 10, recipeBtn.Width, recipeBtn.Height));
+            _recipeButton = new Button(recipeBtn, recipeBtn, _font, "", new Rectangle(1920 - menuBox.Width - recipeBtn.Width - 40, 20, recipeBtn.Width, recipeBtn.Height));
             _recipeButton.Click += RecipeInGame;
 
             _yesButton = new Button(yesButton, yesButton_hover, _font, " ", new Rectangle(1400, 500, 128, 63));

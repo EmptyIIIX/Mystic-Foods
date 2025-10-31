@@ -51,7 +51,8 @@ namespace Mystic_Foods
         public bool isLog = false;
 
         public static Button _cookingBtn, _serveBtn;
-        public static Texture2D CookingBtn, ServeBtn;
+        public static Texture2D CookingBtn, ServeBtn, ServeBtn2;
+        public static Texture2D BinPointer, ServePointer;
         public static bool isCountDownSteam = false;
         public static bool isReset = false;
         public bool ServeRequest = false;
@@ -109,7 +110,10 @@ namespace Mystic_Foods
             steambar1 = content.Load<Texture2D>("Etc/Green_bar");
             steambar2 = content.Load<Texture2D>("Etc/Red_bar");
 
-            ServeBtn = content.Load<Texture2D>("Etc/ServeBtn");
+            ServeBtn = content.Load<Texture2D>("Etc/White_Tako_1");
+            ServeBtn2 = content.Load<Texture2D>("Etc/White_Tako");
+            ServePointer = content.Load<Texture2D>("Etc/ServePointer");
+            BinPointer = content.Load<Texture2D>("Etc/BinPointer");
 
             boxdough = content.Load<Texture2D>("foods/hitbox_dough");
             boxfilling = content.Load<Texture2D>("foods/hitbox_filling");
@@ -148,7 +152,7 @@ namespace Mystic_Foods
             _cookingBtn = new Button(CookingBtn, CookingBtn, _font, " ", new Rectangle(1800 + (818 / 2) - (CookingBtn.Width / 2), 900, 262, 109));
             _cookingBtn.Click += CookingBtn_Click;
 
-            _serveBtn = new Button(ServeBtn, ServeBtn, _font, " ", new Rectangle(3856, 262, 262, 109));
+            _serveBtn = new Button(ServeBtn2, ServeBtn, _font, " ", new Rectangle(3835, 480, ServeBtn.Width, ServeBtn.Height));
             _serveBtn.Click += ServeBtn_Click;
 
             _logOrderBtn = new Button(LogOrder, LogOrder, _font, "", new Rectangle(1200, 0, 94, 134));
@@ -442,6 +446,11 @@ namespace Mystic_Foods
 
             if (GameManager.foodInPlateDeco == false) spriteBatch.Draw(food_nonDeco, new Vector2(2960, 500) - cameraPos, Color.White);
             _gameManager.Draw(cameraPos);
+
+            // Draw button serve and Pointer
+            _serveBtn.DrawTako(spriteBatch, cameraPos);
+            spriteBatch.Draw(BinPointer, new Vector2(44, 271) - cameraPos, Color.White);
+            spriteBatch.Draw(ServePointer, new Vector2(3851, 235) - cameraPos, Color.White);
             spriteBatch.End();
 
             spriteBatch.Begin();
@@ -476,12 +485,6 @@ namespace Mystic_Foods
                 else currentSteam = steamBar.Height - 4;
 
                 _cookingBtn.DrawCooking(spriteBatch, cameraPos);
-            }
-
-            // Draw button serve, steam
-            if (GameManager.HasFood)
-            {
-                _serveBtn.DrawCooking(spriteBatch, cameraPos);
             }
 
             #region UI info

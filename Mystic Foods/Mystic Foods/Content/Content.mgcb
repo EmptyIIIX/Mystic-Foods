@@ -783,6 +783,18 @@
 /processorParam:TextureFormat=Color
 /build:Environments/tools/Table.png
 
+#begin Etc/BinPointer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/BinPointer.png
+
 #begin Etc/Blank.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1094,6 +1106,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Etc/ServeBtn.png
+
+#begin Etc/ServePointer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Etc/ServePointer.png
 
 #begin Etc/steam_bar.png
 /importer:TextureImporter
@@ -1797,6 +1821,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Recipe/topicPoint.png
+
+#begin Recipe/TutorialBtn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Recipe/TutorialBtn.png
 
 #begin UI/credit.png
 /importer:TextureImporter
