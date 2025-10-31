@@ -14,9 +14,11 @@ namespace Mystic_Foods.Scenes
     {
         private SpriteFont _font;
         public static int countPage, MaxPage;
+        public static bool RecipeBookRequest = false;
+        public static Texture2D _rectTexture1;
 
         //scene tutorial
-        public static Texture2D Page_1, Page_2, Page_3, Page_4, Page_5;
+        public static Texture2D Recipe_book;
 
         //button UI
         public static Texture2D nextPage, backPage, exitPage, topicPoint;
@@ -24,23 +26,18 @@ namespace Mystic_Foods.Scenes
 
         //check action page
         public static bool isNextPage, isBackPage, isExitPage;
-        public static int CountTutorial = 0;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
+            _rectTexture1 = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            _rectTexture1.SetData(new[] { Color.White });
             //load scene
-            //Page_1 = content.Load<Texture2D>("Tutorial/T1_page_1");
-            Page_1 = content.Load<Texture2D>("Tutorial/1หน้ารับออเดอร์");
-            Page_2 = content.Load<Texture2D>("Tutorial/2หนังสือเมนู");
-            Page_3 = content.Load<Texture2D>("Tutorial/3วันและเวลา");
-            Page_4 = content.Load<Texture2D>("Tutorial/4การสั่งซื้อของลูกค้า");
-            Page_5 = content.Load<Texture2D>("Tutorial/5ความประทับใจ");
+            Recipe_book = content.Load<Texture2D>("Recipe/Recipe");
 
             //load button UI
-            nextPage = content.Load<Texture2D>("Tutorial/nextpage");
-            backPage = content.Load<Texture2D>("Tutorial/backpage");
-            exitPage = content.Load<Texture2D>("Tutorial/exitpage");
-            topicPoint = content.Load<Texture2D>("Tutorial/topicPoint");
+            nextPage = content.Load<Texture2D>("Recipe/nextpage");
+            backPage = content.Load<Texture2D>("Recipe/backpage");
+            exitPage = content.Load<Texture2D>("Recipe/exitpage");
 
             //button manager
             next = new Button(nextPage, nextPage, _font, "", new Rectangle(1674, 838, 136, 134));
@@ -54,7 +51,7 @@ namespace Mystic_Foods.Scenes
 
             //assign max page and set count page of the tutorial
             countPage = 1;
-            MaxPage = 5;
+            MaxPage = 9;
         }
 
         public void Update(GameTime gameTime)
@@ -62,13 +59,10 @@ namespace Mystic_Foods.Scenes
             if (countPage == 0) countPage = 1; //this cannot be less than 1 page
             if (countPage > MaxPage) countPage = MaxPage; // this cannot be more max page
 
-            if (Game1.wasTutorial == false)
-            {
-                if (countPage != MaxPage) next.Update();
-                if (countPage > 1) back.Update();
+            if (countPage < MaxPage) next.Update();
+            if (countPage > 1) back.Update();
 
-                if (countPage == MaxPage) exitpage.Update();
-            }
+            exitpage.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -78,26 +72,39 @@ namespace Mystic_Foods.Scenes
             switch (countPage)
             {
                 case 1:
-                    spriteBatch.Draw(Page_1, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 1), 850 * (countPage - 1), 1410, 850), Color.White);
                     break;
                 case 2:
-                    spriteBatch.Draw(Page_2, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 1), 850 * (countPage - 2), 1410, 850), Color.White);
                     break;
                 case 3:
-                    spriteBatch.Draw(Page_3, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 1), 850 * (countPage - 3), 1410, 850), Color.White);
                     break;
                 case 4:
-                    spriteBatch.Draw(Page_4, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 4), 850 * (countPage - 3), 1410, 850), Color.White);
                     break;
                 case 5:
-                    spriteBatch.Draw(Page_5, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 4), 850 * (countPage - 4), 1410, 850), Color.White);
+                    break;
+                case 6:
+                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 4), 850 * (countPage - 5), 1410, 850), Color.White);
+                    break;
+                case 7:
+                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 7), 850 * (countPage - 5), 1410, 850), Color.White);
+                    break;
+                case 8:
+                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 7), 850 * (countPage - 6), 1410, 850), Color.White);
+                    break;
+                case 9:
+                    spriteBatch.Draw(Recipe_book, new Vector2(255, 115), new Rectangle(1410 * (countPage - 7), 850 * (countPage - 7), 1410, 850), Color.White);
                     break;
             }
 
-            //draw next and back page
+            ////draw next and back page
             if (countPage < MaxPage) next.Draw(spriteBatch);
             if (countPage > 1) back.Draw(spriteBatch);
-            if (countPage == MaxPage) exitpage.Draw(spriteBatch);
+
+            exitpage.Draw(spriteBatch);
 
             spriteBatch.End();
         }
@@ -118,8 +125,7 @@ namespace Mystic_Foods.Scenes
         {
             SoundManager.PlaySfx("Click");
             isExitPage = true;
-            Game1.wasTutorial = true;
-            //CountTutorial++;
+            GamePlayScene.isRecipeInGame = false;
         }
     }
 }

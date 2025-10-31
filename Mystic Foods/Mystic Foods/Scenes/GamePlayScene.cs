@@ -37,11 +37,11 @@ namespace Mystic_Foods
 
         public static bool served;
         public static bool isEndLv = false;
-        public static bool isTutorialInGame = false;
+        public static bool isRecipeInGame = false;
         public Button _servedYesButton;
 
         public static bool isPaused = false;
-        public static Button _menuButton, _resumeButton, _homeButton, _settingButton, _exitButton;
+        public static Button _menuButton, _resumeButton, _homeButton, _settingButton, _exitButton, _recipeButton;
         public static Button _yesExit, _noExit;
         public static Texture2D yesExit, yesExit_hover, noExit, noExit_hover, logExit;
         public Button _yesButton;
@@ -56,7 +56,7 @@ namespace Mystic_Foods
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox, tutorialBtn;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox, recipeBtn;
         public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn, settingBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D revenueBox;
@@ -146,8 +146,8 @@ namespace Mystic_Foods
             dayBox = content.Load<Texture2D>("Etc/Day");
             moneyBox = content.Load<Texture2D>("Etc/Money");
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
+            recipeBtn = content.Load<Texture2D>("Emote/EmoteMenu");
             uiBox = content.Load<Texture2D>("UI/UIBOX");
-            tutorialBtn = content.Load<Texture2D>("Tutorial/TutorialBtn");
 
             profile = content.Load<Texture2D>("Etc/Cat1");
             homeBtn = content.Load<Texture2D>("Etc/HomeBtn");
@@ -177,8 +177,8 @@ namespace Mystic_Foods
             _exitButton.Click += ExitButton_Click;
             _resumeButton = new Button(resumeBtn, resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height / 2, 180, 165));
             _resumeButton.Click += ResumeButton_Click;
-            //_tutorialButton = new Button(tutorialBtn, tutorialBtn, _font, "", new Rectangle(1840 - menuBox.Width - tutorialBtn.Width, 40, 100, 100));
-            //_tutorialButton.Click += TutorialInGame_Click;
+            _recipeButton = new Button(recipeBtn, recipeBtn, _font, "", new Rectangle(1920 - menuBox.Width - recipeBtn.Width - 20, 10, recipeBtn.Width, recipeBtn.Height));
+            _recipeButton.Click += RecipeInGame;
 
             _yesButton = new Button(yesButton, yesButton_hover, _font, " ", new Rectangle(1400, 500, 128, 63));
             _yesButton.Click += YesButton_Click;
@@ -235,12 +235,12 @@ namespace Mystic_Foods
             {
                 #region Stopping the game
 
-                if (isTutorialInGame)
+                if (isRecipeInGame)
                 {
                     //for button in tutorial
-                    //_tutorialButton.Update();
+                    
                 }
-                else if (isTutorialInGame == false)
+                else if (isRecipeInGame == false)
                 {
                     _homeButton.Update();
                     _settingButton.Update();
@@ -345,7 +345,7 @@ namespace Mystic_Foods
                     GetCustomerByPhase();
                     _patienceMeter = _patienceMeterStart;
                     LoadCustomerTextures();
-
+                    DnDScene.isReset = true;
                 }
                 //Check time out to back to mainmenu scene(end game)
                 if (TimeStage <= 0)
@@ -609,7 +609,7 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $" CurrectOrder : {GameManager.IsCurrectOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 200), Color.Black);
             string TimeS = $"\nTimePerSec: {TimePSec}";
             spriteBatch.DrawString(_font, $"Count Dialogue : {GameManager.countDia}", new Vector2(100, 300), Color.Blue);
-            spriteBatch.DrawString(_font, $"Time {TimeStage}", new Vector2 (100, 200), Color.Black);
+            spriteBatch.DrawString(_font, $"isReset {DnDScene.isReset}", new Vector2 (100, 200), Color.Black);
             */
 
             if (isPaused)
@@ -624,15 +624,7 @@ namespace Mystic_Foods
                     DrawVolumeBar(spriteBatch, musicBarPos, SoundManager.MusicVolume, SoundManager.MusicVolume > 0, musicIcon, muteMusicIcon);
                     DrawVolumeBar(spriteBatch, sfxBarPos, SoundManager.SfxVolume, SoundManager.SfxVolume > 0, sfxIcon, muteSfxIcon);
                 }
-                
-                if (isTutorialInGame)
-                {
-                    //for tutorial page
-                    //spriteBatch.Draw(TutorialScene2.Page_52, new Vector2(0, 0), Color.White);
-                    Game1.callTutorial = true;
-                    //_tutorialButton.Draw(spriteBatch);
-                }
-                else if (isTutorialInGame == false) 
+                else if (isRecipeInGame == false) 
                 {
                     _homeButton.Draw(spriteBatch);
                     _settingButton.Draw(spriteBatch);
@@ -661,7 +653,7 @@ namespace Mystic_Foods
                 //DnDScene._okLogBtn.Draw(spriteBatch);
                 _OkButton.Draw(spriteBatch);
             }
-                _menuButton.Draw(spriteBatch);
+            _menuButton.Draw(spriteBatch);
 
             spriteBatch.End();
         }
@@ -732,7 +724,7 @@ namespace Mystic_Foods
         {
             isPaused = !isPaused;
             isClickExit = false;
-            isTutorialInGame = false;
+            isRecipeInGame = false;
         }
         public void HomeButton_Click(Object sender, EventArgs e)
         {
@@ -746,6 +738,7 @@ namespace Mystic_Foods
             GameManager.countDia = 2;
             isClickExit = false;
             BackToMenuRequested = true;
+            DnDScene.isReset = true;
         }
         public void ServedYes_Click(Object sender, EventArgs e)
         {
@@ -759,10 +752,10 @@ namespace Mystic_Foods
         {
             isPaused = false;
         }
-        public void TutorialInGame_Click(object sender, EventArgs e)
+        public void RecipeInGame(object sender, EventArgs e)
         {
-            isPaused = !isPaused;
-            isTutorialInGame = !isTutorialInGame;
+            Recipe.RecipeBookRequest = true;
+            isRecipeInGame = true;
         }
         private void ExitButton_Click(object sender, EventArgs e)
         {

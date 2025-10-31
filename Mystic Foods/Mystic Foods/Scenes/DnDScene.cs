@@ -53,6 +53,7 @@ namespace Mystic_Foods
         public static Button _cookingBtn, _serveBtn;
         public static Texture2D CookingBtn, ServeBtn;
         public static bool isCountDownSteam = false;
+        public static bool isReset = false;
         public bool ServeRequest = false;
         private bool SteamRequest = false;
         private List<Rectangle> btnItemRect = new List<Rectangle>();
@@ -186,6 +187,7 @@ namespace Mystic_Foods
 
             DragDropManager.SetCamera(cameraPos);
             _menuButton.Update();
+            _recipeButton.Update();
             Globals.Update(gameTime);
 
             if (TimeStage <= 0)
@@ -198,7 +200,7 @@ namespace Mystic_Foods
             {
                 #region Stopping the game
 
-                if (isTutorialInGame)
+                if (isRecipeInGame)
                 {
                     //for button in tutorial
                     //GamePlayScene._tutorialButton.Update();
@@ -272,6 +274,12 @@ namespace Mystic_Foods
                 _logOrderBtn.Update();
                 _okLogBtn.Update();
 
+                if (isReset)
+                {
+                    _gameManager.ResetAll();
+                    isReset = false;
+                }
+
                 if (isCountDownSteam)
                 {
                     GameManager.countSteam -= TimePSec;
@@ -304,8 +312,7 @@ namespace Mystic_Foods
                 {
                     GameManager.countDia = 2;
                     BackToGame = true;
-
-                    _gameManager.ResetAll();
+                    isReset = true;
                 }
 
                 if (currentSteam > 0 && isClickCook)
@@ -447,6 +454,7 @@ namespace Mystic_Foods
             spriteBatch.DrawString(_font, $"IdFood : {GameManager.IdFood}", new Vector2(500, 560), Color.Blue);
             spriteBatch.DrawString(_font, $"IdFlower : {GameManager.IdFlower}", new Vector2(500, 590), Color.Blue);
             spriteBatch.DrawString(_font, $"isDecorate : {GameManager.isDecorate}", new Vector2(500, 620), Color.Blue);
+            spriteBatch.DrawString(_font, $"isReset : {isReset}", new Vector2(500, 620), Color.Blue);
              */
 
             if (GameManager.readySteam)
@@ -578,6 +586,10 @@ namespace Mystic_Foods
                 {
                     _resumeButton.Draw(spriteBatch);
                 }
+                if (isRecipeInGame == true)
+                {
+                    spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
+                }
             }
             else if (isEndLv)
             {
@@ -590,6 +602,7 @@ namespace Mystic_Foods
                 _OkButton.Draw(spriteBatch);
             }
             _menuButton.Draw(spriteBatch);
+            _recipeButton.Draw(spriteBatch);
 
             spriteBatch.End();
         }

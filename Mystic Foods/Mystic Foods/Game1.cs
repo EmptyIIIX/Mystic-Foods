@@ -24,8 +24,6 @@ namespace Mystic_Foods
         private SettingScene _settingScene;
         private CustomerManager _customerManager;
 
-        public static bool wasTutorial = false;
-        public static bool callTutorial = false;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -126,15 +124,15 @@ namespace Mystic_Foods
                     _currentScene = _settingScene;
                 }
             }
-            //else if(_currentScene == _recipeScene)
-            //{
-            //    _recipeScene.Update(gameTime);
-            //    if (Recipe.isExitPage)
-            //    {
-            //        _currentScene = _levelSelectScene;
-            //        Recipe.isExitPage = false;
-            //    }
-            //}
+            else if (_currentScene == _recipeScene)
+            {
+                _recipeScene.Update(gameTime);
+                if (Recipe.isExitPage)
+                {
+                    _currentScene = _dndScene;
+                    Recipe.isExitPage = false;
+                }
+            }
             else if (_currentScene == _levelSelectScene)
             {
                 _levelSelectScene.Update(gameTime);
@@ -161,6 +159,7 @@ namespace Mystic_Foods
             else if (_currentScene == _gamePlayScene)
             {
                 _gamePlayScene.Update(gameTime);
+                
                 if (_gamePlayScene.BackToMenuRequested)
                 {
                     _gamePlayScene.BackToMenuRequested = false;
@@ -175,6 +174,7 @@ namespace Mystic_Foods
             else if (_currentScene == _dndScene)
             {
                 _dndScene.Update(gameTime);
+                
                 if (_gamePlayScene.BackToMenuRequested)
                 {
                     _gamePlayScene.BackToMenuRequested = false;
@@ -194,6 +194,11 @@ namespace Mystic_Foods
                 {
                     _currentScene = _gamePlayScene;
                     _dndScene.backToCounter = false;
+                }
+                if (Recipe.RecipeBookRequest)
+                {
+                    Recipe.RecipeBookRequest = false;
+                    _currentScene = _recipeScene;
                 }
             }
             //Check exit game
