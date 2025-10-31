@@ -61,7 +61,6 @@ namespace Mystic_Foods
         }
         private void OnClientSizeChanged(object sender, System.EventArgs e)
         {
-            //อัปเดตขนาด back bufferเมื่อหน้าต่างเปลี่ยนขนาด
             _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
             _graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
             _graphics.ApplyChanges();
@@ -71,7 +70,7 @@ namespace Mystic_Foods
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             MediaPlayer.IsRepeating = true;
-            SoundManager.MusicVolume = 0.5f;
+            SoundManager.MusicVolume = 0.1f;
             #region BGM
             SoundManager.AddSong("mainmenu", Content.Load<Song>("Music/BGM/Lao Lum Dab"));
             SoundManager.AddSong("daybgm", Content.Load<Song>("Music/BGM/Thai Mung"));
@@ -79,11 +78,13 @@ namespace Mystic_Foods
             SoundManager.AddSong("nightbgm", Content.Load<Song>("Music/BGM/bgm01"));
             #endregion
 
-            SoundManager.SfxVolume = 0.5f;
+            SoundManager.SfxVolume = 0.1f;
             #region SFX
             SoundManager.AddSound("Button", Content.Load<SoundEffect>("Music/SFX/Button Press"));
             SoundManager.AddSound("Click", Content.Load<SoundEffect>("Music/SFX/Click2"));
             SoundManager.AddSound("Cooking", Content.Load<SoundEffect>("Music/SFX/Cooking"));
+            SoundManager.AddSound("VoiceTalk", Content.Load<SoundEffect>(GamePlayScene._currentCustomer.VoicePathTalk));
+            SoundManager.AddSound("VoiceMood", Content.Load<SoundEffect>(GamePlayScene._currentCustomer.VoicePathMood));
             #endregion
 
             Globals.Content = Content;

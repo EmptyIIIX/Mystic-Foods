@@ -10,8 +10,8 @@ namespace Mystic_Foods.Managers
 {
     public class SettingsData
     {
-        public float MusicVolume { get; set; } = 0.5f;
-        public float SfxVolume { get; set; } = 0.5f;
+        public float MusicVolume { get; set; } = 0.1f;
+        public float SfxVolume { get; set; } = 0.1f;
         public bool IsMuted { get; set; } = false;
 
         private static string FilePath => Path.Combine(AppContext.BaseDirectory, "settings.json");

@@ -60,6 +60,7 @@ namespace Mystic_Foods
 
         public static bool isClickCook = false;
         public bool BackToGame = false;
+        private bool _sfxSteam = false;
 
         public static Texture2D boxfilling;
         public static Texture2D boxdough;
@@ -70,6 +71,7 @@ namespace Mystic_Foods
         private List<Rectangle> _boxflower = new List<Rectangle>();
 
         private Texture2D food_nonDeco;
+
         #region Setting
         private Texture2D header, settingBG;
         private Texture2D musicIcon, muteMusicIcon;
@@ -190,11 +192,13 @@ namespace Mystic_Foods
             _recipeButton.Update();
             Globals.Update(gameTime);
 
+            /*
             if (TimeStage <= 0)
             {
                 TimeStage = TimeDefault;
                 isEndLv = true;
             } //Check Time up
+            */
 
             if (isPaused)
             {
@@ -296,7 +300,7 @@ namespace Mystic_Foods
                 
                 }
 
-                if (GameManager.readySteam) _cookingBtn.UpdateStaticBtn(cameraPos);
+                if (GameManager.readySteam ) _cookingBtn.UpdateStaticBtn(cameraPos);
 
                 // ตรวจสอบการคลิกปุ่ม Serve เฉพาะเมื่อมีอาหาร
                 if (GameManager.HasFood)
@@ -627,9 +631,15 @@ namespace Mystic_Foods
             //GameManager.readySteam = true;
             isCountDownSteam = true;
             isClickCook = true;
-            SoundManager.PlaySfx("Cooking");
-            await Task.Delay(3000);
-            SoundManager.StopSfx("Cooking");
+
+            if (_sfxSteam == false)
+            {
+                _sfxSteam = true;
+                SoundManager.PlaySfx("Cooking");
+                await Task.Delay(3000);
+                _sfxSteam = false;
+                SoundManager.StopSfx("Cooking");
+            }
         }
         public void ServeBtn_Click(object sender, EventArgs e)
         {
