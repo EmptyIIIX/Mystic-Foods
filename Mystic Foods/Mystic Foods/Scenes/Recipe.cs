@@ -82,7 +82,7 @@ namespace Mystic_Foods.Scenes
             back = new Button(backPage, backPage_hover, _font, "", new Rectangle(806, 823, 190, 81));
             back.Click += BackButton_click;
 
-            exitpage = new Button(exitPage, exitPage, _font, "", new Rectangle(1567, 215, 90, 79));
+            exitpage = new Button(exitPage, exitPage, _font, "", new Rectangle(1573, 218, 78, 73));
             exitpage.Click += ExitPageButton_click;
 
             //assign max page and set count page of the tutorial
@@ -92,6 +92,7 @@ namespace Mystic_Foods.Scenes
 
         public void Update(GameTime gameTime)
         {
+
             if (countPage == 0) countPage = 1; //this cannot be less than 1 page
             if (countPage > MaxPage) countPage = MaxPage; // this cannot be more max page
 
@@ -141,7 +142,7 @@ namespace Mystic_Foods.Scenes
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+                spriteBatch.Begin();
             switch (numTopic)
             {
                 case 1:

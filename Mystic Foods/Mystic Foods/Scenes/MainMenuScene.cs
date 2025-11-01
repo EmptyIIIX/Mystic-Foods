@@ -51,9 +51,9 @@ namespace Mystic_Foods
             _playBtn.Click += PlayBtn_Click;
             _exitBtn = new Button(ExitBtn, ExitBtn, _font, "", new Rectangle(225, 500 + 100 + 10, 512, 100));
             _exitBtn.Click += ExitBtn_Click;
-            _creditBtn = new Button(CreditBtn, CreditBtn, _font, "", new Rectangle(1920 - CreditBtn.Width - 20, 1080 - (CreditBtn.Height * 2) - 40, 88, 88));
+            _creditBtn = new Button(CreditBtn, CreditBtn, _font, "", new Rectangle(1920 - CreditBtn.Width - 40, 1080 - (CreditBtn.Height * 2) - 60, 123, 67));
             _creditBtn.Click += CreditBtn_Click;
-            _settingBtn = new Button(SettingBtn, SettingBtn, _font, "", new Rectangle(1920 - CreditBtn.Width - 20, 1080 - CreditBtn.Height - 20, 88, 88));
+            _settingBtn = new Button(SettingBtn, SettingBtn, _font, "", new Rectangle(1920 - CreditBtn.Width - 20, 1080 - SettingBtn.Height - 20, 85, 89));
             _settingBtn.Click += SettingBtn_Click;
 
             SoundManager.PlaySong("mainmenu");
