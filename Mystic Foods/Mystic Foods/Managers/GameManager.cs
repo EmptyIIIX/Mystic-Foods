@@ -287,6 +287,7 @@ namespace Mystic_Foods.Managers
                 countSteam = 3f;
                 DnDScene.isCountDownSteam = false;
                 foodInPlateDeco = false;
+                SoundManager.PlaySfx("Trash");
             }
             else if ((target == _trashBin) && item is Food changeFood && _food.Contains(changeFood))
             {
@@ -296,6 +297,7 @@ namespace Mystic_Foods.Managers
                 isChangeFood = false;
                 DnDScene.isClickCook = false;
                 foodInPlateDeco = false;
+                SoundManager.PlaySfx("Trash");
             }
             else if ((target == _trashBin) && item is Filling filling)
             {
@@ -304,6 +306,7 @@ namespace Mystic_Foods.Managers
                 {
                     IdFilling = 0;
                 }
+                SoundManager.PlaySfx("Trash");
             }
             else if ((target == _trashBin) && item is Dough dough)
             {
@@ -313,6 +316,7 @@ namespace Mystic_Foods.Managers
                 {
                     IdDough = 0;
                 }
+                SoundManager.PlaySfx("Trash");
             }
             else if ((target == _trashBin) && item is Flowers flowers)
             {
@@ -321,10 +325,12 @@ namespace Mystic_Foods.Managers
                 {
                     IdFlower = 0;
                 }
+                SoundManager.PlaySfx("Trash");
             }
             else if ((target == _trashBin) && item is Wrapper wrapper)
             {
                 wrapper.Position = _wrapperOriginalPositions[wrapper];
+                SoundManager.PlaySfx("Trash");
             }
             #endregion
         }
@@ -379,6 +385,7 @@ namespace Mystic_Foods.Managers
             var foodTexture = Globals.Content.Load<Texture2D>("foods/food_normal");
             var newFood = new Food(foodTexture, _plate.Position);
             _food.Add(newFood);
+            SoundManager.PlaySfx("Mix");
 
             // รีเซ็ต IdFilling, IdDough, และ IdFood หลังสร้างอาหาร
             IdFilling = 0;
@@ -402,24 +409,28 @@ namespace Mystic_Foods.Managers
                         var changeFood_NonDecorate = new Food(foodTexture_NonDecorate, _plate2.Position);
                         DragDropManager.AddDraggable(changeFood_NonDecorate);
                         _food.Add(changeFood_NonDecorate);
+                        SoundManager.PlaySfx("Woosh");
                         break;
                     case 10:
                         var foodTexture_Mali = Globals.Content.Load<Texture2D>("foods/food_mali");
                         var changeFood_Mali = new Food(foodTexture_Mali, _plate2.Position);
                         DragDropManager.AddDraggable(changeFood_Mali);
                         _food.Add(changeFood_Mali);
+                        SoundManager.PlaySfx("Woosh");
                         break;
                     case 20:
                         var foodTexture_Rose = Globals.Content.Load<Texture2D>("foods/food_rose");
                         var changeFood_Rose = new Food(foodTexture_Rose, _plate2.Position);
                         DragDropManager.AddDraggable(changeFood_Rose);
                         _food.Add(changeFood_Rose);
+                        SoundManager.PlaySfx("Woosh");
                         break;
                     case 30:
                         var foodTexture_Lotus = Globals.Content.Load<Texture2D>("foods/food_lotus");
                         var changeFood_Lotus = new Food(foodTexture_Lotus, _plate2.Position);
                         DragDropManager.AddDraggable(changeFood_Lotus);
                         _food.Add(changeFood_Lotus);
+                        SoundManager.PlaySfx("Woosh");
                         break;
                 }
 

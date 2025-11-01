@@ -69,50 +69,53 @@ namespace Mystic_Foods.Managers
             if (!InputManager.MouseClicked || _dragItem != null)
                 return;
 
-                //for hitbox filling
-                foreach (var pair in _fillingHitboxMap)
+            //for hitbox filling
+            foreach (var pair in _fillingHitboxMap)
+            {
+                Rectangle adjustedHitbox = new Rectangle(
+                    pair.Key.X - (int)_cameraPos.X,
+                    pair.Key.Y - (int)_cameraPos.Y,
+                    pair.Key.Width,
+                    pair.Key.Height
+                );
+
+                if (adjustedHitbox.Contains(InputManager.MousePosition))
                 {
-                    Rectangle adjustedHitbox = new Rectangle(
-                        pair.Key.X - (int)_cameraPos.X,
-                        pair.Key.Y - (int)_cameraPos.Y,
-                        pair.Key.Width,
-                        pair.Key.Height
-                    );
+                    var matchedDraggable = _draggables.OfType<Filling>().FirstOrDefault(f => f.FillingKind == pair.Value);
 
-                    if (adjustedHitbox.Contains(InputManager.MousePosition))
+                    if (matchedDraggable != null)
                     {
-                        var matchedDraggable = _draggables.OfType<Filling>().FirstOrDefault(f => f.FillingKind == pair.Value);
-
-                        if (matchedDraggable != null)
-                        {
-                            _dragItem = matchedDraggable;
-                            Mouse.SetCursor(MouseCursor.Hand);
-                            return;
-                        }
+                        _dragItem = matchedDraggable;
+                        Mouse.SetCursor(MouseCursor.Hand);
+                        SoundManager.PlaySfx("Keep");
+                        return;
                     }
                 }
-                //for hitbox dough
-                foreach (var pair in _doughHitboxMap)
+
+            }
+            //for hitbox dough
+            foreach (var pair in _doughHitboxMap)
+            {
+                Rectangle adjustedHitbox = new Rectangle(
+                    pair.Key.X - (int)_cameraPos.X,
+                    pair.Key.Y - (int)_cameraPos.Y,
+                    pair.Key.Width,
+                    pair.Key.Height
+                );
+
+                if (adjustedHitbox.Contains(InputManager.MousePosition))
                 {
-                    Rectangle adjustedHitbox = new Rectangle(
-                        pair.Key.X - (int)_cameraPos.X,
-                        pair.Key.Y - (int)_cameraPos.Y,
-                        pair.Key.Width,
-                        pair.Key.Height
-                    );
+                    var matchedDraggable = _draggables.OfType<Dough>().FirstOrDefault(d => d.DoughKind == pair.Value);
 
-                    if (adjustedHitbox.Contains(InputManager.MousePosition))
+                    if (matchedDraggable != null)
                     {
-                        var matchedDraggable = _draggables.OfType<Dough>().FirstOrDefault(d => d.DoughKind == pair.Value);
-
-                        if (matchedDraggable != null)
-                        {
-                            _dragItem = matchedDraggable;
-                            Mouse.SetCursor(MouseCursor.Hand);
-                            return;
-                        }
+                        _dragItem = matchedDraggable;
+                        Mouse.SetCursor(MouseCursor.Hand);
+                        SoundManager.PlaySfx("Keep");
+                        return;
                     }
                 }
+            }
             //for decoration
             foreach (var pair in _flowerHitboxMap)
             {
@@ -131,41 +134,43 @@ namespace Mystic_Foods.Managers
                     {
                         _dragItem = matchedDraggable;
                         Mouse.SetCursor(MouseCursor.Hand);
+                        SoundManager.PlaySfx("Keep");
                         return;
                     }
                 }
             }
             //for wrapper that doesn't have a hitbox
             if (_dragItem == null )
-                {
-                    _dragItem = _draggables.OfType<Wrapper>().FirstOrDefault(w => new Rectangle(
-                        (int)(w.Position.X - w.Size.X / 2),    
+            {
+                _dragItem = _draggables.OfType<Wrapper>().FirstOrDefault(w => new Rectangle(
+                        (int)(w.Position.X - w.Size.X / 2),
                         (int)(w.Position.Y - w.Size.Y / 2),
                         (int)w.Size.X,
                         (int)w.Size.Y
-                    ).Contains(InputManager.MousePosition + _cameraPos));
+                ).Contains(InputManager.MousePosition + _cameraPos));
 
-                    if (_dragItem != null)
-                    {
-                        Mouse.SetCursor(MouseCursor.Hand);
-                        return;
-                    }
-                }
-                //for object that no hitbox and on the plate
-                if (_dragItem == null )
+                if (_dragItem != null)
                 {
-                    _dragItem = _draggables.FirstOrDefault(d => new Rectangle(
-                        (int)(d.Position.X - d.Size.X / 2),    
-                        (int)(d.Position.Y - d.Size.Y / 2),
-                        (int)d.Size.X,
-                        (int)d.Size.Y
-                    ).Contains(InputManager.MousePosition + _cameraPos));
-
-                    if (_dragItem != null)
-                    {
-                        Mouse.SetCursor(MouseCursor.Hand);
-                    }
+                    Mouse.SetCursor(MouseCursor.Hand);
+                    SoundManager.PlaySfx("Woosh");
+                    return;
                 }
+            }
+            //for object that no hitbox and on the plate
+            if (_dragItem == null)
+            {
+                _dragItem = _draggables.FirstOrDefault(d => new Rectangle(
+                    (int)(d.Position.X - d.Size.X / 2),
+                    (int)(d.Position.Y - d.Size.Y / 2),
+                    (int)d.Size.X,
+                    (int)d.Size.Y
+                ).Contains(InputManager.MousePosition + _cameraPos));
+
+                if (_dragItem != null)
+                {
+                    Mouse.SetCursor(MouseCursor.Hand);
+                }
+            }
         }
         private static void CheckTarget()
         {

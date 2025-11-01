@@ -654,20 +654,23 @@ namespace Mystic_Foods
                 served = true;
                 _orderRecieve = false;
                 _gameManager.ServeFood();
+                SoundManager.PlaySfx("Mix");
             }
         }
         public void LogBtn_Click(object sender, EventArgs e)
         {
             isLog = !isLog;
+            SoundManager.PlaySfx("Page");
         }
         public void okLogBtn_Click(object sender, EventArgs e)
         {
             isLog = false;
-            //GamePlayScene.isEndLv = false;     for test
+            SoundManager.PlaySfx("Click");
         }
         public void previousButton_Click(object sender, EventArgs e)
         {
             backToCounter = true;
+            SoundManager.PlaySfx("Woosh");
         }
     }
 }

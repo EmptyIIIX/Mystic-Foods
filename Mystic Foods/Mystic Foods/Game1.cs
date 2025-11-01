@@ -84,10 +84,15 @@ namespace Mystic_Foods
             #region SFX
             SoundManager.AddSound("Button", Content.Load<SoundEffect>("Music/SFX/Button Press"));
             SoundManager.AddSound("Button2", Content.Load<SoundEffect>("Music/SFX/Button Press2"));
-            SoundManager.AddSound("Click", Content.Load<SoundEffect>("Music/SFX/Click2"));
+            SoundManager.AddSound("Click", Content.Load<SoundEffect>("Music/SFX/Click"));
             SoundManager.AddSound("Cooking", Content.Load<SoundEffect>("Music/SFX/Cooking"));
             SoundManager.AddSound("Walking", Content.Load<SoundEffect>("Music/SFX/Walking"));
             SoundManager.AddSound("Coin", Content.Load<SoundEffect>("Music/SFX/Coin2"));
+            SoundManager.AddSound("Woosh", Content.Load<SoundEffect>("Music/SFX/woosh"));
+            SoundManager.AddSound("Trash", Content.Load<SoundEffect>("Music/SFX/Trash"));
+            SoundManager.AddSound("Mix", Content.Load<SoundEffect>("Music/SFX/prink"));
+            SoundManager.AddSound("Keep", Content.Load<SoundEffect>("Music/SFX/Mixed"));
+            SoundManager.AddSound("Page", Content.Load<SoundEffect>("Music/SFX/Page"));
             #endregion
 
             #region Voice

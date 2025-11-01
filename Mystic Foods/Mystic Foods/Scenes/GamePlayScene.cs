@@ -814,6 +814,7 @@ namespace Mystic_Foods
         public void HomeButton_Click(Object sender, EventArgs e)
         {
             //reset Scene
+            SoundManager.PlaySfx("Click");
             GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
             LoadCustomerTextures();
@@ -836,6 +837,7 @@ namespace Mystic_Foods
         {
             Recipe.RecipeBookRequest = true;
             isRecipeInGame = true;
+            SoundManager.PlaySfx("Page");
         }
         private void ExitButton_Click(object sender, EventArgs e)
         {

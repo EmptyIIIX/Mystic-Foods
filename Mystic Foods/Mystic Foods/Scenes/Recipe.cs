@@ -219,19 +219,19 @@ namespace Mystic_Foods.Scenes
         }
         public void NextButton_click(object sender, EventArgs e)
         {
-            SoundManager.PlaySfx("Click");
+            SoundManager.PlaySfx("Page");
             isNextPage = true;
             countPage++;
         }
         public void BackButton_click(object sender, EventArgs e)
         {
-            SoundManager.PlaySfx("Click");
+            SoundManager.PlaySfx("Page");
             isBackPage = true;
             countPage--;
         }
         public void ExitPageButton_click(object sender, EventArgs e)
         {
-            SoundManager.PlaySfx("Click");
+            SoundManager.PlaySfx("Page");
             isExitPage = true;
             GamePlayScene.isRecipeInGame = false;
         }
