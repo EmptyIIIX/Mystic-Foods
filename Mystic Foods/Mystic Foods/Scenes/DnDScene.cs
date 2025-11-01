@@ -654,7 +654,6 @@ namespace Mystic_Foods
                 served = true;
                 _orderRecieve = false;
                 _gameManager.ServeFood();
-                SoundManager.PlaySfx("Mix");
             }
         }
         public void LogBtn_Click(object sender, EventArgs e)
