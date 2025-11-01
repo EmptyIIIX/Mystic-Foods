@@ -38,7 +38,7 @@ namespace Mystic_Foods
             Menu_bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
             NameTitle = content.Load<Texture2D>("UI/title");
-            PlayBtn = content.Load<Texture2D>("UI/new_game");
+            PlayBtn = content.Load<Texture2D>("UI/play");
             SettingBtn = content.Load<Texture2D>("UI/setting");
             CreditBtn = content.Load<Texture2D>("UI/credit");
             ExitBtn = content.Load<Texture2D>("UI/exit");
@@ -81,16 +81,16 @@ namespace Mystic_Foods
             spriteBatch.Draw(Menu_bg, new Vector2(0, 0), Color.White);
             spriteBatch.Draw(NameTitle, new Vector2(100, 120), Color.White);
 
-            _playBtn.DrawHomeBtn(spriteBatch);
+            _playBtn.Draw(spriteBatch);
             _settingBtn.DrawHomeBtn(spriteBatch);
             _creditBtn.DrawHomeBtn(spriteBatch);
-            _exitBtn.DrawHomeBtn(spriteBatch);
+            _exitBtn.Draw(spriteBatch);
 
-            if (CreditRequested)
-            {
-                spriteBatch.Draw(settingBG, new Rectangle(1050, 250, 500, 500), Color.White);
-                spriteBatch.DrawString(_font, "Nah", new Vector2(1225, 400), Color.Black);
-            }
+            //if (CreditRequested)
+            //{
+            //    spriteBatch.Draw(settingBG, new Rectangle(1050, 250, 500, 500), Color.White);
+            //    spriteBatch.DrawString(_font, "Nah", new Vector2(1225, 400), Color.Black);
+            //}
 
             spriteBatch.End();
         }
@@ -111,8 +111,8 @@ namespace Mystic_Foods
         {
             SoundManager.PlaySfx("Click");
             await Task.Delay(100);
-            //CreditRequested = !CreditRequested;
-            DnDRequested = true;
+            CreditRequested = true;
+            //DnDRequested = true;
         }
         public async void ExitBtn_Click(object sender, EventArgs e)
         {

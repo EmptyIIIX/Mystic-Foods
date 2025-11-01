@@ -142,7 +142,6 @@ namespace Mystic_Foods.Scenes
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-
             switch (numTopic)
             {
                 case 1:

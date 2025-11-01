@@ -1762,6 +1762,13 @@
 /processorParam:Quality=Best
 /build:Music/Voice/Male Sigh.wav
 
+#begin normalFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:normalFont.spritefont
+
 #begin Recipe/backpage.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1858,6 +1865,18 @@
 /processorParam:TextureFormat=Color
 /build:Recipe/Buttons/BackBtn_hover.png
 
+#begin Recipe/Buttons/BackBtn_hover2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Recipe/Buttons/BackBtn_hover2.png
+
 #begin Recipe/Buttons/BackBtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1905,6 +1924,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Recipe/Buttons/NextBtn_hover.png
+
+#begin Recipe/Buttons/NextBtn_hover2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Recipe/Buttons/NextBtn_hover2.png
 
 #begin Recipe/Buttons/NextBtn.png
 /importer:TextureImporter

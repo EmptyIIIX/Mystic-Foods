@@ -21,6 +21,7 @@ namespace Mystic_Foods
         private DnDScene _dndScene;
         private LevelSelectScene _levelSelectScene;
         private Recipe _recipeScene;
+        private CreditScene _creditScene;
         private SettingScene _settingScene;
         private CustomerManager _customerManager;
 
@@ -51,6 +52,7 @@ namespace Mystic_Foods
             _gamePlayScene = new GamePlayScene(_customerManager);
             _levelSelectScene = new LevelSelectScene();
             _recipeScene = new Recipe();
+            _creditScene = new CreditScene();
             _settingScene = new SettingScene();
 
             //make it start at main menu
@@ -126,6 +128,7 @@ namespace Mystic_Foods
             _dndScene.LoadContent(Content, _spriteBatch);
             _levelSelectScene.LoadContent(Content, _spriteBatch);
             _recipeScene.LoadContent(Content, _spriteBatch);
+            _creditScene.LoadContent(Content, _spriteBatch);
             _settingScene.LoadContent(Content, _spriteBatch);
 
         }
@@ -151,6 +154,11 @@ namespace Mystic_Foods
                     _mainMenuScene.SettingRequested = false;
                     _currentScene = _settingScene;
                 }
+                if (_mainMenuScene.CreditRequested)
+                {
+                    _mainMenuScene.CreditRequested = false;
+                    _currentScene = _creditScene;
+                }
             }
             else if (_currentScene == _recipeScene)
             {
@@ -159,6 +167,15 @@ namespace Mystic_Foods
                 {
                     _currentScene = _dndScene;
                     Recipe.isExitPage = false;
+                }
+            }
+            else if (_currentScene == _creditScene)
+            {
+                _creditScene.Update(gameTime);
+                if (CreditScene.ExitToMenu)
+                {
+                    _currentScene = _mainMenuScene;
+                    CreditScene.ExitToMenu = false;
                 }
             }
             else if (_currentScene == _levelSelectScene)
@@ -187,7 +204,7 @@ namespace Mystic_Foods
             else if (_currentScene == _gamePlayScene)
             {
                 _gamePlayScene.Update(gameTime);
-                
+
                 if (_gamePlayScene.BackToMenuRequested)
                 {
                     _gamePlayScene.BackToMenuRequested = false;
@@ -202,7 +219,7 @@ namespace Mystic_Foods
             else if (_currentScene == _dndScene)
             {
                 _dndScene.Update(gameTime);
-                
+
                 if (_gamePlayScene.BackToMenuRequested)
                 {
                     _gamePlayScene.BackToMenuRequested = false;
