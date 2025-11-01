@@ -375,9 +375,7 @@ namespace Mystic_Foods
                 //Customer leave
                 if (_patienceMeter <= 0)
                 {
-                    GetCustomerByPhase();
-                    _patienceMeter = _patienceMeterStart;
-                    LoadCustomerTextures();
+                    changeCustomer();
                     DnDScene.isReset = true;
                 }
                 //Check time out to back to mainmenu scene(end game)
@@ -882,6 +880,10 @@ namespace Mystic_Foods
                     break;
 
                 case DayPhase.Night:
+
+                    _currentCustomer = _customerManager.GetNextCustomer3();
+
+                    /*
                     if (!_customerManager.IsEventFinished)
                     {
                         _currentCustomer = _customerManager.GetEventCustomer();
@@ -890,6 +892,7 @@ namespace Mystic_Foods
                     {
                         _currentCustomer = _customerManager.GetNextCustomer3();
                     }
+                    */
                     break;
             }
         }
