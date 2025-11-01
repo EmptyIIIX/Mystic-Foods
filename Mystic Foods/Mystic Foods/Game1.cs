@@ -80,7 +80,7 @@ namespace Mystic_Foods
             SoundManager.AddSong("nightbgm", Content.Load<Song>("Music/BGM/bgm01"));
             #endregion
 
-            SoundManager.SfxVolume = 0.5f;
+            SoundManager.SfxVolume = 0.1f;
             #region SFX
             SoundManager.AddSound("Button", Content.Load<SoundEffect>("Music/SFX/Button Press"));
             SoundManager.AddSound("Button2", Content.Load<SoundEffect>("Music/SFX/Button Press2"));
