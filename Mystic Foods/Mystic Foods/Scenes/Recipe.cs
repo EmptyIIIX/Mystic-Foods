@@ -195,22 +195,27 @@ namespace Mystic_Foods.Scenes
         public void Topic1_click(object sender, EventArgs e)
         {
             numTopic = 1;
+            SoundManager.PlaySfx("Click");
         }
         public void Topic2_click(object sender, EventArgs e)
         {
             numTopic = 2;
+            SoundManager.PlaySfx("Click");
         }
         public void Topic3_click(object sender, EventArgs e)
         {
             numTopic = 3;
+            SoundManager.PlaySfx("Click");
         }
         public void Topic4_click(object sender, EventArgs e)
         {
             numTopic = 4;
+            SoundManager.PlaySfx("Click");
         }
         public void TopicDefault_click(object sender, EventArgs e)
         {
             numTopic = 1;
+            SoundManager.PlaySfx("Click");
         }
         public void NextButton_click(object sender, EventArgs e)
         {
