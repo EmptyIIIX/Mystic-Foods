@@ -643,6 +643,7 @@ namespace Mystic_Foods
                 SoundManager.PlaySfx("Cooking");
                 await Task.Delay(3000);
                 _sfxSteam = false;
+                SoundManager.PlaySfx("SteamRelease");
                 SoundManager.StopSfx("Cooking");
             }
         }

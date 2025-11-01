@@ -104,6 +104,7 @@ namespace Mystic_Foods
         private float typingSpeed = 0.005f; //lower the number, faster the typo
         private float typingTimer = 0f;
         private int charIndex = 0;
+        public static string servedDia = "";
         #endregion
 
         #region fade in & out
@@ -415,7 +416,6 @@ namespace Mystic_Foods
                 }
 
                 #endregion
-
                 #endregion
             }
             if (charIndex < fullText.Length)
@@ -501,14 +501,17 @@ namespace Mystic_Foods
                     if (patiencePerc >= 2f / 3f)
                     {
                         drawTexture = _textureHappy;
+                        servedDia = _currentCustomer.DiaHappy;
                     }
                     else if (patiencePerc >= 1f / 3f)
                     {
                         drawTexture = _textureNeutral;
+                        servedDia = _currentCustomer.DiaNormal;
                     }
                     else
                     {
                         drawTexture = _textureGrumpy;
+                        servedDia = _currentCustomer.DiaAngry;
                     }
                     break;
                 case 2:
@@ -646,9 +649,10 @@ namespace Mystic_Foods
                     spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
                     break;
 
+
                 case 1:
-                    if (fullText != _currentCustomer.DiaCurrect)
-                        StartTyping(_currentCustomer.DiaCurrect);
+                    if (fullText != servedDia)
+                        StartTyping(servedDia);
 
                     spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
                     break;

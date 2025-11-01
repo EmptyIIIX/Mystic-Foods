@@ -1630,6 +1630,12 @@
 /processorParam:Quality=Best
 /build:Music/SFX/pu.wav;Music/SFX/pu
 
+#begin Music/SFX/SteamRelease.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SFX/SteamRelease.wav
+
 #begin Music/SFX/Trash.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
