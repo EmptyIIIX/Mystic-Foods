@@ -1768,13 +1768,6 @@
 /processorParam:Quality=Best
 /build:Music/Voice/Male Sigh.wav
 
-#begin normalFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:normalFont.spritefont
-
 #begin Recipe/backpage.png
 /importer:TextureImporter
 /processor:TextureProcessor
