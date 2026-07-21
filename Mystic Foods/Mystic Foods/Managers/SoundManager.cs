@@ -136,19 +136,13 @@ namespace Mystic_Foods.Managers
         public static void SetMusicVolume(float volume)
         {
             settings.MusicVolume = MathHelper.Clamp(volume, 0f, 1f);
-            if (!settings.IsMuted) MusicVolume = settings.MusicVolume;
-
-            SaveSettings();
-            //ApplySettings();
+            ApplySettings();
         }
 
         public static void SetSfxVolume(float volume)
         {
             settings.SfxVolume = MathHelper.Clamp(volume, 0f, 1f);
-            if (!settings.IsMuted) SfxVolume = settings.SfxVolume;
-
-            SaveSettings();
-            //ApplySettings();
+            ApplySettings();
         }
 
         public static void ToggleMute()

@@ -64,26 +64,26 @@ namespace Mystic_Foods.Scenes
             backPage_hover = content.Load<Texture2D>("Recipe/Buttons/BackBtn_hover");
             exitPage = content.Load<Texture2D>("Recipe/exitpage");
 
-            //button manager
-            topic1btn = new Button(topic1, topic1_focus, _font, "", new Rectangle(266, 236, 384, 157));
-            topic1btn.Click += Topic1_click;
-            topic2btn = new Button(topic2, topic2_focus, _font, "", new Rectangle(266, 393, 384, 157));
-            topic2btn.Click += Topic2_click;
-            topic3btn = new Button(topic3, topic3_focus, _font, "", new Rectangle(266, 550, 384, 157));
-            topic3btn.Click += Topic3_click;
-            topic4btn = new Button(topic4, topic4_focus, _font, "", new Rectangle(266, 707, 384, 157));
-            topic4btn.Click += Topic4_click;
-            topicDefaultBtn = new Button(topic1_focus, topic1_focus, _font, "", new Rectangle(266, 236, 384, 157));
-            topicDefaultBtn.Click += TopicDefault_click;
+            //button manager - fixed: Button constructor takes 4 args (texture, font, text, bounds)
+                        topic1btn = new Button(topic1, _font, "", new Rectangle(266, 236, 384, 157));
+                        topic1btn.Click += Topic1_click;
+                        topic2btn = new Button(topic2, _font, "", new Rectangle(266, 393, 384, 157));
+                        topic2btn.Click += Topic2_click;
+                        topic3btn = new Button(topic3, _font, "", new Rectangle(266, 550, 384, 157));
+                        topic3btn.Click += Topic3_click;
+                        topic4btn = new Button(topic4, _font, "", new Rectangle(266, 707, 384, 157));
+                        topic4btn.Click += Topic4_click;
+                        topicDefaultBtn = new Button(topic1, _font, "", new Rectangle(266, 236, 384, 157));
+                        topicDefaultBtn.Click += TopicDefault_click;
 
-            next = new Button(nextPage, nextPage_hover, _font, "", new Rectangle(1343, 823, 190, 81));
-            next.Click += NextButton_click;
+                        next = new Button(nextPage, _font, "", new Rectangle(1343, 823, 190, 81));
+                        next.Click += NextButton_click;
 
-            back = new Button(backPage, backPage_hover, _font, "", new Rectangle(806, 823, 190, 81));
-            back.Click += BackButton_click;
+                        back = new Button(backPage, _font, "", new Rectangle(806, 823, 190, 81));
+                        back.Click += BackButton_click;
 
-            exitpage = new Button(exitPage, exitPage, _font, "", new Rectangle(1573, 218, 78, 73));
-            exitpage.Click += ExitPageButton_click;
+                        exitpage = new Button(exitPage, _font, "", new Rectangle(1573, 218, 78, 73));
+                        exitpage.Click += ExitPageButton_click;
 
             //assign max page and set count page of the tutorial
             countPage = 1;
@@ -170,25 +170,25 @@ namespace Mystic_Foods.Scenes
                     break;
             }
 
-            //draw topic buttons
-            topic1btn.DrawHover(spriteBatch);
-            topic2btn.DrawHover(spriteBatch);
-            topic3btn.DrawHover(spriteBatch);
-            topic4btn.DrawHover(spriteBatch);
+            //draw topic buttons - fixed: use Draw() instead of DrawHover()
+                        topic1btn.Draw(spriteBatch);
+                        topic2btn.Draw(spriteBatch);
+                        topic3btn.Draw(spriteBatch);
+                        topic4btn.Draw(spriteBatch);
 
-            //draw next and back page
-            if (numTopic == 2)
-            {
-                if (countPage < MaxPage) next.DrawHover(spriteBatch);
-                if (countPage > 1) back.DrawHover(spriteBatch);
+                        //draw next and back page
+                        if (numTopic == 2)
+                        {
+                            if (countPage < MaxPage) next.Draw(spriteBatch);
+                            if (countPage > 1) back.Draw(spriteBatch);
 
-            }
-            else if (numTopic == 0)
-            {
-                topicDefaultBtn.DrawHover(spriteBatch);
-            }
+                        }
+                        else if (numTopic == 0)
+                        {
+                            topicDefaultBtn.Draw(spriteBatch);
+                        }
 
-            exitpage.Draw(spriteBatch);
+                        exitpage.Draw(spriteBatch);
 
             spriteBatch.End();
         }

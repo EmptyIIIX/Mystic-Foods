@@ -1,76 +1,65 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Managers;
-using Mystic_Foods.Scenes;
 using Mystic_Foods.Systems;
 using Mystic_Foods.Time;
 using System;
-using System.Formats.Tar;
-using System.Reflection.PortableExecutable;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Mystic_Foods
 {
     public class GamePlayScene : IGameScene
     {
-        public static float TimeDefault = 181f;
+        public static float TimeDefault = 121f;
         public static float TimeStage = TimeDefault;
-        public static float TimePSec = 1.0f / 60.0f;
+        public static float TimePSec;
+
         public enum DayPhase { Dawn, Dusk, Night }
         public static DayPhase CurrentPhase;
+        
+        // Added for Recipe.cs compatibility
+        public static bool isRecipeInGame = false;
         Texture2D texDawn, texDusk, texNight;
 
-        private SpriteFont _font, _font2;
+        private SpriteFont _font;
         public bool BackToMenuRequested = false;
         public bool DnDRequested = false;
         public bool ExitRequest = false;
-        public static bool showSettings = false;
         private KeyboardState _oldState;
         private CustomerManager _customerManager;
         public static Customer _currentCustomer;
         private ContentManager _contentManager;
         private DnDScene _dnDScene;
-        private Recipe _tnTutorialScene;
 
         public static bool served;
         public static bool isEndLv = false;
-        public static bool isRecipeInGame = false;
         public Button _servedYesButton;
 
         public static bool isPaused = false;
-        public static Button _menuButton, _resumeButton, _homeButton, _settingButton, _exitButton, _recipeButton;
+        public static Button _menuButton, _resumeButton, _homeButton, _exitButton;
         public static Button _yesExit, _noExit;
-        public static Texture2D yesExit, yesExit_hover, noExit, noExit_hover, logExit;
+        public static Texture2D yesExit, noExit, logExit;
         public Button _yesButton;
         public Button _whatButton;
         public static Button _OkButton;
 
         public static float _patienceMeter;        // current patience
         public static float _patienceMeterStart = 100f;   // default / max patience
-        public static float _patienceDecreaseRate = 1.4f; // decrease rate
-        public static bool _orderRecieve = false;
+        public static float _patienceDecreaseRate = 1.28f; // decrease rate
         public static Texture2D _textureHappy;
         public static Texture2D _textureNeutral;
         public static Texture2D _textureGrumpy;
 
-        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox, recipeBtn;
-        public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn, settingBtn;
+        public static Texture2D bg, counter, bgBox, dayBox, moneyBox, menuBox, profile, uiBox;
+        public static Texture2D homeBtn, resumeBtn, exitBtn, okBtn;
         public static Texture2D spriteEmoIcon;
         public static Texture2D revenueBox;
-        public static Texture2D whatButton, whatButton_hover, yesButton, yesButton_hover, diaBox;
+        public static Texture2D whatButton, yesButton, diaBox;
         public static Texture2D _happy, _natural, _angry;
         public static Texture2D counterDawn, counterDusk, counterNight;
-        public static Texture2D _rectTexture;
 
-        Texture2D Cat;
-        int frame;
-        //int framePerSec;
-        //float totalElapsed;
-        //float timePerFrame;
+        public static Texture2D _rectTexture;
 
         public static float TotalMoney = 100.0f;
         public static float Revenue = 0.0f;
@@ -81,71 +70,24 @@ namespace Mystic_Foods
         public static float Profit = 0.0f;
 
         public static bool isClickExit = false;
-        public static bool isSkip = false;
-
-        public bool isTutorial2 = false;
-
-        #region Setting
-        private Texture2D header, settingBG;
-        private Texture2D musicIcon, muteMusicIcon;
-        private Texture2D sfxIcon, muteSfxIcon;
-        private Texture2D barBg, barFill, knob;
-        private Vector2 musicBarPos = new Vector2(600, 425);
-        private Vector2 sfxBarPos = new Vector2(600, 675);
-        private const float barScale = 1.0f;
-
-        private bool _draggingMusic = false;
-        private bool _draggingSfx = false;
-        #endregion
-
-        #region Typing
-        private string fullText = "";
-        private string displayedText = "";
-        private float typingSpeed = 0.005f; //lower the number, faster the typo
-        private float typingTimer = 0f;
-        private int charIndex = 0;
-        public static string servedDia = "";
-        #endregion
-
-        #region fade in & out
-        private float _alpha = 0f;
-        private float _fadeSpeed = 2f; // ความเร็วในการเฟด
-        private bool _isFadingIn = true;
-        private bool _isFadingOut = false;
-        private bool _isTransition = true;
-
-        private Vector2 _startPos;
-        private Vector2 _endPos;
-        private Vector2 _customerPosition;
-        #endregion
-
-        #region Idle Anim
-        float _idleTime = 0f;
-        float _baseScaleX = 0.9f;       // สเกลแกน X คงที่
-        float _baseScaleY = 0.9f;       // สเกลปกติของแกน Y
-        float _scaleAmplitudeY = 0.005f; // ขยาย/หดแกน Y
-        float _scaleSpeed = 1f;         // ความเร็วของการเต้น
-        #endregion
-
         public GamePlayScene(CustomerManager cm)
         {
             _customerManager = cm;
             GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
         }
-        public GamePlayScene()
-        {
-        }
+        public GamePlayScene() {}
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
             _contentManager = content;
             _font = content.Load<SpriteFont>("MainFont");
-            _font2 = content.Load<SpriteFont>("DiaFont");
             LoadCustomerTextures();
 
             _rectTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             _rectTexture.SetData(new[] { Color.White });
 
+            bg = content.Load<Texture2D>("Environments/BG/orderBG_morning");
+            counter = content.Load<Texture2D>("Environments/Counter/orderCounter_morning");
             //Cat = content.Load<Texture2D>("Etc/Cat");
             texDawn = content.Load<Texture2D>("Environments/BG/orderBG_morning");
             texDusk = content.Load<Texture2D>("Environments/BG/orderBG_sunset");
@@ -156,11 +98,6 @@ namespace Mystic_Foods
             counterNight = content.Load<Texture2D>("Environments/Counter/orderCounter_midnight");
 
             spriteEmoIcon = content.Load<Texture2D>("Emote/sprite_emotion_icon");
-            Cat = content.Load<Texture2D>("Environments/Counter/Sprite_Cat_Counter");
-            frame = 0;
-            //framePerSec = 4;
-            //timePerFrame = (float)1 / framePerSec;
-            //totalElapsed = 0;
 
             revenueBox = content.Load<Texture2D>("DialogueUI/Revenue");
             okBtn = content.Load<Texture2D>("DialogueUI/okLog");
@@ -169,72 +106,44 @@ namespace Mystic_Foods
             dayBox = content.Load<Texture2D>("Etc/Day");
             moneyBox = content.Load<Texture2D>("Etc/Money");
             menuBox = content.Load<Texture2D>("Emote/EmoteMenu");
-            recipeBtn = content.Load<Texture2D>("Recipe/TutorialBtn");
             uiBox = content.Load<Texture2D>("UI/UIBOX");
 
             profile = content.Load<Texture2D>("Etc/Cat1");
             homeBtn = content.Load<Texture2D>("Etc/HomeBtn");
             exitBtn = content.Load<Texture2D>("Etc/ExitBtn");
-            settingBtn = content.Load<Texture2D>("UI/setting/settingButton");
             logExit = content.Load<Texture2D>("DialogueUI/ConfirmExit_UI");
             yesExit = content.Load<Texture2D>("DialogueUI/LeaveAnyway_BeforeClick");
-            yesExit_hover = content.Load<Texture2D>("DialogueUI/LeaveAnyway_AfterClick");
             noExit = content.Load<Texture2D>("DialogueUI/KeepPlaying_BeforeClick");
-            noExit_hover = content.Load<Texture2D>("DialogueUI/KeepPlaying_AfterClick");
             resumeBtn = content.Load<Texture2D>("Etc/PauseBtn");
 
             whatButton = content.Load<Texture2D>("DialogueUI/WhatButton");
             yesButton = content.Load<Texture2D>("DialogueUI/YesButton");
-            whatButton_hover = content.Load<Texture2D>("DialogueUI/WhatButtonHover");
-            yesButton_hover = content.Load<Texture2D>("DialogueUI/YesButtonHover");
-            diaBox = content.Load<Texture2D>("DialogueUI/DialogueBox2");
+            diaBox = content.Load<Texture2D>("DialogueUI/DialogueBox");
 
-            _menuButton = new Button(menuBox, menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
+            _menuButton = new Button(menuBox, _font, " ", new Rectangle(1670, 10, 231, 162));
             _menuButton.Click += MenuButton_Click;
-
-            _homeButton = new Button(homeBtn, homeBtn, _font, " ", new Rectangle(1970 - menuBox.Width, menuBox.Height + 20, 100, 100));
+            _homeButton = new Button(homeBtn, _font, " ", new Rectangle(1970 - menuBox.Width, menuBox.Height + 20, 100, 106));//real size (50, 53) 
             _homeButton.Click += HomeButton_Click;
-            _settingButton = new Button(settingBtn, settingBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + 40, 100, 100));
-            _settingButton.Click += SettingButton_Click;
-            _exitButton = new Button(exitBtn, exitBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + settingBtn.Height + 60, 100, 100));
-            _exitButton.Click += ExitButton_Click;
-            _resumeButton = new Button(resumeBtn, resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height / 2, 180, 165));
-            _resumeButton.Click += ResumeButton_Click;
-            _recipeButton = new Button(recipeBtn, recipeBtn, _font, "", new Rectangle(1920 - menuBox.Width - recipeBtn.Width - 40, 20, recipeBtn.Width, recipeBtn.Height));
-            _recipeButton.Click += RecipeInGame;
-
-            _yesButton = new Button(yesButton, yesButton_hover, _font, " ", new Rectangle(1400, 500, 128, 63));
+            _yesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
             _yesButton.Click += YesButton_Click;
-            _whatButton = new Button(whatButton, whatButton_hover, _font, " ", new Rectangle(1550, 500, 128, 63));
+            _whatButton = new Button(whatButton, _font, " ", new Rectangle(1550, 500, 128, 63));
             _whatButton.Click += WhatButton_Click;
-
-            _servedYesButton = new Button(yesButton, yesButton_hover, _font, " ", new Rectangle(1400, 500, 128, 63));
+            _servedYesButton = new Button(yesButton, _font, " ", new Rectangle(1400, 500, 128, 63));
             _servedYesButton.Click += ServedYes_Click;
+            _exitButton = new Button(exitBtn, _font, "", new Rectangle(1970 - menuBox.Width, menuBox.Height + homeBtn.Height + 80, 100, 106));// 61, 67
+            _exitButton.Click += ExitButton_Click;
+            _resumeButton = new Button(resumeBtn, _font, " ", new Rectangle(1040 - resumeBtn.Width, 540 - resumeBtn.Height, 180, 165));
+            _resumeButton.Click += ResumeButton_Click;
 
-            _yesExit = new Button(yesExit, yesExit_hover, _font, "", new Rectangle(1138, 686, 375, 170));
+            _yesExit = new Button(yesExit, _font, "", new Rectangle(426, 682, 375, 170));
             _yesExit.Click += yesExitButton_Click;
-            _noExit = new Button(noExit, noExit_hover, _font, "", new Rectangle(426, 682, 384, 163));
+            _noExit = new Button(noExit, _font, "", new Rectangle(1138, 686, 384, 163));
             _noExit.Click += noExitButton_Click;
 
-            _OkButton = new Button(okBtn, okBtn, _font, "", new Rectangle(1450, 840, 300, 150));
+            _OkButton = new Button(okBtn, _font, "", new Rectangle(1450, 840, 300, 150));
             _OkButton.Click += OkEndButton_Click;
-
-            #region setting
-            header = content.Load<Texture2D>("UI/setting/Setting_Word");
-            settingBG = content.Load<Texture2D>("UI/setting/Setting_BG");
-
-            musicIcon = content.Load<Texture2D>("UI/setting/Music_UI");
-            muteMusicIcon = content.Load<Texture2D>("UI/setting/MuteSong");
-            sfxIcon = content.Load<Texture2D>("UI/setting/SoundEffect");
-            muteSfxIcon = content.Load<Texture2D>("UI/setting/MuteSoundEffect");
-
-            barBg = content.Load<Texture2D>("UI/setting/IncreaseSound_BG_UI");
-            barFill = content.Load<Texture2D>("UI/setting/IncreaseSound_UI");
-            knob = content.Load<Texture2D>("UI/setting/SoundButton");
-            #endregion
-
-            _startPos = new Vector2(00, 0);
-            _endPos = new Vector2(200, 0);
+            /*
+             */
         }
 
         private void LoadCustomerTextures()
@@ -243,23 +152,10 @@ namespace Mystic_Foods
             _textureNeutral = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathNeutral);
             _textureGrumpy = _contentManager.Load<Texture2D>(_currentCustomer.SpritePathGrumpy);
         }
-
         public void Update(GameTime gameTime)
         {
             var state = Keyboard.GetState();
-            var mouse = Mouse.GetState();
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
-            if (!_isTransition)
-            {
-                _idleTime += deltaTime * _scaleSpeed;
-            }
-
-            if (isSkip == false )
-            {
-                SkipCustomer();
-                isSkip = true;
-            }
 
             //Button
             _menuButton.Update();
@@ -267,95 +163,28 @@ namespace Mystic_Foods
             {
                 #region Stopping the game
 
-                if (isRecipeInGame)
+                _exitButton.Update();
+                _homeButton.Update();
+                _resumeButton.Update();
+                if (isClickExit)
                 {
-                    //for button in tutorial
-                    
-                }
-                else if (isRecipeInGame == false)
-                {
-                    _homeButton.Update();
-                    _settingButton.Update();
-                    _exitButton.Update();
-                    
-                    if (isClickExit)
-                    {
-                        _yesExit.Update();
-                        _noExit.Update();
-                    }
-
-                    if (!isClickExit && !showSettings)
-                    {
-                        _resumeButton.Update();
-                    }
+                    _yesExit.Update();
+                    _noExit.Update();
                 }
 
-                if (showSettings == true)
-                {
-
-                    Vector2 musicBarPos = new Vector2(600, 425);
-                    Vector2 sfxBarPos = new Vector2(600, 675);
-
-                    float mx = mouse.X;
-                    float my = mouse.Y;
-
-                    Rectangle musicBarRect = new Rectangle((int)musicBarPos.X, (int)musicBarPos.Y, barBg.Width, barBg.Height);
-                    Rectangle sfxBarRect = new Rectangle((int)sfxBarPos.X, (int)sfxBarPos.Y, barBg.Width, barBg.Height);
-
-                    // --- Mouse Drag Volume ---
-                    if (mouse.LeftButton == ButtonState.Pressed)
-                    {
-                        if (!_draggingMusic && !_draggingSfx)
-                        {
-                            if (musicBarRect.Contains(mx, my))
-                                _draggingMusic = true;
-                            else if (sfxBarRect.Contains(mx, my))
-                                _draggingSfx = true;
-                        }
-                    }
-                    else if (mouse.LeftButton == ButtonState.Released)
-                    {
-                        _draggingMusic = false;
-                        _draggingSfx = false;
-                    }
-
-                    if (_draggingMusic)
-                    {
-                        float newVol = MathHelper.Clamp((mx - musicBarRect.X) / (float)musicBarRect.Width, 0f, 1f);
-                        SoundManager.SetMusicVolume(newVol);
-                    }
-                    else if (_draggingSfx)
-                    {
-                        float newVol = MathHelper.Clamp((mx - sfxBarRect.X) / (float)sfxBarRect.Width, 0f, 1f);
-                        SoundManager.SetSfxVolume(newVol);
-                    }
-                }
-                else if (showSettings && isClickExit)
-                {
-                    _resumeButton.Update();
-                }
                 #endregion
             }
             else if (isEndLv == false) 
             {
                 #region Playing the game
 
-                //Updateframe((float)gameTime.ElapsedGameTime.TotalSeconds);
-
-                if (mouse.LeftButton == ButtonState.Pressed && charIndex < fullText.Length)
-                {
-                    displayedText = fullText;
-                    charIndex = fullText.Length;
-
-                    _alpha = 1f;
-                }
                 // random, reset Patience
-                if (!_isTransition)
+                if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
                 {
-                    if (state.IsKeyDown(Keys.Space) && _oldState.IsKeyUp(Keys.Space))
-                    {
-                        changeCustomer();
-                    }
+                    GetCustomerByPhase();
+                    _patienceMeter = _patienceMeterStart;
+                    LoadCustomerTextures();
+                    GameManager.countDia = 2;
                 }
                 _whatButton.Update();
                 
@@ -368,6 +197,7 @@ namespace Mystic_Foods
                 }
 
                 //TimeStage every scene
+                TimePSec = 1.0f / 60.0f;
                 TimeStage -= TimePSec;
 
                 // Patience reduce logic
@@ -376,57 +206,18 @@ namespace Mystic_Foods
                 //Customer leave
                 if (_patienceMeter <= 0)
                 {
-                    changeCustomer();
-                    DnDScene.isReset = true;
+                    GetCustomerByPhase();
+                    _patienceMeter = _patienceMeterStart;
+                    LoadCustomerTextures();
                 }
-                //Check time out to back to mainmenu scene(end game)
+                //Check time out to back to mainmenu scene
                 if (TimeStage <= 0)
                 {
+                    //BackToMenuRequested = true;
                     isEndLv = true;
                     TimeStage = TimeDefault;
                 }
-                //_tutorialButton.Update();
-
-                #region Fade in & out
-                if (state.IsKeyDown(Keys.F1)) FadeIn();
-                if (state.IsKeyDown(Keys.F2)) FadeOut();
-
-                if (_isFadingIn)
-                {
-                    _alpha += _fadeSpeed * deltaTime;
-                    if (_alpha >= 1f)
-                    {
-                        _alpha = 1f;
-                        _isFadingIn = false;
-                        _isTransition = false;
-                    }
-                    _customerPosition = Vector2.Lerp(_startPos, _endPos, _alpha);
-                }
-
-                if (_isFadingOut)
-                {
-                    _alpha -= _fadeSpeed * deltaTime;
-                    if (_alpha <= 0f)
-                    {
-                        _alpha = 0f;
-                        _isFadingOut = false;
-                    }
-                    _customerPosition = Vector2.Lerp(_startPos, _endPos, _alpha);
-                    _isTransition = true;
-                }
-
                 #endregion
-                #endregion
-            }
-            if (charIndex < fullText.Length)
-            {
-                typingTimer += deltaTime;
-                if (typingTimer >= typingSpeed)
-                {
-                    typingTimer = 0f;
-                    charIndex++;
-                    displayedText = fullText.Substring(0, charIndex);
-                }
             }
             else if (isEndLv)
             {
@@ -434,20 +225,13 @@ namespace Mystic_Foods
                 _OkButton.Update();
             }
 
-            // ESC to pause
-            if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
-            {
-                isPaused = !isPaused;
-                isClickExit = false;
-            }
-            // Click yes & patience start decreasing
-            if (_orderRecieve)
-            {
-                _patienceDecreaseRate = 1.4f;
-            } else if (!_orderRecieve)
-            {
-                _patienceDecreaseRate = 0f;
-            }
+            // ESC
+            //if (state.IsKeyDown(Keys.Escape) && _oldState.IsKeyUp(Keys.Escape))
+            //{
+            //    BackToMenuRequested = true;
+            //    TimeStage = 721f;
+            //}
+
 
             //P
             if (state.IsKeyDown(Keys.P) && _oldState.IsKeyUp(Keys.P))
@@ -466,6 +250,8 @@ namespace Mystic_Foods
         {
             spriteBatch.GraphicsDevice.Clear(Color.DarkSeaGreen);
             spriteBatch.Begin();
+            spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
+            
 
             #region Background
             //spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
@@ -489,6 +275,31 @@ namespace Mystic_Foods
             //spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
             #endregion
 
+
+
+            /*
+            string text = "Game Scene!\nPress ESC to menu\nPress SPACE to random customer";
+            Vector2 size = _font.MeasureString(text);
+            spriteBatch.DrawString(
+                _font,
+                text,
+                new Vector2((800 - size.X) / 2, 60),
+                Color.Black);
+             */
+            // Show Customer data
+                /*
+            if (_currentCustomer != null)
+            {
+                //Customer stats
+                string cust = $"Name: {_currentCustomer.Name}\nPatience Stat: {_currentCustomer.Patience:0.00}";
+                string cust = $"Name: {_currentCustomer.Name}";
+                Vector2 custPos = new Vector2(100, 180);
+                spriteBatch.DrawString(_font, cust, custPos, Color.DarkBlue);
+                use rectangle to adjust scale
+                0.9(855, 972) 0.8(760, 864)
+            }
+                 */
+
             #region Customer
             Texture2D drawTexture = _textureNeutral;
             float patiencePerc = _patienceMeter / _patienceMeterStart;
@@ -501,17 +312,14 @@ namespace Mystic_Foods
                     if (patiencePerc >= 2f / 3f)
                     {
                         drawTexture = _textureHappy;
-                        servedDia = _currentCustomer.DiaHappy;
                     }
                     else if (patiencePerc >= 1f / 3f)
                     {
                         drawTexture = _textureNeutral;
-                        servedDia = _currentCustomer.DiaNormal;
                     }
                     else
                     {
                         drawTexture = _textureGrumpy;
-                        servedDia = _currentCustomer.DiaAngry;
                     }
                     break;
                 case 2:
@@ -524,20 +332,7 @@ namespace Mystic_Foods
                     drawTexture = _textureNeutral;
                     break;
             }
-
-            if (_currentCustomer.Name != "Tall dude")
-            {
-                float scaleY = _baseScaleY + (float)Math.Sin(_idleTime) * _scaleAmplitudeY;
-                Vector2 scale = new Vector2(_baseScaleX, scaleY);
-                spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            } else
-            {
-                spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
-            }
-
-            //float scaleY = _baseScaleY + (float)Math.Sin(_idleTime) * _scaleAmplitudeY;
-            //Vector2 scale = new Vector2(_baseScaleX, scaleY);
-            //spriteBatch.Draw(drawTexture, _customerPosition, null, Color.White * _alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(drawTexture, new Vector2(200, 0), null, Color.White, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
             #endregion
 
             #region Counter
@@ -557,7 +352,6 @@ namespace Mystic_Foods
                     break;
             }
             spriteBatch.Draw(Counter, new Vector2(0, 1080 - Counter.Height), Color.White);
-            spriteBatch.Draw(Cat, new Vector2(1026, 565), new Rectangle(frame * 363, 0, 363, 463), Color.White);
             //table pos
             //spriteBatch.Draw(Cat, new Vector2(1000, 600), Color.White);
             spriteBatch.Draw(bgBox, new Vector2(0, 0), Color.White*0.5f);
@@ -566,126 +360,69 @@ namespace Mystic_Foods
             #region UI
 
             #region detailing
-            spriteBatch.Draw(uiBox, new Vector2(10, 32), Color.White);
-            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width + 10, 32), Color.White);
-            spriteBatch.Draw(uiBox, new Vector2(uiBox.Width * 2 + 10, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(244, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(508, 32), Color.White);
+            spriteBatch.Draw(uiBox, new Vector2(772, 32), Color.White);
             #endregion
 
+            //profile
+            spriteBatch.Draw(profile, new Vector2(0, 0), Color.White);
             //Date and Time
             int Days = 1;//สำหรับเปลี่ยนวันตามเงื่อนไขต่างๆที่เราต้องการ
-            spriteBatch.Draw(dayBox, new Vector2(10, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(135, (menuBox.Height / 5) + 20), Color.Black);
+            spriteBatch.Draw(dayBox, new Vector2(profile.Width + 10, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"Day {Days}", new Vector2(profile.Width + 135, (menuBox.Height / 5) + 20), Color.Black);
+            //time
+            string Time = $"{(int)TimeStage}";
+            spriteBatch.DrawString(_font, Time, new Vector2(profile.Width + 145, (menuBox.Height / 5) + 55), Color.Black);
 
-            #region Time UI
-            if (CurrentPhase == DayPhase.Dawn)
-            {
-                if (TimeStage < 181 && TimeStage >= 150) spriteBatch.DrawString(_font, "06:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 150 && TimeStage >= 120) spriteBatch.DrawString(_font, "06:30", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 120 && TimeStage >= 90) spriteBatch.DrawString(_font, "07:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 90 && TimeStage >= 60) spriteBatch.DrawString(_font, "07:30", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 60 && TimeStage >= 30) spriteBatch.DrawString(_font, "08:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 30 && TimeStage >= 1) spriteBatch.DrawString(_font, "08:30", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage == 0) spriteBatch.DrawString(_font, "09:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-            }
-            if (CurrentPhase == DayPhase.Dusk)
-            {
-                if (TimeStage < 181 && TimeStage >= 150) spriteBatch.DrawString(_font, "16:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 150 && TimeStage >= 120) spriteBatch.DrawString(_font, "16:30", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 120 && TimeStage >= 60) spriteBatch.DrawString(_font, "17:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 90 && TimeStage >= 60) spriteBatch.DrawString(_font, "17:30", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 60 && TimeStage >= 1) spriteBatch.DrawString(_font, "18:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 30 && TimeStage >= 1) spriteBatch.DrawString(_font, "18:30", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage == 0) spriteBatch.DrawString(_font, "19:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-            }
-            if (CurrentPhase == DayPhase.Night)
-            {
-                if (TimeStage < 181 && TimeStage >= 150) spriteBatch.DrawString(_font, "00:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 150 && TimeStage >= 120) spriteBatch.DrawString(_font, "00:30", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 120 && TimeStage >= 60) spriteBatch.DrawString(_font, "01:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 90 && TimeStage >= 60) spriteBatch.DrawString(_font, "01:30", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 60 && TimeStage >= 1) spriteBatch.DrawString(_font, "02:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage < 30 && TimeStage >= 1) spriteBatch.DrawString(_font, "02:30", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-                if (TimeStage == 0) spriteBatch.DrawString(_font, "03:00", new Vector2(135, (menuBox.Height / 5) + 55), Color.Black);
-            }
-            #endregion
+            /* สำรองไว้ก่อน
+            spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 110, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(1920 - menuBox.Width - (moneyBox.Width / 2) - 25, (menuBox.Height / 5) + (moneyBox.Height / 4) + 10), Color.Yellow);
+            */
 
-            spriteBatch.Draw(moneyBox, new Vector2(dayBox.Width + 10, menuBox.Height / 5), Color.White);
-            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 36), Color.Black);
+            spriteBatch.Draw(moneyBox, new Vector2(profile.Width + dayBox.Width + 10, menuBox.Height / 5), Color.White);
+            spriteBatch.DrawString(_font, $"{TotalMoney}", new Vector2(profile.Width + dayBox.Width + (moneyBox.Width / 2) + 35, (menuBox.Height / 5) + 36), Color.Black);
 
             //Draw Emotion
             // แสดงค่า Patience Meter
-            Vector2 EmotionPos = new Vector2(moneyBox.Width + dayBox.Width + 10, menuBox.Height / 5);//สำหรับตำแหน่งของอีโมจิอารมณ์
+            Vector2 EmotionPos = new Vector2(moneyBox.Width + profile.Width + dayBox.Width + 10, menuBox.Height / 5);//สำหรับตำแหน่งของอีโมจิอารมณ์
             Vector2 percentPantiencePos = new Vector2(EmotionPos.X + 145, menuBox.Height / 5 + 36);
 
             string patienceText = $"{_patienceMeter:0}%";
-            DrawEmotionIcon(_font, spriteBatch, EmotionPos);
             spriteBatch.DrawString(_font, patienceText, percentPantiencePos, Color.Black);
-
-            //_tutorialButton.Draw(spriteBatch);
-
+            DrawEmotionIcon(_font, spriteBatch, EmotionPos);
             #endregion
 
             #region Dialouge
+            //Dia
+            spriteBatch.Draw(diaBox, new Vector2(900, 200), Color.White);
+            Vector2 diaPos = new Vector2(900, 200);
 
-            if (!_isTransition)
+            if (served == true)
             {
-                spriteBatch.Draw(diaBox, new Vector2(900, 200), Color.White);
-                if (served == true)
-                {
-                    _servedYesButton.DrawHover(spriteBatch);
-                }
-                else
-                {
-                    _yesButton.DrawHover(spriteBatch);
-                }
+                _servedYesButton.Draw(spriteBatch);
+            } else
+            {
+                _yesButton.Draw(spriteBatch);
             }
 
             switch (GameManager.countDia)
             {
                 case 0:
-                    if (fullText != _currentCustomer.DiaWrong)
-                        StartTyping(_currentCustomer.DiaWrong);
-
-                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
+                    spriteBatch.DrawString(_font, _currentCustomer.DiaWrong, new Vector2(1000, 300), Color.Black);
+                    _whatButton.Draw(spriteBatch);
                     break;
-
-
                 case 1:
-                    if (fullText != servedDia)
-                        StartTyping(servedDia);
-
-                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
+                    spriteBatch.DrawString(_font, _currentCustomer.DiaCurrect, new Vector2(1000, 300), Color.Black);
                     break;
-
                 case 2:
-                    if (fullText != _currentCustomer.TalkDia)
-                        StartTyping(_currentCustomer.TalkDia);
-
-                    if (!_isTransition)
-                    {
-                        spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
-                        _whatButton.DrawHover(spriteBatch);
-                    }
+                    spriteBatch.DrawString(_font, _currentCustomer.Dia1, new Vector2(1000, 300), Color.Black);
+                    _whatButton.Draw(spriteBatch);
                     break;
                 case 3:
-                    if (fullText != _currentCustomer.Dia1)
-                        StartTyping(_currentCustomer.Dia1);
-
-                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
-                    _whatButton.DrawHover(spriteBatch);
+                    spriteBatch.DrawString(_font, _currentCustomer.Dia2, new Vector2(1000, 300), Color.Black);
                     break;
 
-                case 4:
-                    if (fullText != _currentCustomer.Dia2)
-                        StartTyping(_currentCustomer.Dia2);
-
-                    spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
-                    break;
-            }
-            if (_isFadingOut)
-            {
-                displayedText = " ";
-                spriteBatch.DrawString(_font2, displayedText, new Vector2(1000, 275), Color.Black);
             }
 
             #endregion
@@ -693,39 +430,26 @@ namespace Mystic_Foods
             /*
             spriteBatch.DrawString(_font, $" IdOrder : {_currentCustomer.IdOrder}", new Vector2(1000, 400), Color.Black);
             spriteBatch.DrawString(_font, $" CurrectOrder : {GameManager.IsCurrectOrder}", new Vector2(1000, diaBoxPos.Y + (diaBoxPos.Y / 2) + 200), Color.Black);
+
             string TimeS = $"\nTimePerSec: {TimePSec}";
             spriteBatch.DrawString(_font, $"Count Dialogue : {GameManager.countDia}", new Vector2(100, 300), Color.Blue);
-            spriteBatch.DrawString(_font, $"isReset {DnDScene.isReset}", new Vector2 (100, 200), Color.Black);
+            spriteBatch.DrawString(_font, $"_what : {_what}", new Vector2(100, 400), Color.Blue);
             */
+
 
             if (isPaused)
             {
+                //DrawString(SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+                //spriteBatch.DrawString(_font, "Paused", new Vector2(900, 300), Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
-                if (showSettings == true)
+                _resumeButton.Draw(spriteBatch);
+                _homeButton.Draw(spriteBatch);
+                _exitButton.Draw(spriteBatch);
+                if (isClickExit)
                 {
-                    spriteBatch.Draw(settingBG, new Vector2(224, 175), Color.White);
-
-                    spriteBatch.Draw(header, new Vector2((1920 - header.Width) / 2, 120), Color.White);
-
-                    DrawVolumeBar(spriteBatch, musicBarPos, SoundManager.MusicVolume, SoundManager.MusicVolume > 0, musicIcon, muteMusicIcon);
-                    DrawVolumeBar(spriteBatch, sfxBarPos, SoundManager.SfxVolume, SoundManager.SfxVolume > 0, sfxIcon, muteSfxIcon);
-                }
-                if (isRecipeInGame == false) 
-                {
-                    _homeButton.Draw(spriteBatch);
-                    _settingButton.Draw(spriteBatch);
-                    _exitButton.Draw(spriteBatch);
-                    if (isClickExit)
-                    {
-                        spriteBatch.Draw(logExit, new Rectangle(448, 263, 1024, 534), Color.White);
-                        _yesExit.DrawHover(spriteBatch);
-                        _noExit.DrawHover(spriteBatch);
-                    }
-                    if (!showSettings && !isClickExit)
-                    {
-                        _resumeButton.Draw(spriteBatch);
-                    }
-
+                    spriteBatch.Draw(logExit, new Rectangle(448, 263, 1024, 534), Color.White);
+                    _yesExit.Draw(spriteBatch);
+                    _noExit.Draw(spriteBatch);
                 }
             }
             else if (isEndLv)
@@ -733,92 +457,57 @@ namespace Mystic_Foods
                 Profit = Revenue - Cost;
                 spriteBatch.Draw(_rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.5f);
                 spriteBatch.Draw(revenueBox, new Vector2(100, 100), Color.White);
-                spriteBatch.DrawString(_font, $"Revenue...........................................{Revenue}B", new Vector2(350, 280), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
-                spriteBatch.DrawString(_font, $"Cost..................................................{Cost}B", new Vector2(350, 390), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
-                spriteBatch.DrawString(_font, $"Profit..............................................{Profit}B", new Vector2(350, 650), Color.Brown, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"{Revenue}", new Vector2(1250, 320), Color.Green, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"{Cost}", new Vector2(1250, 430), Color.Red, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(_font, $"{Profit}", new Vector2(1250, 690), Color.Black, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0);
                 //DnDScene._okLogBtn.Draw(spriteBatch);
                 _OkButton.Draw(spriteBatch);
             }
-            _menuButton.Draw(spriteBatch);
+                _menuButton.Draw(spriteBatch);
 
             spriteBatch.End();
         }
-
-        //void Updateframe(float elapsed)
-        //{
-        //    totalElapsed += elapsed;
-        //    if (totalElapsed > timePerFrame)
-        //    {
-        //        frame = (frame + 1) % 6;
-        //        totalElapsed -= timePerFrame;
-        //    }
-        //}
         public static void DrawEmotionIcon(SpriteFont _font, SpriteBatch spriteBatch, Vector2 EmotionPos)
         {
             float patiencePerc = _patienceMeter / _patienceMeterStart;
             if (patiencePerc >= 2f / 3f)
             {
-                //customer happy
+                //spriteBatch.Draw(_happy, EmotionPos, Color.White);
                 spriteBatch.Draw(spriteEmoIcon, EmotionPos, new Rectangle(0, 0, 264, 104), Color.White);
                 weight = 1.0f;
             }
             else if (patiencePerc >= 1f / 3f)
             {
-                //customer netural
+                //spriteBatch.Draw(_natural, EmotionPos, Color.White);
                 spriteBatch.Draw(spriteEmoIcon, EmotionPos, new Rectangle(0, 104, 264, 104), Color.White);
                 weight = 0.75f;
             }
             else
             {
-                //customer angry
+                //spriteBatch.Draw(_angry, EmotionPos, Color.White);
                 spriteBatch.Draw(spriteEmoIcon, EmotionPos, new Rectangle(0, 208, 264, 104), Color.White);
                 weight = 0.25f;
             }
+            //string patienceText = $"{_patienceMeter:0}%";
+            //spriteBatch.DrawString(_font, patienceText, new Vector2(EmotionPos.X + (_happy.Width / 5), EmotionPos.Y + _happy.Height), Color.Black);
         }
-
-        private void DrawVolumeBar(SpriteBatch spriteBatch, Vector2 position, float volume, bool notMuted, Texture2D normalIcon, Texture2D muteIcon)
-        {
-            spriteBatch.Draw(notMuted ? normalIcon : muteIcon, new Vector2(position.X - 250, position.Y - 30), Color.White);
-
-            spriteBatch.Draw(barBg, position, null, Color.White, 0f, Vector2.Zero, barScale, SpriteEffects.None, 0f);
-            float fillWidth = barFill.Width * volume;
-            Rectangle sourceRect = new Rectangle(0, 0, (int)fillWidth, barFill.Height);
-
-            spriteBatch.Draw(barFill, position, sourceRect, Color.White, 0f, Vector2.Zero, barScale, SpriteEffects.None, 0f);
-
-            Vector2 knobPos = new Vector2(position.X + fillWidth - knob.Width / 2, position.Y - 5);
-            spriteBatch.Draw(knob, knobPos, Color.White);
-
-            spriteBatch.DrawString(_font, $"{(int)(volume * 100)}%", new Vector2(position.X + barBg.Width + 50, position.Y), Color.Black);
-        }
-
         private void YesButton_Click(Object sender, EventArgs e)
         {
-            SoundManager.PlaySfx("Button");
             DnDRequested = true;
             DnDScene.cameraPos = Vector2.Zero;
-            _orderRecieve = true;
         }
         private void WhatButton_Click(Object sender, EventArgs e)
         {
-            if (GameManager.countDia < 4)
-            {
-                SoundManager.PlaySfx(_currentCustomer.VoicePathMood);
-                _patienceMeter -= 10f;
-                GameManager.countDia++;
-            }
+            GameManager.countDia = 3;
         }
         public void MenuButton_Click(object sender, EventArgs e)
         {
             isPaused = !isPaused;
             isClickExit = false;
-            isRecipeInGame = false;
-            SoundManager.PlaySfx("Click");
         }
         public void HomeButton_Click(Object sender, EventArgs e)
         {
             //reset Scene
-            SoundManager.PlaySfx("Click");
             GetCustomerByPhase();
             _patienceMeter = _patienceMeterStart;
             LoadCustomerTextures();
@@ -827,52 +516,38 @@ namespace Mystic_Foods
             isEndLv = false;
             GameManager.countDia = 2;
             isClickExit = false;
-            showSettings = false;
             BackToMenuRequested = true;
-            DnDScene.isReset = true;
         }
-
+        public void ServedYes_Click(Object sender, EventArgs e)
+        {
+            GetCustomerByPhase();
+            _patienceMeter = _patienceMeterStart;
+            LoadCustomerTextures();
+            GameManager.countDia = 2;
+            served = false;
+        }
         public void ResumeButton_Click(object sender, EventArgs e)
         {
             isPaused = false;
-            SoundManager.PlaySfx("Click");
-        }
-        public void RecipeInGame(object sender, EventArgs e)
-        {
-            Recipe.RecipeBookRequest = true;
-            isRecipeInGame = true;
-            SoundManager.PlaySfx("Page");
         }
         private void ExitButton_Click(object sender, EventArgs e)
         {
             isClickExit = !isClickExit;
-            showSettings = false;
-            SoundManager.PlaySfx("Click");
         }
         private void yesExitButton_Click(object sender, EventArgs e)
         {
-            _orderRecieve = false;
             ExitRequest = true;
-            SoundManager.PlaySfx("Click");
         }
         private void noExitButton_Click(object sender, EventArgs e)
         {
             isClickExit = false;
-            SoundManager.PlaySfx("Click");
         }
+        
         private void OkEndButton_Click(object sender, EventArgs e)
         {
             isEndLv = false;
             BackToMenuRequested = true;
-            SoundManager.PlaySfx("Click");
         }
-        private void SettingButton_Click(object sender, EventArgs e)
-        {
-            showSettings = !showSettings;
-            isClickExit = false;
-            SoundManager.PlaySfx("Click");
-        }
-
         public void GetCustomerByPhase()
         {
             switch (CurrentPhase)
@@ -880,94 +555,12 @@ namespace Mystic_Foods
                 case DayPhase.Dawn:
                     _currentCustomer = _customerManager.GetNextCustomer();
                     break;
-
                 case DayPhase.Dusk:
                     _currentCustomer = _customerManager.GetNextCustomer2();
                     break;
-
                 case DayPhase.Night:
-
                     _currentCustomer = _customerManager.GetNextCustomer3();
-
-                    /*
-                    if (!_customerManager.IsEventFinished)
-                    {
-                        _currentCustomer = _customerManager.GetEventCustomer();
-                    }
-                    else
-                    {
-                        _currentCustomer = _customerManager.GetNextCustomer3();
-                    }
-                    */
                     break;
-            }
-        }
-        public void SkipCustomer()
-        {
-            GetCustomerByPhase();
-            _patienceMeter = _patienceMeterStart;
-            LoadCustomerTextures();
-            GameManager.countDia = 2;
-        }
-        private void StartTyping(string text)
-        {
-            if (!_isTransition)
-            {
-                fullText = text;
-                displayedText = "";
-                charIndex = 0;
-                typingTimer = 0f;
-
-                if (GameManager.countDia == 2)
-                {
-                    SoundManager.PlaySfx(_currentCustomer.VoicePathTalk);
-                }
-            }
-        }
-
-        public async void wait()
-        {
-            await Task.Delay(1000);
-        }
-
-        public void FadeIn()
-        {
-            _isFadingIn = true;
-            _isFadingOut = false;
-            _alpha = 0f;
-            _customerPosition = _startPos;
-        }
-
-        public void FadeOut()
-        {
-            _isFadingOut = true;
-            _isFadingIn = false;
-            _alpha = 1f;
-            _customerPosition = _endPos;
-        }
-        
-        public async void changeCustomer()
-        {
-            FadeOut();
-            GameManager.countDia = 2;
-            SoundManager.PlaySfx("Walking");
-            await Task.Delay(500);
-
-            GetCustomerByPhase();
-            _patienceMeter = _patienceMeterStart;
-            LoadCustomerTextures();
-            FadeIn();
-            served = false;
-        }
-
-        public void ServedYes_Click(Object sender, EventArgs e)
-        {
-            changeCustomer();
-
-            if (TimeStage <= 0)
-            {
-                isEndLv = true;
-                TimeStage = TimeDefault;
             }
         }
     }

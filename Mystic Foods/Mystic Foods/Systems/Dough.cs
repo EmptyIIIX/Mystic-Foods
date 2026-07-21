@@ -14,6 +14,7 @@ namespace Mystic_Foods.Systems
             Golden_Moon = 30 
         }
         public DoughType DoughKind { get; private set; }
+        public string Type => $"Dough_{DoughKind}";
 
         private Texture2D _normalTexture;
         private Texture2D _onPlateTexture;

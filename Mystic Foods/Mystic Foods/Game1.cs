@@ -15,16 +15,19 @@ namespace Mystic_Foods
         private SpriteBatch _spriteBatch;
 
         private GameManager _gameManager;
+
+        //Scene Management
         private IGameScene _currentScene;
         private MainMenuScene _mainMenuScene;
         private GamePlayScene _gamePlayScene;
         private DnDScene _dndScene;
         private LevelSelectScene _levelSelectScene;
-        private Recipe _recipeScene;
-        private CreditScene _creditScene;
+        private TutorialScene _tutorialScene;
         private SettingScene _settingScene;
+
         private CustomerManager _customerManager;
 
+        public static bool wasTutorial = false;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -51,8 +54,7 @@ namespace Mystic_Foods
             _mainMenuScene = new MainMenuScene();
             _gamePlayScene = new GamePlayScene(_customerManager);
             _levelSelectScene = new LevelSelectScene();
-            _recipeScene = new Recipe();
-            _creditScene = new CreditScene();
+            _tutorialScene = new TutorialScene();
             _settingScene = new SettingScene();
 
             //make it start at main menu
@@ -63,6 +65,7 @@ namespace Mystic_Foods
         }
         private void OnClientSizeChanged(object sender, System.EventArgs e)
         {
+            //อัปเดตขนาด back bufferเมื่อหน้าต่างเปลี่ยนขนาด
             _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
             _graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
             _graphics.ApplyChanges();
@@ -71,55 +74,17 @@ namespace Mystic_Foods
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            MediaPlayer.IsRepeating = true;
-            SoundManager.MusicVolume = 0.1f;
+            SoundManager.MusicVolume = 0.5f;
             #region BGM
-            SoundManager.AddSong("mainmenu", Content.Load<Song>("Music/BGM/Lao Lum Dab"));
-            SoundManager.AddSong("daybgm", Content.Load<Song>("Music/BGM/Thai Mung"));
-            SoundManager.AddSong("duskbgm", Content.Load<Song>("Music/BGM/Thai Ar Hom (Chaina)"));
+            SoundManager.AddSong("mainmenu", Content.Load<Song>("Music/BGM/bgm02"));
             SoundManager.AddSong("nightbgm", Content.Load<Song>("Music/BGM/bgm01"));
             #endregion
 
-            SoundManager.SfxVolume = 0.1f;
+            SoundManager.SfxVolume = 0.5f;
             #region SFX
             SoundManager.AddSound("Button", Content.Load<SoundEffect>("Music/SFX/Button Press"));
-            SoundManager.AddSound("Button2", Content.Load<SoundEffect>("Music/SFX/Button Press2"));
-            SoundManager.AddSound("Click", Content.Load<SoundEffect>("Music/SFX/Click"));
+            SoundManager.AddSound("Click", Content.Load<SoundEffect>("Music/SFX/Click2"));
             SoundManager.AddSound("Cooking", Content.Load<SoundEffect>("Music/SFX/Cooking"));
-            SoundManager.AddSound("SteamRelease", Content.Load<SoundEffect>("Music/SFX/SteamRelease"));
-            SoundManager.AddSound("Walking", Content.Load<SoundEffect>("Music/SFX/Walking"));
-            SoundManager.AddSound("Coin", Content.Load<SoundEffect>("Music/SFX/Coin2"));
-            SoundManager.AddSound("Woosh", Content.Load<SoundEffect>("Music/SFX/woosh"));
-            SoundManager.AddSound("Trash", Content.Load<SoundEffect>("Music/SFX/Trash"));
-            SoundManager.AddSound("Mix", Content.Load<SoundEffect>("Music/SFX/prink"));
-            SoundManager.AddSound("Keep", Content.Load<SoundEffect>("Music/SFX/Mixed"));
-            SoundManager.AddSound("Page", Content.Load<SoundEffect>("Music/SFX/Page"));
-            #endregion
-
-            #region Voice
-            SoundManager.AddSound("Cartoon Talk", Content.Load<SoundEffect>("Music/Voice/Cartoon Talk"));
-
-            SoundManager.AddSound("Female Ahem", Content.Load<SoundEffect>("Music/Voice/Female Ahem"));
-            SoundManager.AddSound("Female Augh", Content.Load<SoundEffect>("Music/Voice/Female Augh"));
-            SoundManager.AddSound("Female Augh2", Content.Load<SoundEffect>("Music/Voice/Female Augh2"));
-            SoundManager.AddSound("Female Disagree1", Content.Load<SoundEffect>("Music/Voice/Female Disagree1"));
-            SoundManager.AddSound("Female Disagree2", Content.Load<SoundEffect>("Music/Voice/Female Disagree2"));
-            SoundManager.AddSound("Female Hmm1", Content.Load<SoundEffect>("Music/Voice/Female Hmm1"));
-            SoundManager.AddSound("Female Hmm2", Content.Load<SoundEffect>("Music/Voice/Female Hmm2"));
-            SoundManager.AddSound("Female Laugh1", Content.Load<SoundEffect>("Music/Voice/Female Laugh1"));
-            SoundManager.AddSound("Female Laugh2", Content.Load<SoundEffect>("Music/Voice/Female Laugh2"));
-            SoundManager.AddSound("Female Reject", Content.Load<SoundEffect>("Music/Voice/Female Reject"));
-
-            SoundManager.AddSound("Giant Mood", Content.Load<SoundEffect>("Music/Voice/Giant Mood"));
-            SoundManager.AddSound("Giant Pleasure", Content.Load<SoundEffect>("Music/Voice/Giant Pleasure"));
-
-            SoundManager.AddSound("Kid Angry", Content.Load<SoundEffect>("Music/Voice/Kid Angry"));
-            SoundManager.AddSound("Kid Surprise", Content.Load<SoundEffect>("Music/Voice/Kid Surprise"));
-
-            SoundManager.AddSound("Male Hi", Content.Load<SoundEffect>("Music/Voice/Male Hi"));
-            SoundManager.AddSound("Male Angry1", Content.Load<SoundEffect>("Music/Voice/Male Angry1"));
-            SoundManager.AddSound("Male Angry2", Content.Load<SoundEffect>("Music/Voice/Male Angry2"));
-            SoundManager.AddSound("Male Sigh", Content.Load<SoundEffect>("Music/Voice/Male Sigh"));
             #endregion
 
             Globals.Content = Content;
@@ -133,8 +98,7 @@ namespace Mystic_Foods
             _gamePlayScene.LoadContent(Content, _spriteBatch);
             _dndScene.LoadContent(Content, _spriteBatch);
             _levelSelectScene.LoadContent(Content, _spriteBatch);
-            _recipeScene.LoadContent(Content, _spriteBatch);
-            _creditScene.LoadContent(Content, _spriteBatch);
+            _tutorialScene.LoadContent(Content, _spriteBatch);
             _settingScene.LoadContent(Content, _spriteBatch);
 
         }
@@ -145,11 +109,18 @@ namespace Mystic_Foods
             if (_currentScene == _mainMenuScene)
             {
                 _mainMenuScene.Update(gameTime);
-                if (MainMenuScene.StartGameRequested)
+                if (_mainMenuScene.StartGameRequested && wasTutorial == false)
                 {
-                    MainMenuScene.StartGameRequested = false;
+                    _mainMenuScene.StartGameRequested = false;
+                    //_currentScene = _levelSelectScene;
+                    _currentScene = _tutorialScene;
+                }
+                else if (_mainMenuScene.StartGameRequested && wasTutorial)
+                {
+                    _mainMenuScene.StartGameRequested = false;
                     _currentScene = _levelSelectScene;
                 }
+
                 if (_mainMenuScene.DnDRequested)
                 {
                     _mainMenuScene.DnDRequested = false;
@@ -160,36 +131,22 @@ namespace Mystic_Foods
                     _mainMenuScene.SettingRequested = false;
                     _currentScene = _settingScene;
                 }
-                if (_mainMenuScene.CreditRequested)
-                {
-                    _mainMenuScene.CreditRequested = false;
-                    _currentScene = _creditScene;
-                }
             }
-            else if (_currentScene == _recipeScene)
+            else if(_currentScene == _tutorialScene)
             {
-                _recipeScene.Update(gameTime);
-                if (Recipe.isExitPage)
+                _tutorialScene.Update(gameTime);
+                if (TutorialScene.isExitPage)
                 {
-                    _currentScene = _dndScene;
-                    Recipe.isExitPage = false;
-                }
-            }
-            else if (_currentScene == _creditScene)
-            {
-                _creditScene.Update(gameTime);
-                if (CreditScene.ExitToMenu)
-                {
-                    _currentScene = _mainMenuScene;
-                    CreditScene.ExitToMenu = false;
+                    _currentScene = _levelSelectScene;
+                    TutorialScene.isExitPage = false;
                 }
             }
             else if (_currentScene == _levelSelectScene)
             {
                 _levelSelectScene.Update(gameTime);
-                if (_levelSelectScene.tutorial2)
+                if (_levelSelectScene.gameplayRequest)
                 {
-                    _levelSelectScene.tutorial2 = false;
+                    _levelSelectScene.gameplayRequest = false;
                     _currentScene = _gamePlayScene;
                 }
                 if (_levelSelectScene.MenuRequest)
@@ -210,7 +167,6 @@ namespace Mystic_Foods
             else if (_currentScene == _gamePlayScene)
             {
                 _gamePlayScene.Update(gameTime);
-
                 if (_gamePlayScene.BackToMenuRequested)
                 {
                     _gamePlayScene.BackToMenuRequested = false;
@@ -225,7 +181,6 @@ namespace Mystic_Foods
             else if (_currentScene == _dndScene)
             {
                 _dndScene.Update(gameTime);
-
                 if (_gamePlayScene.BackToMenuRequested)
                 {
                     _gamePlayScene.BackToMenuRequested = false;
@@ -240,16 +195,6 @@ namespace Mystic_Foods
                 {
                     _dndScene.BackToGame = false;
                     _currentScene = _gamePlayScene;
-                }
-                if (_dndScene.backToCounter)
-                {
-                    _currentScene = _gamePlayScene;
-                    _dndScene.backToCounter = false;
-                }
-                if (Recipe.RecipeBookRequest)
-                {
-                    Recipe.RecipeBookRequest = false;
-                    _currentScene = _recipeScene;
                 }
             }
             //Check exit game

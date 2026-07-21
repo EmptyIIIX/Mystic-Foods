@@ -23,30 +23,29 @@ namespace Mystic_Foods.Scenes
         private Texture2D dayBtn, duskBtn, nightBtn, homeBtn;
 
         public bool MenuRequest = false;
-        //public bool gameplayRequest = false;
-        public bool tutorial2 = false;
+        public bool gameplayRequest = false;
 
         Texture2D bg;
         Button dayButton, duskButton, nightButton, homeButton;
 
         public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
         {
-            _font = content.Load<SpriteFont>("BoldFont");
+            _font = content.Load<SpriteFont>("MainFont");
 
             bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
-            homeBtn = content.Load<Texture2D>("UI/previous");
+            homeBtn = content.Load<Texture2D>("Etc/option_exit");
             dayBtn = content.Load<Texture2D>("LevelUI/Morning");
             duskBtn = content.Load<Texture2D>("LevelUI/Evening");
             nightBtn = content.Load<Texture2D>("LevelUI/Night");
 
-            dayButton = new Button(dayBtn, dayBtn, _font, "", new Rectangle(240, 300, 360, 640));
+            dayButton = new Button(dayBtn, _font, "", new Rectangle(240, 300, 360, 640));
             dayButton.Click += DayButton_Click;
-            duskButton = new Button(duskBtn, duskBtn, _font, "", new Rectangle(780, 300, 360, 640));
+            duskButton = new Button(duskBtn, _font, "", new Rectangle(780, 300, 360, 640));
             duskButton.Click += DuskButton_Click;
-            nightButton = new Button(nightBtn, nightBtn, _font, "", new Rectangle(1320, 300, 360, 640));
+            nightButton = new Button(nightBtn, _font, "", new Rectangle(1320, 300, 360, 640));
             nightButton.Click += NightButton_Click;
-            homeButton = new Button(homeBtn, homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
+            homeButton = new Button(homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
             homeButton.Click += HomeButton_Click;
         }
 
@@ -72,7 +71,7 @@ namespace Mystic_Foods.Scenes
             spriteBatch.GraphicsDevice.Clear(Color.DarkSlateBlue);
 
             string text = "Choose the opening hours";
-            float scale = 1.0f;
+            float scale = 3.0f;
 
             // วัดขนาดข้อความหลัง scale
             Vector2 textSize = _font.MeasureString(text) * scale;
@@ -82,7 +81,7 @@ namespace Mystic_Foods.Scenes
             int screenHeight = spriteBatch.GraphicsDevice.Viewport.Height;
 
             // คำนวณตำแหน่งให้อยู่กลางจอ
-            Vector2 position = new Vector2((screenWidth - textSize.X) / 2f,50);
+            Vector2 position = new Vector2((screenWidth - textSize.X) / 2f,100);
 
             spriteBatch.Begin();
             spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
@@ -99,44 +98,26 @@ namespace Mystic_Foods.Scenes
 
         private async void DayButton_Click(object sender, EventArgs e)
         {
-            SoundManager.StopMusic();
-            GamePlayScene.isSkip = false;
-            SoundManager.PlaySfx("Click");
+            SoundManager.PlaySfx("Button");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dawn;
-            SoundManager.PlaySfx("Walking");
-            //gameplayRequest = true;
-            tutorial2 = true;
-            await Task.Delay(500);
-            SoundManager.PlaySong("daybgm");
+            gameplayRequest = true;
         }
 
         private async void DuskButton_Click(object sender, EventArgs e)
         {
-            SoundManager.StopMusic();
-            GamePlayScene.isSkip = false;
-            SoundManager.PlaySfx("Click");
+            SoundManager.PlaySfx("Button");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dusk;
-            SoundManager.PlaySfx("Walking");
-            //gameplayRequest = true;
-            tutorial2 = true;
-            await Task.Delay(500);
-            SoundManager.PlaySong("duskbgm");
+            gameplayRequest = true;
         }
 
         private async void NightButton_Click(object sender, EventArgs e)
         {
-            SoundManager.StopMusic();
-            GamePlayScene.isSkip = false;
-            SoundManager.PlaySfx("Click");
+            SoundManager.PlaySfx("Button");
             await Task.Delay(100);
             GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Night;
-            SoundManager.PlaySfx("Walking");
-            //gameplayRequest = true;
-            tutorial2 = true;
-            await Task.Delay(500);
-            SoundManager.PlaySong("nightbgm");
+            gameplayRequest = true;
         }
         public async void HomeButton_Click(object sender, EventArgs e)
         {
