@@ -1,214 +1,141 @@
+using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
+using Mystic_Foods.Core.Scenes;
+using Mystic_Foods.Core.Services;
+using Mystic_Foods.Core.UI;
 using Mystic_Foods.Managers;
-using Mystic_Foods.Scenes;
 using Mystic_Foods.Systems;
 
 namespace Mystic_Foods
 {
+    /// <summary>
+    /// Main game class implementing Service Locator pattern for dependency injection
+    /// Follows Single Responsibility Principle - orchestrates game components
+    /// </summary>
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-
-        private GameManager _gameManager;
-
-        //Scene Management
-        private IGameScene _currentScene;
-        private MainMenuScene _mainMenuScene;
-        private GamePlayScene _gamePlayScene;
-        private DnDScene _dndScene;
-        private LevelSelectScene _levelSelectScene;
-        private TutorialScene _tutorialScene;
-        private SettingScene _settingScene;
-
+        private SceneManager _sceneManager;
         private CustomerManager _customerManager;
+        private GameManager _gameManager;
+        private SoundManager _soundManager;
+        private ScreenManager _screenManager;
 
-        public static bool wasTutorial = false;
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = Screen.PrimaryScreen.Bounds.Width,
+                PreferredBackBufferHeight = Screen.PrimaryScreen.Bounds.Height,
+                IsFullScreen = false,
+                SynchronizeWithVerticalRetrace = true
+            };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-            //screen resolution
-            //เก็บค่าขนาดหน้าจอของdevice
-            int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            int screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            //set up หน้าต่างเกม
-            _graphics.PreferredBackBufferWidth = screenWidth;
-            _graphics.PreferredBackBufferHeight = screenHeight;
-            _graphics.IsFullScreen = false;
-            Window.AllowUserResizing = true;
-            Window.IsBorderless = true;//better fullscreen
-            _graphics.ApplyChanges();
+            Window.Title = "Mystic Foods";
         }
+
         protected override void Initialize()
         {
-            SoundManager.LoadSettings();
-
+            // Setup Service Locator with all dependencies
+            SetupServiceLocator();
+            
+            // Initialize Graphics Service
+            _graphics.InitializeGraphicsDevice(1920, 1080);
+            ServiceLocator.Register<GraphicsService>(new GraphicsService());
+            ServiceLocator.Get<IGraphicsService>().Initialize(_graphics.GraphicsDevice, 1920, 1080);
+            
+            // Set screen service
+            var screenService = ServiceLocator.Get<IGraphicsService>();
+            _screenManager = new ScreenManager();
+            _screenManager.Initialize(_graphics, 1920, 1080, false);
+            ServiceLocator.Register<ScreenManager>(_screenManager);
+            
+            // Initialize Scene Manager
+            _sceneManager = new SceneManager(ServiceLocator.Get<ContentManager>(), _graphics.GraphicsDevice);
+            ServiceLocator.Register<SceneManager>(_sceneManager);
+            
+            // Register managers and systems
             _customerManager = new CustomerManager();
-            _mainMenuScene = new MainMenuScene();
-            _gamePlayScene = new GamePlayScene(_customerManager);
-            _levelSelectScene = new LevelSelectScene();
-            _tutorialScene = new TutorialScene();
-            _settingScene = new SettingScene();
-
-            //make it start at main menu
-            _currentScene = _mainMenuScene;
-
-            Window.ClientSizeChanged += OnClientSizeChanged;
+            ServiceLocator.Register<CustomerManager>(_customerManager);
+            
+            _gameManager = new GameManager();
+            ServiceLocator.Register<GameManager>(_gameManager);
+            
+            _soundManager = new SoundManager();
+            ServiceLocator.Register<SoundManager>(_soundManager);
+            
+            // Initialize game components
+            InitializeGameComponents();
+            
             base.Initialize();
         }
-        private void OnClientSizeChanged(object sender, System.EventArgs e)
+
+        private void SetupServiceLocator()
         {
-            //อัปเดตขนาด back bufferเมื่อหน้าต่างเปลี่ยนขนาด
-            _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
-            _graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
-            _graphics.ApplyChanges();
+            // Register core services first
+            ServiceLocator.Register<IInputService>(new InputService());
         }
+
+        private void InitializeGameComponents()
+        {
+            // Initialize core game systems
+            _gameManager.LoadContent(Content);
+            
+            // Create scene instances using dependency injection
+            var mainMenuScene = new MainMenuScene();
+            var gamePlayScene = new GamePlayScene(_customerManager);
+            var levelSelectScene = new LevelSelectScene();
+            var tutorialScene = new TutorialScene();
+            var settingScene = new SettingScene();
+            var dndScene = new DnDScene(_gameManager);
+            
+            // Register scenes with SceneManager
+            _sceneManager.RegisterScene("MainMenu", mainMenuScene);
+            _sceneManager.RegisterScene("GamePlay", gamePlayScene);
+            _sceneManager.RegisterScene("LevelSelect", levelSelectScene);
+            _sceneManager.RegisterScene("Tutorial", tutorialScene);
+            _sceneManager.RegisterScene("Settings", settingScene);
+            _sceneManager.RegisterScene("DnD", dndScene);
+            
+            // Start with main menu
+            _sceneManager.ChangeScene("MainMenu");
+        }
+
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            SoundManager.MusicVolume = 0.5f;
-            #region BGM
-            SoundManager.AddSong("mainmenu", Content.Load<Song>("Music/BGM/bgm02"));
-            SoundManager.AddSong("nightbgm", Content.Load<Song>("Music/BGM/bgm01"));
-            #endregion
-
-            SoundManager.SfxVolume = 0.5f;
-            #region SFX
-            SoundManager.AddSound("Button", Content.Load<SoundEffect>("Music/SFX/Button Press"));
-            SoundManager.AddSound("Click", Content.Load<SoundEffect>("Music/SFX/Click2"));
-            SoundManager.AddSound("Cooking", Content.Load<SoundEffect>("Music/SFX/Cooking"));
-            #endregion
-
-            Globals.Content = Content;
-            _gameManager = new GameManager();
-            _gameManager.LoadContent(Content);
-
-            _dndScene = new DnDScene(_gameManager);
-
-            //load scene
-            _mainMenuScene.LoadContent(Content, _spriteBatch);
-            _gamePlayScene.LoadContent(Content, _spriteBatch);
-            _dndScene.LoadContent(Content, _spriteBatch);
-            _levelSelectScene.LoadContent(Content, _spriteBatch);
-            _tutorialScene.LoadContent(Content, _spriteBatch);
-            _settingScene.LoadContent(Content, _spriteBatch);
-
+            // Content loading is handled by SceneManager
         }
+
         protected override void Update(GameTime gameTime)
         {
-            //Scene Logic
-            #region Scene Logic
-            if (_currentScene == _mainMenuScene)
-            {
-                _mainMenuScene.Update(gameTime);
-                if (_mainMenuScene.StartGameRequested && wasTutorial == false)
-                {
-                    _mainMenuScene.StartGameRequested = false;
-                    //_currentScene = _levelSelectScene;
-                    _currentScene = _tutorialScene;
-                }
-                else if (_mainMenuScene.StartGameRequested && wasTutorial)
-                {
-                    _mainMenuScene.StartGameRequested = false;
-                    _currentScene = _levelSelectScene;
-                }
-
-                if (_mainMenuScene.DnDRequested)
-                {
-                    _mainMenuScene.DnDRequested = false;
-                    _currentScene = _dndScene;
-                }
-                if (_mainMenuScene.SettingRequested)
-                {
-                    _mainMenuScene.SettingRequested = false;
-                    _currentScene = _settingScene;
-                }
-            }
-            else if(_currentScene == _tutorialScene)
-            {
-                _tutorialScene.Update(gameTime);
-                if (TutorialScene.isExitPage)
-                {
-                    _currentScene = _levelSelectScene;
-                    TutorialScene.isExitPage = false;
-                }
-            }
-            else if (_currentScene == _levelSelectScene)
-            {
-                _levelSelectScene.Update(gameTime);
-                if (_levelSelectScene.gameplayRequest)
-                {
-                    _levelSelectScene.gameplayRequest = false;
-                    _currentScene = _gamePlayScene;
-                }
-                if (_levelSelectScene.MenuRequest)
-                {
-                    _levelSelectScene.MenuRequest = false;
-                    _currentScene = _mainMenuScene;
-                }
-            }
-            else if (_currentScene == _settingScene)
-            {
-                _settingScene.Update(gameTime);
-                if (_settingScene.MenuRequest)
-                {
-                    _settingScene.MenuRequest = false;
-                    _currentScene = _mainMenuScene;
-                }
-            }
-            else if (_currentScene == _gamePlayScene)
-            {
-                _gamePlayScene.Update(gameTime);
-                if (_gamePlayScene.BackToMenuRequested)
-                {
-                    _gamePlayScene.BackToMenuRequested = false;
-                    _currentScene = _mainMenuScene;
-                }
-                else if (_gamePlayScene.DnDRequested)
-                {
-                    _gamePlayScene.DnDRequested = false;
-                    _currentScene = _dndScene;
-                }
-            }
-            else if (_currentScene == _dndScene)
-            {
-                _dndScene.Update(gameTime);
-                if (_gamePlayScene.BackToMenuRequested)
-                {
-                    _gamePlayScene.BackToMenuRequested = false;
-                    _currentScene = _mainMenuScene;
-                }
-                if (_dndScene.ServeRequest)
-                {
-                    _dndScene.ServeRequest = false;
-                    _currentScene = _gamePlayScene;
-                }
-                if (_dndScene.BackToGame)
-                {
-                    _dndScene.BackToGame = false;
-                    _currentScene = _gamePlayScene;
-                }
-            }
-            //Check exit game
-            if (_mainMenuScene.ExitRequested || _gamePlayScene.ExitRequest) Exit();
-            #endregion
-
+            // Update services
+            ServiceLocator.Get<IInputService>().Update();
+            ServiceLocator.Get<IGraphicsService>().UpdateViewport(
+                Window.ClientBounds.Width,
+                Window.ClientBounds.Height
+            );
+            
+            // Update SceneManager
+            _sceneManager.Update(gameTime);
+            
             base.Update(gameTime);
         }
+
         protected override void Draw(GameTime gameTime)
         {
-            //draw scene
-            _currentScene.Draw(_spriteBatch);
-
+            _graphics.GraphicsDevice.Clear(Color.Black);
+            _sceneManager.Draw(gameTime);
             base.Draw(gameTime);
+        }
+
+        protected override void UnloadContent()
+        {
+            _sceneManager?.OnResize(0, 0);
+            ServiceLocator.Clear();
+            base.UnloadContent();
         }
     }
 }
