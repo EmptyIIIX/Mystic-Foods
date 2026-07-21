@@ -1,63 +1,95 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Mystic_Foods.Managers;
-using Mystic_Foods.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+using Mystic_Foods.Core.DI;
+using Mystic_Foods.Core.Services;
+using Mystic_Foods.Core.Scenes;
+using Mystic_Foods.Core.UI;
 
 namespace Mystic_Foods.Scenes
 {
-    public class LevelSelectScene : IGameScene
+    public class LevelSelectScene : IScene
     {
-        private GraphicsDeviceManager _graphics;
+        private readonly IGraphicsService _graphics;
+        private readonly IInputService _input;
+        private readonly Container _container;
+
         private SpriteFont _font;
-        private Texture2D dayBtn, duskBtn, nightBtn, homeBtn;
+        public bool MenuRequest { get; private set; }
+        public bool GameplayRequest { get; private set; }
 
-        public bool MenuRequest = false;
-        public bool gameplayRequest = false;
+        private Texture2D _bg;
+        private Texture2D _dayBtnTex, _duskBtnTex, _nightBtnTex, _homeBtnTex;
+        private Button _dayButton, _duskButton, _nightButton, _homeButton;
 
-        Texture2D bg;
-        Button dayButton, duskButton, nightButton, homeButton;
+        public string Name { get; } = "LevelSelect";
+        public bool IsActive { get; set; }
+        public bool IsVisible { get; set; } = true;
 
-        public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
+        public LevelSelectScene(Container container)
+        {
+            _container = container;
+            _graphics = container.Resolve<IGraphicsService>();
+            _input = container.Resolve<IInputService>();
+        }
+
+        public void LoadContent(ContentManager content)
         {
             _font = content.Load<SpriteFont>("MainFont");
+            _bg = content.Load<Texture2D>("Environments/BG/MenuBG");
 
-            bg = content.Load<Texture2D>("Environments/BG/MenuBG");
+            _homeBtnTex = content.Load<Texture2D>("Etc/option_exit");
+            _dayBtnTex = content.Load<Texture2D>("LevelUI/Morning");
+            _duskBtnTex = content.Load<Texture2D>("LevelUI/Evening");
+            _nightBtnTex = content.Load<Texture2D>("LevelUI/Night");
 
-            homeBtn = content.Load<Texture2D>("Etc/option_exit");
-            dayBtn = content.Load<Texture2D>("LevelUI/Morning");
-            duskBtn = content.Load<Texture2D>("LevelUI/Evening");
-            nightBtn = content.Load<Texture2D>("LevelUI/Night");
+            _dayButton = new Button(new ButtonConfig
+            {
+                Texture = _dayBtnTex,
+                Font = _font,
+                Text = "",
+                Bounds = new Rectangle(240, 300, 360, 640),
+                OnClick = _ => { GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dawn; GameplayRequest = true; }
+            });
 
-            dayButton = new Button(dayBtn, _font, "", new Rectangle(240, 300, 360, 640));
-            dayButton.Click += DayButton_Click;
-            duskButton = new Button(duskBtn, _font, "", new Rectangle(780, 300, 360, 640));
-            duskButton.Click += DuskButton_Click;
-            nightButton = new Button(nightBtn, _font, "", new Rectangle(1320, 300, 360, 640));
-            nightButton.Click += NightButton_Click;
-            homeButton = new Button(homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
-            homeButton.Click += HomeButton_Click;
+            _duskButton = new Button(new ButtonConfig
+            {
+                Texture = _duskBtnTex,
+                Font = _font,
+                Text = "",
+                Bounds = new Rectangle(780, 300, 360, 640),
+                OnClick = _ => { GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dusk; GameplayRequest = true; }
+            });
+
+            _nightButton = new Button(new ButtonConfig
+            {
+                Texture = _nightBtnTex,
+                Font = _font,
+                Text = "",
+                Bounds = new Rectangle(1320, 300, 360, 640),
+                OnClick = _ => { GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Night; GameplayRequest = true; }
+            });
+
+            _homeButton = new Button(new ButtonConfig
+            {
+                Texture = _homeBtnTex,
+                Font = _font,
+                Text = "",
+                Bounds = new Rectangle(50, 50, 80, 100),
+                OnClick = _ => MenuRequest = true
+            });
         }
 
         public void Update(GameTime gameTime)
         {
-            var state = Keyboard.GetState();
-            var mouse = Mouse.GetState();
+            if (!IsActive) return;
+            _input.Update();
 
-            dayButton.Update();
-            duskButton.Update();
-            nightButton.Update();
-            homeButton.Update();
+            _dayButton.Update(gameTime);
+            _duskButton.Update(gameTime);
+            _nightButton.Update(gameTime);
+            _homeButton.Update(gameTime);
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
@@ -65,65 +97,34 @@ namespace Mystic_Foods.Scenes
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // ใช้ GraphicsDevice จาก spriteBatch เพื่อ clear หน้าจอ
-            spriteBatch.GraphicsDevice.Clear(Color.DarkSlateBlue);
+            if (!IsVisible) return;
+
+            _graphics.Begin();
+            _graphics.Draw(_bg, new Rectangle(0, 0, 1920, 1080), null, Color.White);
 
             string text = "Choose the opening hours";
             float scale = 3.0f;
-
-            // วัดขนาดข้อความหลัง scale
             Vector2 textSize = _font.MeasureString(text) * scale;
+            int screenWidth = _graphics.Viewport.Width;
+            Vector2 position = new Vector2((screenWidth - textSize.X) / 2f, 100);
 
-            // ใช้ GraphicsDevice จาก spriteBatch
-            int screenWidth = spriteBatch.GraphicsDevice.Viewport.Width;
-            int screenHeight = spriteBatch.GraphicsDevice.Viewport.Height;
+            _graphics.DrawString(_font, text, position, Color.White, 0f, Vector2.Zero, scale);
 
-            // คำนวณตำแหน่งให้อยู่กลางจอ
-            Vector2 position = new Vector2((screenWidth - textSize.X) / 2f,100);
-
-            spriteBatch.Begin();
-            spriteBatch.Draw(bg, new Vector2(0, 0), Color.White);
-
-            spriteBatch.DrawString(_font, text, position, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-
-            dayButton.Draw(spriteBatch);
-            duskButton.Draw(spriteBatch);
-            nightButton.Draw(spriteBatch);
-            homeButton.Draw(spriteBatch);
-
-            spriteBatch.End();
+            _dayButton.Draw(gameTime, _graphics.SpriteBatch);
+            _duskButton.Draw(gameTime, _graphics.SpriteBatch);
+            _nightButton.Draw(gameTime, _graphics.SpriteBatch);
+            _homeButton.Draw(gameTime, _graphics.SpriteBatch);
+            _graphics.End();
         }
 
-        private async void DayButton_Click(object sender, EventArgs e)
+        public void OnEnter()
         {
-            SoundManager.PlaySfx("Button");
-            await Task.Delay(100);
-            GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dawn;
-            gameplayRequest = true;
+            MenuRequest = GameplayRequest = false;
         }
 
-        private async void DuskButton_Click(object sender, EventArgs e)
-        {
-            SoundManager.PlaySfx("Button");
-            await Task.Delay(100);
-            GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Dusk;
-            gameplayRequest = true;
-        }
-
-        private async void NightButton_Click(object sender, EventArgs e)
-        {
-            SoundManager.PlaySfx("Button");
-            await Task.Delay(100);
-            GamePlayScene.CurrentPhase = GamePlayScene.DayPhase.Night;
-            gameplayRequest = true;
-        }
-        public async void HomeButton_Click(object sender, EventArgs e)
-        {
-            SoundManager.PlaySfx("Click");
-            await Task.Delay(100);
-            MenuRequest = true;
-        }
+        public void OnExit() { }
+        public void OnResize(int width, int height) { }
     }
 }

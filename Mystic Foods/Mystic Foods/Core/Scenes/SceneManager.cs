@@ -1,14 +1,11 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Mystic_Foods.Core.Services;
+using Mystic_Foods.Core.Scenes;
 
 namespace Mystic_Foods.Core.Scenes
 {
-    /// <summary>
-    /// Manages scene transitions using State pattern
-    /// Follows Single Responsibility Principle - handles only scene lifecycle
-    /// </summary>
     public class SceneManager
     {
         private ContentManager _content;
@@ -97,7 +94,6 @@ namespace Mystic_Foods.Core.Scenes
                 {
                     _transitionAlpha = 1f;
                     
-                    // Switch scene at peak darkness
                     _currentScene?.OnExit();
                     _currentScene = _nextScene;
                     _currentSceneName = _nextSceneName;
@@ -119,9 +115,9 @@ namespace Mystic_Foods.Core.Scenes
             }
         }
 
-        public void Draw(GameTime gameTime)
-        {
-            _currentScene?.Draw(gameTime);
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+                {
+                    _currentScene?.Draw(gameTime, spriteBatch);
             
             if (_isTransitioning)
             {

@@ -3,86 +3,113 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Mystic_Foods.Managers;
-using Mystic_Foods.Systems;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Mystic_Foods.Core.DI;
+using Mystic_Foods.Core.Services;
+using Mystic_Foods.Core.Scenes;
+using Mystic_Foods.Core.UI;
+using Mystic_Foods.Managers;
 
 namespace Mystic_Foods.Scenes
 {
-    public class SettingScene : IGameScene
+    public class SettingScene : IScene
     {
+        private readonly Container _container;
+        private readonly IGraphicsService _graphics;
+        private readonly IInputService _input;
+
         private SpriteFont _font;
-        private KeyboardState prevKey;
-        public bool MenuRequest = false;
+        private KeyboardState _prevKey;
+        public bool MenuRequest { get; private set; }
 
-        Button homeButton;
-        private Texture2D homeBtn;
+        private Button _homeButton;
+        private Texture2D _homeBtnTex;
 
-        public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
+        public string Name => "Setting";
+        public bool IsActive { get; set; }
+        public bool IsVisible { get; set; } = true;
+
+        public SettingScene(Container container)
+        {
+            _container = container;
+            _graphics = container.Resolve<IGraphicsService>();
+            _input = container.Resolve<IInputService>();
+        }
+
+        public void LoadContent(ContentManager content)
         {
             _font = content.Load<SpriteFont>("MainFont");
+            _homeBtnTex = content.Load<Texture2D>("Etc/option_exit");
 
-            homeBtn = content.Load<Texture2D>("Etc/option_exit");
-
-            homeButton = new Button(homeBtn, _font, "", new Rectangle(50, 50, 80, 100));
-            homeButton.Click += HomeButton_Click;
+            _homeButton = new Button(new ButtonConfig
+            {
+                Texture = _homeBtnTex,
+                Font = _font,
+                Text = "",
+                Bounds = new Rectangle(50, 50, 80, 100),
+                OnClick = _ => HomeButton_Click()
+            });
         }
 
         public void Update(GameTime gameTime)
         {
-            homeButton.Update();
+            if (!IsActive) return;
+            _input.Update();
+
+            _homeButton.Update(gameTime);
 
             var key = Keyboard.GetState();
 
             // ปรับ BGM
-            if (key.IsKeyDown(Keys.Right) && !prevKey.IsKeyDown(Keys.Right))
-                SoundManager.SetMusicVolume(SoundManager.MusicVolume + 0.1f);
+            if (key.IsKeyDown(Keys.Right) && !_prevKey.IsKeyDown(Keys.Right))
+                SoundManager.SetMusicVolume(MathHelper.Clamp(SoundManager.MusicVolume + 0.1f, 0f, 1f));
 
-            if (key.IsKeyDown(Keys.Left) && !prevKey.IsKeyDown(Keys.Left))
-                SoundManager.SetMusicVolume(SoundManager.MusicVolume - 0.1f);
+            if (key.IsKeyDown(Keys.Left) && !_prevKey.IsKeyDown(Keys.Left))
+                SoundManager.SetMusicVolume(MathHelper.Clamp(SoundManager.MusicVolume - 0.1f, 0f, 1f));
 
             // ปรับ SFX
-            if (key.IsKeyDown(Keys.Up) && !prevKey.IsKeyDown(Keys.Up))
-                SoundManager.SetSfxVolume(SoundManager.SfxVolume + 0.1f);
+            if (key.IsKeyDown(Keys.Up) && !_prevKey.IsKeyDown(Keys.Up))
+                SoundManager.SetSfxVolume(MathHelper.Clamp(SoundManager.SfxVolume + 0.1f, 0f, 1f));
 
-            if (key.IsKeyDown(Keys.Down) && !prevKey.IsKeyDown(Keys.Down))
-                SoundManager.SetSfxVolume(SoundManager.SfxVolume - 0.1f);
+            if (key.IsKeyDown(Keys.Down) && !_prevKey.IsKeyDown(Keys.Down))
+                SoundManager.SetSfxVolume(MathHelper.Clamp(SoundManager.SfxVolume - 0.1f, 0f, 1f));
 
             // ปุ่ม Mute
-            if (key.IsKeyDown(Keys.M) && !prevKey.IsKeyDown(Keys.M))
+            if (key.IsKeyDown(Keys.M) && !_prevKey.IsKeyDown(Keys.M))
                 SoundManager.ToggleMute();
 
             // ปุ่ม Save
-            if (key.IsKeyDown(Keys.Enter) && !prevKey.IsKeyDown(Keys.Enter))
+            if (key.IsKeyDown(Keys.Enter) && !_prevKey.IsKeyDown(Keys.Enter))
                 SoundManager.SaveSettings();
 
-            prevKey = key;
+            _prevKey = key;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.GraphicsDevice.Clear(Color.Black);
+            if (!IsVisible) return;
 
-            spriteBatch.Begin();
-            homeButton.Draw(spriteBatch);
+            _graphics.Begin();
+            _graphics.SpriteBatch.GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.DrawString(_font, $"BGM Volume: {(int)(SoundManager.MusicVolume * 100)}%", new Vector2(100, 100), Color.White);
-            spriteBatch.DrawString(_font, $"SFX Volume: {(int)(SoundManager.SfxVolume * 100)}%", new Vector2(100, 140), Color.White);
-            spriteBatch.DrawString(_font, $"Muted: {(MediaPlayer.Volume == 0 ? "Yes" : "No")}", new Vector2(100, 180), Color.White);
-            spriteBatch.DrawString(_font, "←/→: BGM | ↑/↓: SFX | M: Mute | Enter: Save", new Vector2(100, 240), Color.Gray);
+            _homeButton.Draw(gameTime, _graphics.SpriteBatch);
 
-            spriteBatch.End();
+            _graphics.SpriteBatch.DrawString(_font, $"BGM Volume: {(int)(SoundManager.MusicVolume * 100)}%", new Vector2(100, 100), Color.White);
+            _graphics.SpriteBatch.DrawString(_font, $"SFX Volume: {(int)(SoundManager.SfxVolume * 100)}%", new Vector2(100, 140), Color.White);
+            _graphics.SpriteBatch.DrawString(_font, $"Muted: {(SoundManager.IsMuted ? "Yes" : "No")}", new Vector2(100, 180), Color.White);
+            _graphics.SpriteBatch.DrawString(_font, "←/→: BGM | ↑/↓: SFX | M: Mute | Enter: Save", new Vector2(100, 240), Color.Gray);
+
+            _graphics.End();
         }
 
-        public async void HomeButton_Click(object sender, EventArgs e)
+        private void HomeButton_Click()
         {
             SoundManager.PlaySfx("Click");
-            await Task.Delay(100);
             MenuRequest = true;
         }
+
+        public void OnEnter() { }
+        public void OnExit() { }
+        public void OnResize(int width, int height) { }
     }
 }

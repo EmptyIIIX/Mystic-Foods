@@ -3,22 +3,18 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using Mystic_Foods.Core.Services;
+using Mystic_Foods.Core.UI;
 
 namespace Mystic_Foods.Core.UI
 {
-    /// <summary>
-    /// Button styles for different visual states
-    /// </summary>
     public enum ButtonStyle
     {
-        Default,      // Simple color tint on hover
-        HoverTexture, // Separate hover texture
-        Custom        // Custom draw delegate
+        Default,
+        HoverTexture,
+        Custom
     }
 
-    /// <summary>
-    /// Button configuration using Builder pattern
-    /// </summary>
     public class ButtonConfig
     {
         public Texture2D Texture { get; set; }
@@ -33,120 +29,32 @@ namespace Mystic_Foods.Core.UI
         public Color TextColor { get; set; } = Color.Black;
         public ButtonStyle Style { get; set; } = ButtonStyle.Default;
         public Vector2 TextOffset { get; set; } = Vector2.Zero;
-        public float _origin;
         public Action<Button> OnClick { get; set; }
         public Action<Button> OnHoverEnter { get; set; }
         public Action<Button> OnHoverExit { get; set; }
     }
 
-    /// <summary>
-    /// Button builder for fluent configuration
-    /// </summary>
     public class ButtonBuilder
     {
         private readonly ButtonConfig _config = new();
 
-        public ButtonBuilder WithTexture(Texture2D texture)
-        {
-            _config.Texture = texture;
-            return this;
-        }
-
-        public ButtonBuilder WithHoverTexture(Texture2D texture)
-        {
-            _config.HoverTexture = texture;
-            _config.Style = ButtonStyle.HoverTexture;
-            return this;
-        }
-
-        public ButtonBuilder WithPressedTexture(Texture2D texture)
-        {
-            _config.PressedTexture = texture;
-            return this;
-        }
-
-        public ButtonBuilder WithFont(SpriteFont font)
-        {
-            _config.Font = font;
-            return this;
-        }
-
-        public ButtonBuilder WithText(string text)
-        {
-            _config.Text = text;
-            return this;
-        }
-
-        public ButtonBuilder WithBounds(Rectangle bounds)
-        {
-            _config.Bounds = bounds;
-            return this;
-        }
-
-        public ButtonBuilder WithBounds(int x, int y, int width, int height)
-        {
-            _config.Bounds = new Rectangle(x, y, width, height);
-            return this;
-        }
-
-        public ButtonBuilder WithColors(Color normal, Color hover, Color pressed)
-        {
-            _config.NormalColor = normal;
-            _config.HoverColor = hover;
-            _config.PressedColor = pressed;
-            return this;
-        }
-
-        public ButtonBuilder WithTextColor(Color color)
-        {
-            _config.TextColor = color;
-            return this;
-        }
-
-        public ButtonBuilder WithStyle(ButtonStyle style)
-        {
-            _config.Style = style;
-            return this;
-        }
-
-        public ButtonBuilder WithTextOffset(Vector2 offset)
-        {
-            _config.TextOffset = offset;
-            return this;
-        }
-
-        public ButtonBuilder OnClick(Action<Button> action)
-        {
-            _config.OnClick = action;
-            return this;
-        }
-
-        public ButtonBuilder OnHoverEnter(Action<Button> action)
-        {
-            _config.OnHoverEnter = action;
-            return this;
-        }
-
-        public ButtonBuilder OnHoverExit(Action<Button> action)
-        {
-            _config.OnHoverExit = action;
-            return this;
-        }
-
-        public Button Build()
-        {
-            return new Button(_config);
-        }
+        public ButtonBuilder WithTexture(Texture2D texture) { _config.Texture = texture; return this; }
+        public ButtonBuilder WithHoverTexture(Texture2D texture) { _config.HoverTexture = texture; _config.Style = ButtonStyle.HoverTexture; return this; }
+        public ButtonBuilder WithPressedTexture(Texture2D texture) { _config.PressedTexture = texture; return this; }
+        public ButtonBuilder WithFont(SpriteFont font) { _config.Font = font; return this; }
+        public ButtonBuilder WithText(string text) { _config.Text = text; return this; }
+        public ButtonBuilder WithBounds(Rectangle bounds) { _config.Bounds = bounds; return this; }
+        public ButtonBuilder WithBounds(int x, int y, int width, int height) { _config.Bounds = new Rectangle(x, y, width, height); return this; }
+        public ButtonBuilder WithColors(Color normal, Color hover, Color pressed) { _config.NormalColor = normal; _config.HoverColor = hover; _config.PressedColor = pressed; return this; }
+        public ButtonBuilder WithTextColor(Color color) { _config.TextColor = color; return this; }
+        public ButtonBuilder WithStyle(ButtonStyle style) { _config.Style = style; return this; }
+        public ButtonBuilder WithTextOffset(Vector2 offset) { _config.TextOffset = offset; return this; }
+        public ButtonBuilder OnClick(Action<Button> action) { _config.OnClick = action; return this; }
+        public ButtonBuilder OnHoverEnter(Action<Button> action) { _config.OnHoverEnter = action; return this; }
+        public ButtonBuilder OnHoverExit(Action<Button> action) { _config.OnHoverExit = action; return this; }
+        public Button Build() => new Button(_config);
     }
 
-    /// <summary>
-    /// Refactored Button component following SOLID principles
-    /// - Single Responsibility: Only handles button interaction and rendering
-    /// - Open/Closed: Extensible via ButtonStyle enum and custom delegates
-    /// - Liskov Substitution: Can be used anywhere IUIElement is expected
-    /// - Interface Segregation: Implements only IUIElement
-    /// - Dependency Inversion: Depends on abstractions (IInputService)
-    /// </summary>
     public class Button : IUIElement
     {
         private readonly ButtonConfig _config;
@@ -180,7 +88,6 @@ namespace Mystic_Foods.Core.UI
             var mouseRect = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
             bool isHovering = mouseRect.Intersects(_config.Bounds);
 
-            // State transitions
             var previousState = _currentState;
 
             if (!isHovering)
@@ -203,15 +110,10 @@ namespace Mystic_Foods.Core.UI
                 _currentState = ButtonState.Hover;
             }
 
-            // Hover events
             if (isHovering && !_wasHovered)
-            {
                 OnHoverEnter();
-            }
             else if (!isHovering && _wasHovered)
-            {
                 OnHoverExit();
-            }
 
             _wasHovered = isHovering;
         }
@@ -225,7 +127,6 @@ namespace Mystic_Foods.Core.UI
 
             spriteBatch.Draw(texture, _config.Bounds, color);
 
-            // Draw text if present
             if (!string.IsNullOrEmpty(_config.Text) && _config.Font != null)
             {
                 var textSize = _config.Font.MeasureString(_config.Text);
@@ -293,9 +194,6 @@ namespace Mystic_Foods.Core.UI
         Disabled
     }
 
-    /// <summary>
-    /// Interface for UI elements - Interface Segregation Principle
-    /// </summary>
     public interface IUIElement
     {
         void Update(GameTime gameTime);

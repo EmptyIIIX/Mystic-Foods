@@ -116,40 +116,42 @@ namespace Mystic_Foods.Managers
         }
 
         #region Setting
-        public static void LoadSettings()
-        {
-            settings = SettingsData.Load();
-            ApplySettings();
-        }
+                public static void LoadSettings()
+                {
+                    settings = SettingsData.Load();
+                    ApplySettings();
+                }
 
-        public static void SaveSettings()
-        {
-            settings.Save();
-        }
+                public static void SaveSettings()
+                {
+                    settings.Save();
+                }
 
-        public static void ApplySettings()
-        {
-            MusicVolume = settings.IsMuted ? 0 : settings.MusicVolume;
-            SfxVolume = settings.IsMuted ? 0 : settings.SfxVolume;
-        }
+                public static void ApplySettings()
+                {
+                    MusicVolume = settings.IsMuted ? 0 : settings.MusicVolume;
+                    SfxVolume = settings.IsMuted ? 0 : settings.SfxVolume;
+                }
 
-        public static void SetMusicVolume(float volume)
-        {
-            settings.MusicVolume = MathHelper.Clamp(volume, 0f, 1f);
-            ApplySettings();
-        }
+                public static void SetMusicVolume(float volume)
+                {
+                    settings.MusicVolume = MathHelper.Clamp(volume, 0f, 1f);
+                    ApplySettings();
+                }
 
-        public static void SetSfxVolume(float volume)
-        {
-            settings.SfxVolume = MathHelper.Clamp(volume, 0f, 1f);
-            ApplySettings();
-        }
+                public static void SetSfxVolume(float volume)
+                {
+                    settings.SfxVolume = MathHelper.Clamp(volume, 0f, 1f);
+                    ApplySettings();
+                }
 
-        public static void ToggleMute()
-        {
-            settings.IsMuted = !settings.IsMuted;
-            ApplySettings();
-        }
-        #endregion
+                public static void ToggleMute()
+                {
+                    settings.IsMuted = !settings.IsMuted;
+                    ApplySettings();
+                }
+
+                public static bool IsMuted => settings.IsMuted;
+                #endregion
     }
 }

@@ -1,129 +1,106 @@
 ﻿using System;
-using System.Collections;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Mystic_Foods.Managers;
-using Mystic_Foods.Systems;
+using Mystic_Foods.Core.DI;
+using Mystic_Foods.Core.Services;
+using Mystic_Foods.Core.Scenes;
+using Mystic_Foods.Core.UI;
 
 namespace Mystic_Foods.Scenes
 {
-    public class CreditScene : IGameScene
+    public class CreditScene : IScene
     {
+        private readonly Container _container;
+        private readonly IGraphicsService _graphics;
+        private readonly IInputService _input;
+
         private SpriteFont _font1, _font2, _font3;
-        private KeyboardState keyboardState;
+        private ContentManager _content;
 
-        public static bool ExitToMenu = false;
-        public static bool isCreditActive = true;
+        private Texture2D _creditBg;
+        private Button _exitBtn;
 
-        public static Vector2 screenCenterDefault = new Vector2(1920 / 2, 1200);
-        public Vector2 screenCenter = screenCenterDefault;
-        private Vector2 Yspacing_1 = new Vector2(0, 100);
-        private Vector2 Yspacing_2 = new Vector2(0, 30);
-        private Vector2 Yspacing_3 = new Vector2(0, 30);
-        private Vector2 TextSpeed = new Vector2(0, 2);
+        public static bool ExitToMenu { get; private set; } = false;
+        public static bool IsCreditActive { get; private set; } = true;
 
-        Hashtable nameCredit = new()
+        public string Name => "Credit";
+        public bool IsActive { get; set; }
+        public bool IsVisible { get; set; } = true;
+
+        public CreditScene(Container container)
         {
-            {"ST 1", "Keattikorn Samarnggoon" },
-            {"ST 2", "Patison Palee" },
-            {"ST 3", "Supara Grudpan" },
-            {"wef", "Theerapat Boongrom 672110100" },
-            {"gun", "Kanyanat Meekham 672110080" },
-            {"pare", "Sirikanya Kawilawan 672110126" },
-            {"prai", "Kanyanat Khumtongsuk 672110079" },
-            {"min", "Premintr Singkaew 672110108" }
-        };
-        public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
+            _container = container;
+            _graphics = container.Resolve<IGraphicsService>();
+            _input = container.Resolve<IInputService>();
+        }
+
+        public void LoadContent(ContentManager content)
         {
-            _font1 = content.Load<SpriteFont>("MainFont");
-            _font2 = content.Load<SpriteFont>("DiaFont");
-            _font3 = content.Load<SpriteFont>("BoldFont");
+            _content = content;
+            _font1 = content.Load<SpriteFont>("BoldFont");
+            _font2 = content.Load<SpriteFont>("MainFont");
+            _font3 = content.Load<SpriteFont>("DiaFont");
+
+            _creditBg = content.Load<Texture2D>("Credit/credit_bg");
+
+            _exitBtn = new Button(new ButtonConfig
+            {
+                Texture = content.Load<Texture2D>("Credit/exit_btn"),
+                Font = _font2,
+                Text = "",
+                Bounds = new Rectangle(1700, 950, 100, 50),
+                OnClick = _ => ExitToMenu = true
+            });
         }
 
         public void Update(GameTime gameTime)
         {
-            keyboardState = Keyboard.GetState();
+            if (!IsActive) return;
 
-            if (keyboardState.IsKeyDown(Keys.Escape))
+            _input.Update();
+            _exitBtn.Update(gameTime);
+
+            if (ExitToMenu)
             {
-                ExitToMenu = true;
-                screenCenter = screenCenterDefault;
+                IsCreditActive = false;
+                ExitToMenu = false;
             }
-
-            if (screenCenter.Y < -1720)
-            {
-                isCreditActive = false;
-            } 
-            else
-            {
-                isCreditActive = true;
-            }
-
-            if (isCreditActive)
-            {
-                screenCenter -= TextSpeed;
-            }
-
         }
-        public void Draw(SpriteBatch spriteBatch)
+
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.GraphicsDevice.Clear(Color.Black);
+            if (!IsVisible) return;
 
-            spriteBatch.Begin();
-            Vector2 textsize = _font1.MeasureString((string)nameCredit["wef"]);
-            //spriteBatch.Draw(GamePlayScene._rectTexture, new Rectangle(0, 0, 1920, 1080), Color.Black * 0.2f);
+            _graphics.Begin();
 
-            spriteBatch.DrawString(_font1, "Press Esc to Exit", new Vector2(1700, 1020), Color.White);
-            //gametitle
-            spriteBatch.DrawString(_font2, "Mystic Food Ayothaya Sweet", screenCenter - (textsize / 2) - Yspacing_2, Color.White);
-            spriteBatch.DrawString(_font2, "Group : Wolfpack", screenCenter - (textsize / 4), Color.White);
+            spriteBatch.Draw(_creditBg, Vector2.Zero, Color.White);
 
-            //Game Designer
-            spriteBatch.DrawString(_font1, "Game Designer", screenCenter - (textsize / 4) + (Yspacing_1 * 1), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["gun"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 1) + (Yspacing_2 * 1) + (Yspacing_3 * 1), Color.White);
+            // Draw credit text
+            spriteBatch.DrawString(_font1, "MYSTIC FOODS", new Vector2(500, 100), Color.Gold, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(_font2, "Developed by CAMT Game Dev Team", new Vector2(450, 200), Color.White);
+            spriteBatch.DrawString(_font2, "Programmers: Team Mystic", new Vector2(450, 250), Color.White);
+            spriteBatch.DrawString(_font2, "Artists: Team Mystic", new Vector2(450, 300), Color.White);
+            spriteBatch.DrawString(_font2, "Music: Team Mystic", new Vector2(450, 350), Color.White);
+            spriteBatch.DrawString(_font3, "Special thanks to all contributors", new Vector2(400, 450), Color.LightGray);
 
-            //Programmer
-            spriteBatch.DrawString(_font1, "Programmer", screenCenter - (textsize / 4) + (Yspacing_1 * 2) + (Yspacing_2 * 1) + (Yspacing_3 * 1), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["min"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 2) + (Yspacing_2 * 2) + (Yspacing_3 * 2), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["wef"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 2) + (Yspacing_2 * 3) + (Yspacing_3 * 2), Color.White);
+            _exitBtn.Draw(gameTime, spriteBatch);
 
-            //Artist & Animator
-            spriteBatch.DrawString(_font1, "Artist & Animator", screenCenter - (textsize / 4) + (Yspacing_1 * 3) + (Yspacing_2 * 3) + (Yspacing_3 * 2), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["pare"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 3) + (Yspacing_2 * 3) + (Yspacing_3 * 4), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["gun"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 3) + (Yspacing_2 * 4) + (Yspacing_3 * 4), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["prai"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 3) + (Yspacing_2 * 5) + (Yspacing_3 * 4), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["min"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 3) + (Yspacing_2 * 6) + (Yspacing_3 * 4), Color.White);
-
-            //Sound Designer
-            spriteBatch.DrawString(_font1, "Sound Designer", screenCenter - (textsize / 4) + (Yspacing_1 * 5) + (Yspacing_2 * 4) + (Yspacing_3 * 3), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["min"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 5) + (Yspacing_2 * 4) + (Yspacing_3 * 5), Color.White);
-            
-            //Writer and dialogue
-            spriteBatch.DrawString(_font1, "Writer & Dialogue", screenCenter - (textsize / 4) + (Yspacing_1 * 6) + (Yspacing_2 * 5) + (Yspacing_3 * 4), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["min"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 6) + (Yspacing_2 * 5) + (Yspacing_3 * 6), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["gun"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 6) + (Yspacing_2 * 6) + (Yspacing_3 * 6), Color.White);
-
-            //Assets & Tool Used
-            spriteBatch.DrawString(_font1, "Assets & Tool Used", screenCenter - (textsize / 4) + (Yspacing_1 * 7) + (Yspacing_2 * 7) + (Yspacing_3 * 5), Color.White);
-            spriteBatch.DrawString(_font1, "Font : MN Plachon Lui Suan", screenCenter - (textsize / 2) + (Yspacing_1 * 7) + (Yspacing_2 * 7) + (Yspacing_3 * 7), Color.White);
-            spriteBatch.DrawString(_font1, "Texture & Sprite : Wolfpack", screenCenter - (textsize / 2) + (Yspacing_1 * 7) + (Yspacing_2 * 8) + (Yspacing_3 * 7), Color.White);
-            spriteBatch.DrawString(_font1, "Sound Effect : epidemicsound.com", screenCenter - (textsize / 2) + (Yspacing_1 * 7) + (Yspacing_2 * 9) + (Yspacing_3 * 7), Color.White);
-            spriteBatch.DrawString(_font1, "Background Music : \n   -Lao Somdet (Lan Xang Version)\n   -Khmer Phaia Ruea\n   -Thai Mung\n   -Thai Ar Hom (Chaina)\n   -Lao Lum Dab", screenCenter - (textsize / 2) + (Yspacing_1 * 7) + (Yspacing_2 * 10) + (Yspacing_3 * 7), Color.White);
-            spriteBatch.DrawString(_font1, "Engine : MonoGame 3.8.4", screenCenter - (textsize / 2) + (Yspacing_1 * 7) + (Yspacing_2 * 18) + (Yspacing_3 * 7), Color.White);
-
-            //Special Thanks
-            spriteBatch.DrawString(_font1, "Special Thanks", screenCenter - (textsize / 4) + (Yspacing_1 * 11) + (Yspacing_2 * 8) + (Yspacing_3 * 7), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["ST 1"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 11) + (Yspacing_2 * 9) + (Yspacing_3 * 8), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["ST 2"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 11) + (Yspacing_2 * 10) + (Yspacing_3 * 8), Color.White);
-            spriteBatch.DrawString(_font1, $"{(string)nameCredit["ST 3"]}", screenCenter - (textsize / 2) + (Yspacing_1 * 11) + (Yspacing_2 * 11) + (Yspacing_3 * 8), Color.White);
-
-            //End Credit
-            spriteBatch.DrawString(_font3, "Thank you for playing", screenCenter - new Vector2(450, 0) + (Yspacing_1 * 16) + (Yspacing_2 * 10) + (Yspacing_3 * 10), Color.White);
-
-            spriteBatch.End();
+            _graphics.End();
         }
+
+        public void OnEnter()
+        {
+            ExitToMenu = false;
+            IsCreditActive = true;
+        }
+
+        public void OnExit()
+        {
+            IsCreditActive = false;
+        }
+
+        public void OnResize(int width, int height) { }
     }
 }

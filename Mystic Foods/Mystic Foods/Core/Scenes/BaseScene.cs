@@ -6,10 +6,6 @@ using Mystic_Foods.Core.UI;
 
 namespace Mystic_Foods.Core.Scenes
 {
-    /// <summary>
-    /// Base scene class implementing Template Method pattern
-    /// Provides common functionality for all scenes
-    /// </summary>
     public abstract class BaseScene : IScene
     {
         protected readonly IInputService _input;
@@ -20,7 +16,7 @@ namespace Mystic_Foods.Core.Scenes
         protected bool _isLoaded = false;
 
         public string Name { get; protected set; }
-        public bool IsActive { get; protected set; }
+        public bool IsActive { get; set; }
         public bool IsVisible { get; protected set; } = true;
 
         protected BaseScene(string name)
@@ -30,7 +26,6 @@ namespace Mystic_Foods.Core.Scenes
             _graphics = ServiceLocator.Get<IGraphicsService>();
         }
 
-        // Template Method pattern - defines the algorithm skeleton
         public virtual void Initialize()
         {
             if (_isInitialized) return;
@@ -38,11 +33,11 @@ namespace Mystic_Foods.Core.Scenes
             _isInitialized = true;
         }
 
-        public virtual void LoadContent(ContentManager content, SpriteBatch spriteBatch)
+        public virtual void LoadContent(ContentManager content)
         {
             if (_isLoaded) return;
             _content = content;
-            _spriteBatch = spriteBatch;
+            _spriteBatch = new SpriteBatch(_graphics.SpriteBatch.GraphicsDevice);
             OnLoadContent();
             _isLoaded = true;
         }
@@ -54,23 +49,21 @@ namespace Mystic_Foods.Core.Scenes
             OnUpdate(gameTime);
         }
 
-        public virtual void Draw(GameTime gameTime)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (!IsVisible) return;
-            OnDraw(gameTime);
+            OnDraw(gameTime, spriteBatch);
         }
 
         public virtual void OnEnter() { }
         public virtual void OnExit() { }
         public virtual void OnResize(int width, int height) { }
 
-        // Abstract methods subclasses must implement
         protected abstract void OnInitialize();
         protected abstract void OnLoadContent();
         protected abstract void OnUpdate(GameTime gameTime);
-        protected abstract void OnDraw(GameTime gameTime);
+        protected abstract void OnDraw(GameTime gameTime, SpriteBatch spriteBatch);
 
-        // Helper methods
         protected T LoadTexture<T>(string assetName) where T : Texture2D
         {
             return _content.Load<T>(assetName);

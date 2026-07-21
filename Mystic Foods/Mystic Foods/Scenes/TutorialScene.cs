@@ -3,113 +3,123 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Mystic_Foods.Systems;
-
+using Mystic_Foods.Core.DI;
+using Mystic_Foods.Core.Services;
+using Mystic_Foods.Core.Scenes;
+using Mystic_Foods.Core.UI;
 
 namespace Mystic_Foods.Scenes
 {
-    public class TutorialScene : IGameScene
+    public class TutorialScene : IScene
     {
+        private readonly Container _container;
+        private readonly IGraphicsService _graphics;
+        private readonly IInputService _input;
+
         private SpriteFont _font;
-        public static int countPage, MaxPage;
+        private ContentManager _content;
 
-        //scene tutorial
-        public static Texture2D Page_1, Page_2, Page_3, Page_4;
+        private Texture2D _page1, _page2, _page3, _page4;
+        private Texture2D _nextPageTex, _backPageTex, _exitPageTex, _topicPointTex;
+        private Button _nextBtn, _backBtn, _exitBtn;
 
-        //button UI
-        public static Texture2D nextPage, backPage, exitPage, topicPoint;
-        public static Button next, back, exitpage;
+        public int CurrentPage { get; private set; } = 1;
+        public int MaxPage { get; } = 4;
 
-        //check action page
-        public static bool isNextPage, isBackPage, isExitPage;
+        public string Name => "Tutorial";
+        public bool IsActive { get; set; }
+        public bool IsVisible { get; set; } = true;
 
-        public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
+        public TutorialScene(Container container)
         {
-            //load scene
-            Page_1 = content.Load<Texture2D>("Tutorial/levelscene");
-            Page_2 = content.Load<Texture2D>("Tutorial/หนังสือที่จะขึ้นก่อนเริ่มเกม");
-            Page_3 = content.Load<Texture2D>("Tutorial/หนังสือแบบเลือกดูประวัติได้");
-            Page_4 = content.Load<Texture2D>("Tutorial/levelscene");
+            _container = container;
+            _graphics = container.Resolve<IGraphicsService>();
+            _input = container.Resolve<IInputService>();
+        }
 
-            //load button UI
-            nextPage = content.Load<Texture2D>("Tutorial/nextpage");
-            backPage = content.Load<Texture2D>("Tutorial/backpage");
-            exitPage = content.Load<Texture2D>("Tutorial/exitpage");
-            topicPoint = content.Load<Texture2D>("Tutorial/topicPoint");
+        public void LoadContent(ContentManager content)
+        {
+            _content = content;
+            _font = content.Load<SpriteFont>("MainFont");
 
-            //button manager
-            next = new Button(nextPage, _font, "", new Rectangle(1674, 838, 136, 134));
-            next.Click += NextButton_click;
+            _page1 = content.Load<Texture2D>("Tutorial/levelscene");
+            _page2 = content.Load<Texture2D>("Tutorial/หนังสือที่จะขึ้นก่อนเริ่มเกม");
+            _page3 = content.Load<Texture2D>("Tutorial/หนังสือแบบเลือกดูประวัติได้");
+            _page4 = content.Load<Texture2D>("Tutorial/levelscene");
 
-            back = new Button(backPage, _font, "", new Rectangle(110, 838, 136, 134));
-            back.Click += BackButton_click;
+            _nextPageTex = content.Load<Texture2D>("Tutorial/nextpage");
+            _backPageTex = content.Load<Texture2D>("Tutorial/backpage");
+            _exitPageTex = content.Load<Texture2D>("Tutorial/exitpage");
+            _topicPointTex = content.Load<Texture2D>("Tutorial/topicPoint");
 
-            exitpage = new Button(exitPage, _font, "", new Rectangle(1720, 106, 90, 79));
-            exitpage.Click += ExitPageButton_click;
+            _nextBtn = new Button(new ButtonConfig
+            {
+                Texture = _nextPageTex, Font = _font, Text = "",
+                Bounds = new Rectangle(1674, 838, 136, 134),
+                OnClick = _ => NextPage()
+            });
 
-            //assign max page and set count page of the tutorial
-            countPage = 1;
-            MaxPage = 4;
+            _backBtn = new Button(new ButtonConfig
+            {
+                Texture = _backPageTex, Font = _font, Text = "",
+                Bounds = new Rectangle(110, 838, 136, 134),
+                OnClick = _ => PrevPage()
+            });
+
+            _exitBtn = new Button(new ButtonConfig
+            {
+                Texture = _exitPageTex, Font = _font, Text = "",
+                Bounds = new Rectangle(1720, 106, 90, 79),
+                OnClick = _ => ExitTutorial()
+            });
         }
 
         public void Update(GameTime gameTime)
         {
-            if (countPage == 0) countPage = 1; //this cannot be less than 1 page
-            if (countPage > MaxPage) countPage = MaxPage; // this cannot be more max page
+            if (!IsActive) return;
 
+            _input.Update();
 
-            if (Game1.wasTutorial == false)
+            CurrentPage = Math.Clamp(CurrentPage, 1, MaxPage);
+
+            if (!Game1.wasTutorial)
             {
-                next.Update();
-                back.Update();
-
-                if (countPage == MaxPage) exitpage.Update();
+                _nextBtn.Update(gameTime);
+                _backBtn.Update(gameTime);
+                if (CurrentPage == MaxPage) _exitBtn.Update(gameTime);
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            if (!IsVisible) return;
 
-            switch (countPage)
+            _graphics.Begin();
+
+            Texture2D currentPageTex = CurrentPage switch
             {
-                case 1:
-                    spriteBatch.Draw(Page_1, new Vector2(0, 0), Color.White);
-                    break;
-                case 2:
-                    spriteBatch.Draw(Page_2, new Vector2(0, 0), Color.White);
-                    break;
-                case 3:
-                    spriteBatch.Draw(Page_3, new Vector2(0, 0), Color.White);
-                    break;
-                case 4:
-                    spriteBatch.Draw(Page_4, new Vector2(0, 0), Color.White);
-                    break;
+                1 => _page1,
+                2 => _page2,
+                3 => _page3,
+                4 => _page4,
+                _ => _page1
+            };
 
-            }
+            spriteBatch.Draw(currentPageTex, Vector2.Zero, Color.White);
 
-            //draw next and back page
-            if (countPage < MaxPage) next.Draw(spriteBatch);
-            if (countPage > 1) back.Draw(spriteBatch);
-            if (countPage == MaxPage) exitpage.Draw(spriteBatch);
+            if (CurrentPage < MaxPage) _nextBtn.Draw(gameTime, spriteBatch);
+            if (CurrentPage > 1) _backBtn.Draw(gameTime, spriteBatch);
+            if (CurrentPage == MaxPage) _exitBtn.Draw(gameTime, spriteBatch);
 
-            spriteBatch.End();
+            _graphics.End();
         }
 
-        public void NextButton_click(object sender, EventArgs e)
-        {
-            isNextPage = true;
-            countPage++;
-        }
-        public void BackButton_click(object sender, EventArgs e)
-        {
-            isBackPage = true;
-            countPage--;
-        }
-        public void ExitPageButton_click(object sender, EventArgs e)
-        {
-            isExitPage = true;
-            Game1.wasTutorial = true;
-        }
+        public void OnEnter() { CurrentPage = 1; }
+        public void OnExit() { }
+        public void OnResize(int width, int height) { }
+
+        private void NextPage() => CurrentPage++;
+        private void PrevPage() => CurrentPage--;
+        private void ExitTutorial() => Game1.wasTutorial = true;
     }
 }

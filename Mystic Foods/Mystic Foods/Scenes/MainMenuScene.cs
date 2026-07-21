@@ -1,118 +1,133 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Mystic_Foods.Managers;
-using Mystic_Foods.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Mystic_Foods.Core.DI;
+using Mystic_Foods.Core.Services;
+using Mystic_Foods.Core.Scenes;
+using Mystic_Foods.Core.UI;
 
-namespace Mystic_Foods
+namespace Mystic_Foods.Scenes
 {
-    public class MainMenuScene : IGameScene
+    public class MainMenuScene : IScene
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteFont _font; //font use to draw string
-        public bool StartGameRequested = false; //check if start game
-        public bool DnDRequested = false;
-        public bool ExitRequested = false; //check if exit game
-        public bool CreditRequested = false;
-        public bool SettingRequested = false;
+        private readonly IGraphicsService _graphics;
+        private readonly IInputService _input;
+        private readonly Container _container;
 
-        public Texture2D NameTitle;
-        public Texture2D PlayBtn, SettingBtn, CreditBtn, ExitBtn;
-        public Button _playBtn, _settingBtn, _creditBtn, _exitBtn;
+        private SpriteFont _font;
+        public bool StartGameRequested { get; private set; }
+        public bool DnDRequested { get; private set; }
+        public bool ExitRequested { get; private set; }
+        public bool CreditRequested { get; private set; }
+        public bool SettingRequested { get; private set; }
 
-        private KeyboardState _oldState; //make it only pressable (can't hold)
-        private MouseState _oldMouseState;
+        private Texture2D _nameTitle;
+        private Texture2D _menuBg;
+        private Button _playBtn, _settingBtn, _creditBtn, _exitBtn;
 
-        Texture2D Menu_bg;
+        public string Name { get; } = "MainMenu";
+        public bool IsActive { get; set; }
+        public bool IsVisible { get; set; } = true;
 
-        public void LoadContent(ContentManager content, SpriteBatch spriteBatch)
+        public MainMenuScene(Container container)
+        {
+            _container = container;
+            _graphics = container.Resolve<IGraphicsService>();
+            _input = container.Resolve<IInputService>();
+        }
+
+        public void LoadContent(ContentManager content)
         {
             _font = content.Load<SpriteFont>("MainFont");
-            Menu_bg = content.Load<Texture2D>("Environments/BG/MenuBG");
+            _menuBg = content.Load<Texture2D>("Environments/BG/MenuBG");
+            _nameTitle = content.Load<Texture2D>("Etc/NameTitle");
 
-            NameTitle = content.Load<Texture2D>("Etc/NameTitle");
-            PlayBtn = content.Load<Texture2D>("Etc/option_start game");
-            SettingBtn = content.Load<Texture2D>("Etc/option_setting");
-            CreditBtn = content.Load<Texture2D>("Etc/option_credit");
-            ExitBtn = content.Load<Texture2D>("Etc/option_exit");
+            var playTex = content.Load<Texture2D>("Etc/option_start game");
+            var settingTex = content.Load<Texture2D>("Etc/option_setting");
+            var creditTex = content.Load<Texture2D>("Etc/option_credit");
+            var exitTex = content.Load<Texture2D>("Etc/option_exit");
 
-            //_playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
-            //_playBtn.Click += PlayBtn_Click;
-            _playBtn = new Button(PlayBtn, _font, "", new Rectangle(225, 400, 512, 100));
-            _playBtn.Click += PlayBtn_Click;
-            _settingBtn = new Button(SettingBtn, _font, "", new Rectangle(225, 400 + PlayBtn.Height + 20, 512, 100));
-            _settingBtn.Click += SettingBtn_Click;
-            _creditBtn = new Button(CreditBtn, _font, "", new Rectangle(225, 400 + (PlayBtn.Height * 2) + 40, 512, 100));
-            _creditBtn.Click += CreditBtn_Click;
-            _exitBtn = new Button(ExitBtn, _font, "", new Rectangle(1920 - ExitBtn.Width - 20, 1080 - ExitBtn.Height - 20, 80, 100));
-            _exitBtn.Click += ExitBtn_Click;
+            int btnW = 512, btnH = 100;
+            int startX = 225, startY = 400, gap = 20;
+
+            _playBtn = new Button(new ButtonConfig
+            {
+                Texture = playTex,
+                Font = _font,
+                Text = "",
+                Bounds = new Rectangle(startX, startY, btnW, btnH),
+                OnClick = _ => StartGameRequested = true
+            });
+
+            _settingBtn = new Button(new ButtonConfig
+            {
+                Texture = settingTex,
+                Font = _font,
+                Text = "",
+                Bounds = new Rectangle(startX, startY + btnH + gap, btnW, btnH),
+                OnClick = _ => SettingRequested = true
+            });
+
+            _creditBtn = new Button(new ButtonConfig
+            {
+                Texture = creditTex,
+                Font = _font,
+                Text = "",
+                Bounds = new Rectangle(startX, startY + 2 * (btnH + gap), btnW, btnH),
+                OnClick = _ => CreditRequested = !CreditRequested
+            });
+
+            _exitBtn = new Button(new ButtonConfig
+            {
+                Texture = exitTex,
+                Font = _font,
+                Text = "",
+                Bounds = new Rectangle(1920 - exitTex.Width - 20, 1080 - exitTex.Height - 20, 80, 100),
+                OnClick = _ => ExitRequested = true
+            });
 
             MediaPlayer.IsRepeating = true;
-            SoundManager.PlaySong("mainmenu");
+            // SoundManager.PlaySong("mainmenu"); // TODO: integrate with new audio service
         }
 
         public void Update(GameTime gameTime)
         {
-            var state = Keyboard.GetState();
-            var mouse = Mouse.GetState();
+            if (!IsActive) return;
+            _input.Update();
 
-            _playBtn.Update();
-            _settingBtn.Update();
-            _creditBtn.Update();
-            _exitBtn.Update();
-
-            _oldState = state; //update keyboard status
-            _oldMouseState = mouse;
+            _playBtn.Update(gameTime);
+            _settingBtn.Update(gameTime);
+            _creditBtn.Update(gameTime);
+            _exitBtn.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+                {
+                    if (!IsVisible) return;
+
+                    _graphics.Begin();
+                    _graphics.Draw(_menuBg, new Rectangle(0, 0, 1920, 1080), null, Color.White);
+                    _graphics.Draw(_nameTitle, new Rectangle(100, 120, _nameTitle.Width, _nameTitle.Height), null, Color.White);
+
+                    _playBtn.Draw(gameTime, _graphics.SpriteBatch);
+                    _settingBtn.Draw(gameTime, _graphics.SpriteBatch);
+                    _creditBtn.Draw(gameTime, _graphics.SpriteBatch);
+                    _exitBtn.Draw(gameTime, _graphics.SpriteBatch);
+
+                    if (CreditRequested)
+                    {
+                        _graphics.DrawString(_font, "Hello World!", new Vector2(960, 540), Color.White);
+                    }
+                    _graphics.End();
+                }
+
+        public void OnEnter()
         {
-            spriteBatch.GraphicsDevice.Clear(Color.DarkSlateBlue);
-
-            spriteBatch.Begin();
-            spriteBatch.Draw(Menu_bg, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(NameTitle, new Vector2(100, 120), Color.White);
-
-            _playBtn.DrawHomeBtn(spriteBatch);
-            _settingBtn.DrawHomeBtn(spriteBatch);
-            _creditBtn.DrawHomeBtn(spriteBatch);
-            _exitBtn.DrawHomeBtn(spriteBatch);
-
-            if (CreditRequested) spriteBatch.DrawString(_font, "Hello World!", new Vector2(960 , 540), Color.White);
-
-            spriteBatch.End();
+            StartGameRequested = DnDRequested = ExitRequested = CreditRequested = SettingRequested = false;
         }
 
-        public async void PlayBtn_Click(object sender, EventArgs e)
-        {
-            SoundManager.PlaySfx("Click");
-            await Task.Delay(100);
-            StartGameRequested = true;
-        }
-        public async void SettingBtn_Click(object sender, EventArgs e)
-        {
-            SoundManager.PlaySfx("Click");
-            await Task.Delay(100);
-            SettingRequested = true;
-        }
-        public async void CreditBtn_Click(object sender, EventArgs e)
-        {
-            SoundManager.PlaySfx("Click");
-            await Task.Delay(100);
-            CreditRequested = !CreditRequested;
-        }
-        public async void ExitBtn_Click(object sender, EventArgs e)
-        {
-            SoundManager.PlaySfx("Click");
-            await Task.Delay(200);
-            ExitRequested = true;
-        }
+        public void OnExit() { }
+        public void OnResize(int width, int height) { }
     }
 }

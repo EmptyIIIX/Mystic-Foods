@@ -1,21 +1,41 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Mystic_Foods.Gameplay.Ingredients;
+using Mystic_Foods.Gameplay.Cooking;
+using Mystic_Foods.Gameplay.Customer;
+using Mystic_Foods.Managers;
+using Mystic_Foods.Scenes;
 using Mystic_Foods.Systems;
+
+using SystemsFood = Mystic_Foods.Systems.Food;
 
 namespace Mystic_Foods.Managers
 {
     public class GameManager
     {
+        private static GameManager _instance;
+        public static GameManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new GameManager();
+                }
+                return _instance;
+            }
+        }
+
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
         private CustomerManager _customerManager;
-        private Sprite _sprite;
 
-        public List<Food> _food = new();
+        private List<SystemsFood> _food = new();
         private readonly List<Filling> _fillings = new();
         private readonly List<Dough> _doughs = new();
         private readonly List<Wrapper> _wrapper = new();
@@ -42,17 +62,20 @@ namespace Mystic_Foods.Managers
         public static int IdDough;
         public static int IdFlower;
         public static bool HasFood { get; private set; }
-        public static bool isChangeFood;
-        public static bool isDecorate;
-        public static bool readySteam = false;
-        public static int countDia = 2;
-        public static float countSteam = 3f;
+        public static bool IsChangeFood;
+        public static bool IsDecorate;
+        public static bool ReadySteam = false;
+        public static int CountDia = 2;
+        public static float CountSteam = 3f;
+
+        public List<SystemsFood> Foods => _food;
 
         public GameManager()
         {
             DragDropManager.OnDrop += HandleDrop;
             DragDropManager.OnDragFailed += HandleDragFailed;
             HasFood = false;
+            _instance = this;
         }
 
         public void LoadContent(ContentManager content)
@@ -124,10 +147,10 @@ namespace Mystic_Foods.Managers
             _trashBin = new TrashBin(trashBinTexture, new Vector2(160, 800));
             _trashBin2 = new TrashBin(trashBinTexture, new Vector2(4000, 800));
         }
+
         private void HandleDrop(IDraggable item, ITargetable target)
         {
             #region check count of food
-            //ถ้ามีอาหารเกิน 1 ชิ้น ให้รีเซ็ตตำแหน่งของ sai, pang, wrapper
             if (_food.Count >= 1 && (item is Filling || item is Dough || item is Wrapper))
             {
                 if (item is Filling filling)
@@ -155,10 +178,8 @@ namespace Mystic_Foods.Managers
             {
                 if (item is Filling newFilling)
                 {
-                    // อัปเดต _placedFilling และ IdFilling
                     _placedFilling = newFilling;
                     IdFilling = (int)newFilling.FillingKind;
-                    // รีเซ็ต Filling อื่นที่อยู่บนจาน
                     var otherFillings = _fillings.Where(f => f != newFilling && f.Position == _plate.Position).ToList();
                     foreach (var filling in otherFillings)
                     {
@@ -167,11 +188,9 @@ namespace Mystic_Foods.Managers
                 }
                 else if (item is Dough newDough)
                 {
-                    // อัปเดต _placedDough และ IdDough
                     _placedDough = newDough;
                     IdDough = (int)newDough.DoughKind;
                     newDough.SetOnPlate(true);
-                    // รีเซ็ต Dough อื่นที่อยู่บนจาน
                     var otherDoughs = _doughs.Where(d => d != newDough && d.Position == _plate.Position).ToList();
                     foreach (var dough in otherDoughs)
                     {
@@ -180,7 +199,6 @@ namespace Mystic_Foods.Managers
                     }
                 }
 
-                // ตรวจสอบการสร้าง Food
                 var fillingOnPlate = _fillings.FirstOrDefault(f => f.Position == _plate.Position);
                 var doughOnPlate = _doughs.FirstOrDefault(d => d.Position == _plate.Position);
                 var wrapperOnPlate = _wrapper.FirstOrDefault(w => w.Position == _plate.Position);
@@ -188,12 +206,12 @@ namespace Mystic_Foods.Managers
                 if (fillingOnPlate != null && doughOnPlate != null && wrapperOnPlate != null)
                 {
                     CreateFood(fillingOnPlate, doughOnPlate, wrapperOnPlate);
-                    isChangeFood = false;
+                    IsChangeFood = false;
                 }
             }
             #endregion
 
-            #region Plate_2//สำหรับของตกแต่ง
+            #region Plate_2
             if (target == _plate2)
             {
                 if (item is Flowers newFlowers)
@@ -208,16 +226,14 @@ namespace Mystic_Foods.Managers
                     }
                 }
 
-                //check decoration
                 var flowerOnPlate = _flowers.FirstOrDefault(fw => fw.Position == _plate2.Position);
-                var foodOnPlate = _food.FirstOrDefault(fd  => fd.Position == _plate2.Position);
+                var foodOnPlate = _food.FirstOrDefault(fd => fd.Position == _plate2.Position);
 
                 if (foodOnPlate != null && flowerOnPlate != null)
                 {
-                    isDecorate = true;
+                    IsDecorate = true;
                     var food = _food.Last();
                     ChangeFood(food);
-
                 }
             }
             #endregion
@@ -225,38 +241,34 @@ namespace Mystic_Foods.Managers
             #region steamer
             else if (target == _steam1)
             {
-
-                if (item is Food food && isChangeFood == false)
+                if (item is SystemsFood food && IsChangeFood == false)
                 {
-                    readySteam = true;
+                    ReadySteam = true;
                     DragDropManager.RemoveDraggable(food);
-                    //System.Diagnostics.Debug.WriteLine($"Food placed on steam1: {food}, readySteam={readySteam}");
-
                 }
-
             }
             #endregion
 
             #region TrashBin
-            else if ((target == _trashBin || target == _trashBin2) && item is Food food && _food.Contains(food))
+            else if ((target == _trashBin || target == _trashBin2) && item is SystemsFood foodItem && _food.Contains(foodItem))
             {
-                _food.Remove(food);
-                DragDropManager.RemoveDraggable(food);
+                _food.Remove(foodItem);
+                DragDropManager.RemoveDraggable(foodItem);
                 IdFood = 0;
                 HasFood = false;
-                isChangeFood = false;
-                readySteam = false;
-                countSteam = 3f;
-                DnDScene.isCountDownSteam = false;
+                IsChangeFood = false;
+                ReadySteam = false;
+                CountSteam = 3f;
+                DnDScene.IsCountDownSteam = false;
             }
-            else if ((target == _trashBin || target == _trashBin2) && item is Food changeFood && _food.Contains(changeFood))
-            {
-                _food.Remove(changeFood);
-                (changeFood as IDraggable).UnregisterDraggable();
-                HasFood = false;
-                isChangeFood = false;
-                DnDScene.isClickCook = false;
-            }
+            else if ((target == _trashBin || target == _trashBin2) && item is SystemsFood changeFood && _food.Contains(changeFood))
+                        {
+                            _food.Remove(changeFood);
+                            DragDropManager.RemoveDraggable(changeFood);
+                            HasFood = false;
+                            IsChangeFood = false;
+                            // DnDScene.IsClickCook = false;
+                        }
             else if ((target == _trashBin || target == _trashBin2) && item is Filling filling)
             {
                 filling.Position = _fillingOriginalPositions[filling];
@@ -288,6 +300,7 @@ namespace Mystic_Foods.Managers
             }
             #endregion
         }
+
         private void HandleDragFailed(IDraggable item)
         {
             if (item is Filling filling)
@@ -320,14 +333,13 @@ namespace Mystic_Foods.Managers
                 wrapper.Position = _wrapperOriginalPositions[wrapper];
             }
         }
+
         private void CreateFood(Filling filling, Dough dough, Wrapper wrapper)
         {
-            // อัปเดต IdFilling, IdDough, และ IdFood
             IdFilling = (int)filling.FillingKind;
             IdDough = (int)dough.DoughKind;
             IdFood = IdFilling * IdDough;
 
-            // รีเซ็ตตำแหน่งของวัตถุดิบ
             int fillingIndex = _fillings.IndexOf(filling);
             int doughIndex = _doughs.IndexOf(dough);
             int wrapIndex = _wrapper.IndexOf(wrapper);
@@ -335,44 +347,41 @@ namespace Mystic_Foods.Managers
             dough.Position = new Vector2(_originPang.X, _originPang.Y + (doughIndex * _doughSpacing));
             wrapper.Position = new Vector2(_originWrapper.X, _originWrapper.Y);
 
-            //สร้าง food
             var foodTexture = Globals.Content.Load<Texture2D>("foods/3");
-            var newFood = new Food(foodTexture, _plate.Position);
+            var newFood = new SystemsFood(foodTexture, _plate.Position);
             _food.Add(newFood);
 
-            // รีเซ็ต IdFilling, IdDough, และ IdFood หลังสร้างอาหาร
             IdFilling = 0;
             IdDough = 0;
             GamePlayScene.Cost += 20;
             GamePlayScene.TotalMoney -= 20;
             dough.SetOnPlate(false);
         }
-        public void ChangeFood(Food food)
+
+        public void ChangeFood(SystemsFood food)
         {
-            //delete the food
             _food.Remove(food);
             DragDropManager.RemoveDraggable(food);
 
-            //change asset from food to changeFood
-            if (isDecorate)
+            if (IsDecorate)
             {
                 switch (IdFlower)
                 {
                     case 10:
                         var foodTexture_Mali = Globals.Content.Load<Texture2D>("foods/food_mali");
-                        var changeFood_Mali = new Food(foodTexture_Mali, _plate2.Position);
+                        var changeFood_Mali = new SystemsFood(foodTexture_Mali, _plate2.Position);
                         DragDropManager.AddDraggable(changeFood_Mali);
                         _food.Add(changeFood_Mali);
                         break;
                     case 20:
                         var foodTexture_Rose = Globals.Content.Load<Texture2D>("foods/food_rose");
-                        var changeFood_Rose = new Food(foodTexture_Rose, _plate2.Position);
+                        var changeFood_Rose = new SystemsFood(foodTexture_Rose, _plate2.Position);
                         DragDropManager.AddDraggable(changeFood_Rose);
                         _food.Add(changeFood_Rose);
                         break;
                     case 30:
                         var foodTexture_Lotus = Globals.Content.Load<Texture2D>("foods/food_lotus");
-                        var changeFood_Lotus = new Food(foodTexture_Lotus, _plate2.Position);
+                        var changeFood_Lotus = new SystemsFood(foodTexture_Lotus, _plate2.Position);
                         DragDropManager.AddDraggable(changeFood_Lotus);
                         _food.Add(changeFood_Lotus);
                         break;
@@ -388,31 +397,32 @@ namespace Mystic_Foods.Managers
             else
             {
                 var foodTexture = Globals.Content.Load<Texture2D>("foods/2");
-                var changeFood = new Food(foodTexture, _steam1.Position);
+                var changeFood = new SystemsFood(foodTexture, _steam1.Position);
                 DragDropManager.AddDraggable(changeFood);
                 _food.Add(changeFood);
                 IdFood += 10;
             }
 
-            isChangeFood = true;
-            isDecorate = false;
+            IsChangeFood = true;
+            IsDecorate = false;
             HasFood = true;
-            readySteam = false;
-            countSteam = 3f;
-            DnDScene.isCountDownSteam = false;
+            ReadySteam = false;
+            CountSteam = 3f;
+            DnDScene.IsCountDownSteam = false;
         }
+
         public void ServeFood()
         {
-            if(IdFood == GamePlayScene._currentCustomer.IdOrder)
+            if (IdFood == GamePlayScene._currentCustomer.IdOrder)
             {
-                countDia = 1;
+                CountDia = 1;
                 GamePlayScene.pay = GamePlayScene.price * GamePlayScene.weight;
                 GamePlayScene.Revenue += GamePlayScene.pay;
                 GamePlayScene.TotalMoney += GamePlayScene.pay;
             }
             else
             {
-                countDia = 0;
+                CountDia = 0;
             }
 
             foreach (var food in _food.ToList())
@@ -423,18 +433,20 @@ namespace Mystic_Foods.Managers
 
             _food.Clear();
             HasFood = false;
-            isChangeFood = false;
-            readySteam = false;
+            IsChangeFood = false;
+            ReadySteam = false;
             IdFood = 0;
-            countSteam = 3f;
-            DnDScene.isCountDownSteam = false;
-            DnDScene.isClickCook = false;
+            CountSteam = 3f;
+            DnDScene.IsCountDownSteam = false;
+            DnDScene.IsClickCook = false;
         }
+
         public void Update()
         {
             InputManager.Update();
             DragDropManager.Update();
         }
+
         public void Draw(Vector2 cameraPos)
         {
             _plate.Draw(cameraPos);
