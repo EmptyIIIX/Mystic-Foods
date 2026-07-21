@@ -40,41 +40,41 @@ namespace Mystic_Foods.Composition
             var recipeRegistry = new RecipeRegistry();
             
             // Create customer data using legacy Mystic_Foods.Customer type
-            var customers = new List<Mystic_Foods.Customer>
-            {
-                new Mystic_Foods.Customer
-                {
-                    Id = 1,
-                    Name = "ลูกค้าคนที่ 1",
-                    IdOrder = 10,
-                    SpritePathHappy = "Customers/Customer1_Happy",
-                    SpritePathNeutral = "Customers/Customer1_Neutral",
-                    SpritePathGrumpy = "Customers/Customer1_Grumpy",
-                    Dia1 = "สวัสดีครับ ขอสั่งอาหารหน่อยได้ไหม",
-                    Dia2 = "เมนูไหนขายดีบ้างครับ",
-                    DiaCurrect = "อร่อยมากครับ ขอบคุณ!",
-                    DiaWrong = "อืม... นี่ไม่ใช่ที่สั่งหรอก",
-                    DiaHappy = "ยอดเยี่ยมเลยครับ!",
-                    DiaNormal = "กินได้นะครับ",
-                    DiaAngry = "ไม่อร่อยเลย..."
-                },
-                new Mystic_Foods.Customer
-                {
-                    Id = 2,
-                    Name = "ลูกค้าคนที่ 2",
-                    IdOrder = 20,
-                    SpritePathHappy = "Customers/Customer2_Happy",
-                    SpritePathNeutral = "Customers/Customer2_Neutral",
-                    SpritePathGrumpy = "Customers/Customer2_Grumpy",
-                    Dia1 = "หิวจังเลย วันนี้ทำอะไรดี",
-                    Dia2 = "แนะนำเมนูแนะนำหน่อย",
-                    DiaCurrect = "อร่อยสุดๆ เลย!",
-                    DiaWrong = "เอ้า นี่ผิดออเดอร์แล้ว",
-                    DiaHappy = "เยี่ยมมาก!",
-                    DiaNormal = "ปกติปกติ",
-                    DiaAngry = "เสียใจจัง"
-                }
-            };
+                        var customers = new List<Mystic_Foods.Customer>
+                        {
+                            new Mystic_Foods.Customer
+                            {
+                                Id = 1,
+                                Name = "ลูกค้าคนที่ 1",
+                                IdOrder = 10,
+                                SpritePathHappy = "Customers/Human/Dawn/NPC1/npc1HumanHappy",
+                                SpritePathNeutral = "Customers/Human/Dawn/NPC1/npc1HumanNormal",
+                                SpritePathGrumpy = "Customers/Human/Dawn/NPC1/npc1HumanAngry",
+                                Dia1 = "สวัสดีครับ ขอสั่งอาหารหน่อยได้ไหม",
+                                Dia2 = "เมนูไหนขายดีบ้างครับ",
+                                DiaCurrect = "อร่อยมากครับ ขอบคุณ!",
+                                DiaWrong = "อืม... นี่ไม่ใช่ที่สั่งหรอก",
+                                DiaHappy = "ยอดเยี่ยมเลยครับ!",
+                                DiaNormal = "กินได้นะครับ",
+                                DiaAngry = "ไม่อร่อยเลย..."
+                            },
+                            new Mystic_Foods.Customer
+                            {
+                                Id = 2,
+                                Name = "ลูกค้าคนที่ 2",
+                                IdOrder = 20,
+                                SpritePathHappy = "Customers/Human/Dawn/NPC2/npc2HumanHappy",
+                                SpritePathNeutral = "Customers/Human/Dawn/NPC2/npc2HumanNormal",
+                                SpritePathGrumpy = "Customers/Human/Dawn/NPC2/npc2HumanAngry",
+                                Dia1 = "หิวจังเลย วันนี้ทำอะไรดี",
+                                Dia2 = "แนะนำเมนูแนะนำหน่อย",
+                                DiaCurrect = "อร่อยสุดๆ เลย!",
+                                DiaWrong = "เอ้า นี่ผิดออเดอร์แล้ว",
+                                DiaHappy = "เยี่ยมมาก!",
+                                DiaNormal = "ปกติปกติ",
+                                DiaAngry = "เสียใจจัง"
+                            }
+                        };
             
             var customerQueue = new CustomerQueue(customers);
 

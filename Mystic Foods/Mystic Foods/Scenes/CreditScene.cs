@@ -37,23 +37,36 @@ namespace Mystic_Foods.Scenes
         }
 
         public void LoadContent(ContentManager content)
-        {
-            _content = content;
-            _font1 = content.Load<SpriteFont>("BoldFont");
-            _font2 = content.Load<SpriteFont>("MainFont");
-            _font3 = content.Load<SpriteFont>("DiaFont");
+                {
+                    _content = content;
+                    _font1 = content.Load<SpriteFont>("BoldFont");
+                    _font2 = content.Load<SpriteFont>("MainFont");
+                    _font3 = content.Load<SpriteFont>("DiaFont");
 
-            _creditBg = content.Load<Texture2D>("Credit/credit_bg");
+                    // Load with fallback for missing content
+                    _creditBg = LoadOrFallback(content, "Credit/credit_bg");
 
-            _exitBtn = new Button(new ButtonConfig
-            {
-                Texture = content.Load<Texture2D>("Credit/exit_btn"),
-                Font = _font2,
-                Text = "",
-                Bounds = new Rectangle(1700, 950, 100, 50),
-                OnClick = _ => ExitToMenu = true
-            });
-        }
+                    _exitBtn = new Button(new ButtonConfig
+                    {
+                        Texture = LoadOrFallback(content, "Credit/exit_btn"),
+                        Font = _font2,
+                        Text = "",
+                        Bounds = new Rectangle(1700, 950, 100, 50),
+                        OnClick = _ => ExitToMenu = true
+                    });
+                }
+
+                private Texture2D LoadOrFallback(ContentManager content, string path)
+                        {
+                            try { return content.Load<Texture2D>(path); }
+                            catch (ContentLoadException)
+                            {
+                                var gd = _graphics.SpriteBatch.GraphicsDevice;
+                                var tex = new Texture2D(gd, 1, 1);
+                                tex.SetData(new[] { Color.White });
+                                return tex;
+                            }
+                        }
 
         public void Update(GameTime gameTime)
         {
